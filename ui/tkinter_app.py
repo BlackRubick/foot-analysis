@@ -338,7 +338,11 @@ class BiomechanicsApp:
         # Inicializa los labels ANTES de crear los botones
         self.posture_original_lbl, self.posture_result_lbl = self._build_common_image_area(self.tab_posture)
 
+
         ttk.Button(controls, text="Cargar imagen", command=lambda: self._load_image(self.posture_state, self.posture_original_lbl, self.posture_result_lbl)).pack(side="left", padx=4)
+
+        # Botón de analizar manual
+        ttk.Button(controls, text="Analizar", style="Primary.TButton", command=self._analyze_posture).pack(side="left", padx=4)
 
         # Botón de captura robusto: deshabilitado si no hay cámaras
         capture_btn = ttk.Button(

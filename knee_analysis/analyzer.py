@@ -51,7 +51,32 @@ class KneeAnalyzer:
         return "Plano no válido"
 
     def analyze(self, image: np.ndarray, plane: str = "frontal") -> Dict:
-        landmarks = self.detector.detect(image)
+        try:
+            landmarks = self.detector.detect(image)
+        except Exception as e:
+            # No se detectaron landmarks, devolver imagen con mensaje
+            annotated = image.copy()
+            cv2.putText(
+                annotated,
+                "No se detectaron puntos de referencia (landmarks)",
+                (20, 40),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.8,
+                (0, 0, 255),
+                2,
+            )
+            return {
+                "metrics": {
+                    "plane": plane,
+                    "side": "-",
+                    "knee_angle_deg": 0.0,
+                    "classification": "No detectado",
+                },
+                "images": {
+                    "annotated": annotated,
+                },
+            }
+
         side = self._select_side(landmarks)
 
         if side == "left":
