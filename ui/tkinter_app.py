@@ -296,6 +296,8 @@ class BiomechanicsApp:
         cam_combo.pack(side="left", padx=(0, 2))
         ttk.Button(controls, text="Actualizar cámaras", command=lambda: self._update_camera_combo(cam_combo, self.knee_camera_var)).pack(side="left", padx=(0, 8))
 
+
+        ttk.Button(controls, text="Cargar imagen", command=lambda: self._load_image(self.knee_state, self.knee_original_lbl, self.knee_result_lbl)).pack(side="left", padx=4)
         ttk.Button(controls, text="Tomar foto", command=lambda: self._capture_image(self.knee_state, self.knee_original_lbl, self.knee_result_lbl, self._get_camera_index(self.knee_camera_var.get()))).pack(side="left", padx=4)
 
         ttk.Label(controls, text="Plano:", style="Body.TLabel").pack(side="left", padx=(12, 4))
