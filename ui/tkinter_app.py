@@ -84,6 +84,41 @@ class CameraCaptureDialog(tk.Toplevel):
 
 
 class BiomechanicsApp:
+    def _load_image(self, state: ModuleState, label: ttk.Label, result_label: ttk.Label):
+        from tkinter import filedialog, messagebox
+        import cv2
+        path = filedialog.askopenfilename(
+            title="Selecciona imagen",
+            filetypes=[("Imágenes", "*.jpg *.jpeg *.png *.bmp *.tif *.tiff")],
+        )
+        if not path:
+            return
+        img = cv2.imread(path)
+        if img is None:
+            messagebox.showerror("Imagen", "No se pudo cargar la imagen.")
+            return
+        state.source_image = img
+        state.source_path = path
+        state.result = None
+        self._set_image_on_label(label, img)
+        self._clear_image_label(result_label, "Resultado no disponible")
+    def _get_camera_index(self, camera_name: str) -> int:
+        """
+        Dado el nombre de la cámara (como aparece en el combobox), devuelve el índice correspondiente.
+        Si no se encuentra, retorna 0 por defecto.
+        """
+        for idx, name in self._camera_options:
+            if name == camera_name:
+                return idx
+        # Fallback: intentar extraer el índice del string
+        import re
+        m = re.search(r"índice (\d+)", camera_name)
+        if m:
+            return int(m.group(1))
+        try:
+            return int(camera_name)
+        except Exception:
+            return 0
     def _build_posture_tab(self):
         controls = ttk.Frame(self.tab_posture, style="Card.TFrame")
         controls.pack(fill="x", padx=10, pady=8)
@@ -517,43 +552,13 @@ class BiomechanicsApp:
     def _build_foot_tab(self):
         controls = ttk.Frame(self.tab_foot, style="Card.TFrame")
         controls.pack(fill="x", padx=10, pady=8)
-        # Resultados
-        self.lever_result_text = tk.Text(self.tab_lever, height=12)
-        self.lever_result_text.pack(fill="both", padx=10, pady=10)
-        self._configure_text_widget(self.lever_result_text)
-
-        controls = ttk.Frame(self.tab_lever, style="Card.TFrame")
-        controls.pack(fill="x", padx=10, pady=8)
-
-        ttk.Label(controls, text="Peso (kg):", style="Body.TLabel").pack(side="left", padx=(0, 2))
-        self.lever_weight_var = tk.StringVar()
-        ttk.Entry(controls, textvariable=self.lever_weight_var, width=8).pack(side="left", padx=(0, 8))
-
-        ttk.Label(controls, text="Segmento:", style="Body.TLabel").pack(side="left", padx=(0, 2))
-        self.lever_segment_var = tk.StringVar()
-        segmentos_es = ["cabeza", "tronco", "brazo_superior", "antebrazo", "mano", "muslo", "pierna", "pie"]
-        self.lever_segment_combo = ttk.Combobox(controls, textvariable=self.lever_segment_var, values=segmentos_es, state="readonly", width=14)
-        self.lever_segment_combo.pack(side="left", padx=(0, 8))
-
-        controls3 = ttk.Frame(self.tab_lever, style="Card.TFrame")
-        controls3.pack(fill="x", padx=10, pady=(2, 8))
-        ttk.Label(controls3, text="LE (cm):", style="Body.TLabel").pack(side="left", padx=(0, 2))
-        self.lever_le_var = tk.StringVar()
-        ttk.Entry(controls3, textvariable=self.lever_le_var, width=6).pack(side="left", padx=(0, 8))
-        ttk.Label(controls3, text="LR (cm):", style="Body.TLabel").pack(side="left", padx=(0, 2))
-        self.lever_lr_var = tk.StringVar()
-        ttk.Entry(controls3, textvariable=self.lever_lr_var, width=6).pack(side="left", padx=(0, 8))
-        ttk.Label(controls3, text="CO (mm):", style="Body.TLabel").pack(side="left", padx=(0, 2))
-        self.lever_co_var = tk.StringVar()
-        ttk.Entry(controls3, textvariable=self.lever_co_var, width=6).pack(side="left", padx=(0, 8))
-        ttk.Label(controls3, text="H (mm):", style="Body.TLabel").pack(side="left", padx=(0, 2))
-        self.lever_h_var = tk.StringVar()
-        ttk.Entry(controls3, textvariable=self.lever_h_var, width=6).pack(side="left", padx=(0, 8))
-        ttk.Button(controls3, text="Calcular", style="Primary.TButton", command=self._calculate_lever).pack(side="left", padx=8)
+        ttk.Label(controls, text="Cámara:", style="Body.TLabel").pack(side="left", padx=(0, 2))
+        cam_combo = ttk.Combobox(controls, textvariable=self.foot_camera_var, state="readonly", width=32)
+        cam_combo['values'] = [name for idx, name in self._camera_options]
+        cam_combo.pack(side="left", padx=(0, 2))
+        ttk.Button(controls, text="Actualizar cámaras", command=lambda: self._update_camera_combo(cam_combo, self.foot_camera_var)).pack(side="left", padx=(0, 8))
+        ttk.Button(controls, text="Cargar imagen", command=lambda: self._load_image(self.foot_state, self.foot_original_lbl, self.foot_result_lbl)).pack(side="left", padx=4)
         ttk.Button(controls, text="Tomar foto", command=lambda: self._capture_image(self.foot_state, self.foot_original_lbl, self.foot_result_lbl, self._get_camera_index(self.foot_camera_var.get()))).pack(side="left", padx=4)
-        ttk.Button(controls, text="Analizar", style="Primary.TButton", command=self._analyze_foot).pack(side="left", padx=4)
-        ttk.Button(controls, text="Guardar resultados", command=self._save_foot).pack(side="left", padx=4)
-
         ttk.Label(controls, text="Vista:", style="Body.TLabel").pack(side="left", padx=(15, 4))
         stage_cb = ttk.Combobox(
             controls,
@@ -564,6 +569,8 @@ class BiomechanicsApp:
         )
         stage_cb.pack(side="left", padx=4)
         stage_cb.bind("<<ComboboxSelected>>", lambda _e: self._refresh_foot_view())
+        ttk.Button(controls, text="Analizar", style="Primary.TButton", command=self._analyze_foot).pack(side="left", padx=4)
+        ttk.Button(controls, text="Guardar resultados", command=self._save_foot).pack(side="left", padx=4)
 
         self.foot_original_lbl, self.foot_result_lbl = self._build_common_image_area(self.tab_foot)
 
