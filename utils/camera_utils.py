@@ -15,20 +15,22 @@ def list_cameras(max_devices=10):
         for dev in sorted(video_devs, key=lambda x: int(re.findall(r"\\d+", dev)[0])):
             idx = int(re.findall(r"\\d+", dev)[0])
             name = f"/dev/{dev}"
-            # Intentar abrir con OpenCV para verificar que está disponible
             cap = cv2.VideoCapture(idx)
             if cap.isOpened():
-                label = name
-                try:
-                    import subprocess
-                    out = subprocess.check_output(["v4l2-ctl", "-d", name, "--info"], stderr=subprocess.DEVNULL, timeout=1)
-                    for line in out.decode().splitlines():
-                        if "Card type" in line:
-                            label = line.split(":", 1)[-1].strip()
-                            break
-                except Exception:
-                    pass
-                cameras.append((idx, f"{label} (índice {idx})"))
+                # Probar que realmente devuelve un frame válido
+                ret, frame = cap.read()
+                if ret and frame is not None:
+                    label = name
+                    try:
+                        import subprocess
+                        out = subprocess.check_output(["v4l2-ctl", "-d", name, "--info"], stderr=subprocess.DEVNULL, timeout=1)
+                        for line in out.decode().splitlines():
+                            if "Card type" in line:
+                                label = line.split(":", 1)[-1].strip()
+                                break
+                    except Exception:
+                        pass
+                    cameras.append((idx, f"{label} (índice {idx})"))
             cap.release()
         if cameras:
             return cameras
