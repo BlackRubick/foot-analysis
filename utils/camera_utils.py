@@ -2,7 +2,7 @@ import cv2
 import os
 import re
 
-def list_cameras(max_devices=10):
+def list_cameras(max_devices=20):
     """
     Devuelve una lista de tuplas (index, name) de cámaras conectadas.
     En Linux intenta leer /dev/video* y usar v4l2-ctl si está disponible.
@@ -11,17 +11,18 @@ def list_cameras(max_devices=10):
     cameras = []
     # Linux: buscar /dev/video* y probar con OpenCV si realmente están disponibles
     if os.name == "posix":
-        video_devs = [f for f in os.listdir("/dev") if re.match(r"video\\d+", f)]
-        for dev in sorted(video_devs, key=lambda x: int(re.findall(r"\\d+", dev)[0])):
-            idx = int(re.findall(r"\\d+", dev)[0])
-            name = f"/dev/{dev}"
+        # Buscar hasta /dev/video20 aunque no existan todos
+        for idx in range(max_devices):
+            name = f"/dev/video{idx}"
+            if not os.path.exists(name):
+                continue
             cap = cv2.VideoCapture(idx)
             if cap.isOpened():
                 # Probar que realmente devuelve un frame válido y no vacío
                 ret, frame = cap.read()
                 if ret and frame is not None:
                     # Considerar frame válido si no es todo negro o gris
-                    if frame.sum() > 10000:  # Umbral simple para descartar frames vacíos
+                    if frame.sum() > 10000:
                         label = name
                         # Obtener nombre real de la cámara
                         try:
