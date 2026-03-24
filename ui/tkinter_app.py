@@ -75,17 +75,19 @@ class CameraCaptureDialog(tk.Toplevel):
                 self.destroy()
                 return
 
-        self.preview = ttk.Label(self)
-        self.preview.pack(fill="both", expand=True, padx=12, pady=12)
+        # Solo mostrar previsualización y controles si es cámara USB
+        if hasattr(self, 'cap') and self.cap is not None:
+            self.preview = ttk.Label(self)
+            self.preview.pack(fill="both", expand=True, padx=12, pady=12)
 
-        controls = ttk.Frame(self)
-        controls.pack(fill="x", padx=12, pady=(0, 12))
+            controls = ttk.Frame(self)
+            controls.pack(fill="x", padx=12, pady=(0, 12))
 
-        ttk.Button(controls, text="Capturar", command=self._capture).pack(side="left", padx=4)
-        ttk.Button(controls, text="Cancelar", command=self._close).pack(side="left", padx=4)
+            ttk.Button(controls, text="Capturar", command=self._capture).pack(side="left", padx=4)
+            ttk.Button(controls, text="Cancelar", command=self._close).pack(side="left", padx=4)
 
-        self.protocol("WM_DELETE_WINDOW", self._close)
-        self._update_frame()
+            self.protocol("WM_DELETE_WINDOW", self._close)
+            self._update_frame()
 
     def _update_frame(self):
         if self.cap is None:
