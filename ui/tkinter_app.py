@@ -341,10 +341,8 @@ class BiomechanicsApp:
 
         ttk.Button(controls, text="Cargar imagen", command=lambda: self._load_image(self.posture_state, self.posture_original_lbl, self.posture_result_lbl)).pack(side="left", padx=4)
 
-        # Botón de analizar manual
         ttk.Button(controls, text="Analizar", style="Primary.TButton", command=self._analyze_posture).pack(side="left", padx=4)
 
-        # Botón de captura robusto: deshabilitado si no hay cámaras
         capture_btn = ttk.Button(
             controls,
             text="Tomar foto",
