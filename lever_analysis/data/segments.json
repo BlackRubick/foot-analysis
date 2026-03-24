@@ -1,0 +1,10 @@
+{
+  "cabeza": 0.08,
+  "tronco": 0.50,
+  "brazo_superior": 0.03,
+  "antebrazo": 0.02,
+  "mano": 0.01,
+  "muslo": 0.10,
+  "pierna": 0.05,
+  "pie": 0.015
+}

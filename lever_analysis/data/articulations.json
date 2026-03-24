@@ -1,0 +1,33 @@
+{
+  "Occipitoatlantoidea": {
+    "movements": [
+      {"name": "Flexión", "fulcrum": "articulación", "effort": "músculo agonista", "resistance": "peso cabeza"},
+      {"name": "Extensión", "fulcrum": "articulación", "effort": "músculo agonista", "resistance": "peso cabeza"},
+      {"name": "Inclinación lateral", "fulcrum": "articulación", "effort": "músculo agonista", "resistance": "peso cabeza"}
+    ]
+  },
+  "Atlantoaxial": {
+    "movements": [
+      {"name": "Rotación", "fulcrum": "articulación", "effort": "músculo agonista", "resistance": "peso cabeza"}
+    ]
+  },
+  "ATM": {
+    "movements": [
+      {"name": "Elevación", "fulcrum": "articulación", "effort": "músculo agonista", "resistance": "peso mandíbula"},
+      {"name": "Depresión", "fulcrum": "articulación", "effort": "músculo agonista", "resistance": "peso mandíbula"},
+      {"name": "Protrusión", "fulcrum": "articulación", "effort": "músculo agonista", "resistance": "peso mandíbula"},
+      {"name": "Retrusión", "fulcrum": "articulación", "effort": "músculo agonista", "resistance": "peso mandíbula"}
+    ]
+  },
+  "Glenohumeral": {
+    "movements": [
+      {"name": "Flexión", "fulcrum": "articulación", "effort": "músculo agonista", "resistance": "peso brazo"},
+      {"name": "Extensión", "fulcrum": "articulación", "effort": "músculo agonista", "resistance": "peso brazo"},
+      {"name": "Abducción", "fulcrum": "articulación", "effort": "músculo agonista", "resistance": "peso brazo"},
+      {"name": "Aducción", "fulcrum": "articulación", "effort": "músculo agonista", "resistance": "peso brazo"},
+      {"name": "Rotación interna", "fulcrum": "articulación", "effort": "músculo agonista", "resistance": "peso brazo"},
+      {"name": "Rotación externa", "fulcrum": "articulación", "effort": "músculo agonista", "resistance": "peso brazo"}
+    ]
+  }
+  // ... Agregar el resto de articulaciones y movimientos siguiendo este formato
+}

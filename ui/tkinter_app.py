@@ -84,6 +84,51 @@ class CameraCaptureDialog(tk.Toplevel):
 
 
 class BiomechanicsApp:
+    def _build_posture_tab(self):
+        controls = ttk.Frame(self.tab_posture, style="Card.TFrame")
+        controls.pack(fill="x", padx=10, pady=8)
+        ttk.Label(controls, text="Cámara:", style="Body.TLabel").pack(side="left", padx=(0, 2))
+        cam_combo = ttk.Combobox(controls, textvariable=self.posture_camera_var, state="readonly", width=32)
+        cam_combo['values'] = [name for idx, name in self._camera_options_posture]
+        cam_combo.pack(side="left", padx=(0, 8))
+        if self._camera_options_posture:
+            self.posture_camera_var.set(self._camera_options_posture[0][1])
+        ttk.Button(controls, text="Actualizar cámaras", command=lambda: self._update_camera_combo(cam_combo, self.posture_camera_var)).pack(side="left", padx=(0, 8))
+        ttk.Button(controls, text="Cargar imagen", command=lambda: self._load_image(self.posture_state, self.posture_original_lbl, self.posture_result_lbl)).pack(side="left", padx=4)
+        ttk.Button(controls, text="Tomar foto", command=lambda: self._capture_image(self.posture_state, self.posture_original_lbl, self.posture_result_lbl, self._get_camera_index(self.posture_camera_var.get()))).pack(side="left", padx=4)
+        ttk.Button(controls, text="Analizar", style="Primary.TButton", command=self._analyze_posture).pack(side="left", padx=4)
+        ttk.Button(controls, text="Guardar resultado", command=self._save_posture).pack(side="left", padx=4)
+
+        self.posture_original_lbl, self.posture_result_lbl = self._build_common_image_area(self.tab_posture)
+
+        metrics_frame = ttk.LabelFrame(self.tab_posture, text="Métricas", style="Card.TLabelframe")
+        metrics_frame.pack(fill="x", padx=10, pady=(0, 10))
+        self.posture_metrics_text = tk.Text(metrics_frame, height=5)
+        self.posture_metrics_text.pack(fill="x", padx=8, pady=8)
+        self._configure_text_widget(self.posture_metrics_text)
+
+    def _generate_pdf_report(self, analysis_type, metrics, image_path, interpretation=""):
+        try:
+            from utils.pdf_report import generate_pdf_report
+            out_dir = self._ensure_output_dir()
+            pdf_path = os.path.join(out_dir, f"reporte_{analysis_type}_{self.patient_data.get('Nombre','paciente')}.pdf")
+            # Datos dummy para las secciones no usadas
+            posture_data = metrics if analysis_type == "postura" else {}
+            plantar_data = metrics if analysis_type == "pie" else {}
+            lever_data = metrics if analysis_type == "palanca" else {}
+            # El generador espera: patient_data, posture_data, plantar_data, results_text, img_path, out_path
+            generate_pdf_report(
+                self.patient_data,
+                posture_data,
+                plantar_data,
+                interpretation,
+                image_path,
+                pdf_path
+            )
+            messagebox.showinfo("PDF generado", f"Reporte PDF guardado en:\n{pdf_path}")
+        except Exception as e:
+            messagebox.showerror("PDF", f"Error al generar PDF: {e}")
+
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Sistema de Análisis Biomecánico")
@@ -113,12 +158,52 @@ class BiomechanicsApp:
         self.foot_stage_var = tk.StringVar(value="annotated")
         self.status_var = tk.StringVar(value="Listo")
 
+        # Datos generales del paciente
+        self.patient_data = {
+            "Nombre": "",
+            "Edad": "",
+            "Sexo": "",
+            "Ocupación": "",
+            "Actividad física": "",
+            "Antecedentes traumatológicos": "",
+            "Enfermedades crónico-degenerativas": "",
+            "Dolor en pies": "No",
+            "Dolor en oídos": "No",
+            "Alteraciones de la visión": "No",
+            "Vértigos": "No",
+            "Inestabilidad": "No",
+            "Malestar en dientes": "No",
+            "Presencia de cicatrices": "No"
+        }
+
         # Variables para cámara por módulo
         self.foot_camera_var = tk.StringVar()
         self.knee_camera_var = tk.StringVar()
         self.posture_camera_var = tk.StringVar()
         self._camera_options = []
         self._refresh_cameras()
+
+    def _show_patient_form(self):
+        form = tk.Toplevel(self.root)
+        form.title("Datos generales del paciente")
+        form.geometry("500x600")
+        form.transient(self.root)
+        form.grab_set()
+        entries = {}
+        row = 0
+        for k in self.patient_data:
+            tk.Label(form, text=k+":").grid(row=row, column=0, sticky="w", padx=8, pady=4)
+            e = tk.Entry(form, width=40)
+            e.insert(0, self.patient_data[k])
+            e.grid(row=row, column=1, padx=8, pady=4)
+            entries[k] = e
+            row += 1
+        def save_and_close():
+            for k in self.patient_data:
+                self.patient_data[k] = entries[k].get()
+            form.destroy()
+        tk.Button(form, text="Guardar", command=save_and_close).grid(row=row, column=0, columnspan=2, pady=12)
+
     def _refresh_cameras(self):
         # Solo webcams USB
         self._camera_options = list_cameras()
@@ -186,6 +271,7 @@ class BiomechanicsApp:
         return self.posture_analyzer
 
     def _build_ui(self):
+
         top = ttk.Frame(self.root, style="App.TFrame")
         top.pack(fill="x", padx=14, pady=(12, 8))
 
@@ -204,8 +290,9 @@ class BiomechanicsApp:
         ttk.Label(output_card, text="Carpeta de salida", style="Body.TLabel").pack(anchor="w")
         row = ttk.Frame(output_card, style="Card.TFrame")
         row.pack(fill="x", pady=(4, 0))
-        ttk.Entry(row, textvariable=self.save_dir_var, width=42).pack(side="left", padx=(0, 6))
-        ttk.Button(row, text="Elegir", command=self._choose_output_dir).pack(side="left")
+        ttk.Entry(row, textvariable=self.save_dir_var, width=32).pack(side="left", padx=(0, 6))
+        ttk.Button(row, text="Elegir", command=self._ensure_output_dir).pack(side="left")
+        ttk.Button(row, text="Datos paciente", command=self._show_patient_form).pack(side="left", padx=(8,0))
 
         notebook = ttk.Notebook(self.root)
         notebook.pack(fill="both", expand=True, padx=14, pady=8)
@@ -214,13 +301,188 @@ class BiomechanicsApp:
         self.tab_knee = ttk.Frame(notebook)
         self.tab_posture = ttk.Frame(notebook)
 
+
         notebook.add(self.tab_foot, text="Baropodometría (Pie)")
         notebook.add(self.tab_knee, text="Rodilla")
         notebook.add(self.tab_posture, text="Postura")
+        # Nueva pestaña para palancas
+        self.tab_lever = ttk.Frame(notebook)
+        notebook.add(self.tab_lever, text="Palancas y Torque")
 
         self._build_foot_tab()
         self._build_knee_tab()
         self._build_posture_tab()
+        self._build_lever_tab()
+
+    def _build_lever_tab(self):
+        # Limpiar la pestaña antes de crear controles
+        for child in self.tab_lever.winfo_children():
+            child.destroy()
+
+        controls = ttk.Frame(self.tab_lever, style="Card.TFrame")
+        controls.pack(fill="x", padx=10, pady=8)
+        ttk.Label(controls, text="Peso (kg):", style="Body.TLabel").pack(side="left", padx=(0, 2))
+        self.lever_weight_var = tk.StringVar()
+        ttk.Entry(controls, textvariable=self.lever_weight_var, width=8).pack(side="left", padx=(0, 8))
+        ttk.Label(controls, text="Segmento:", style="Body.TLabel").pack(side="left", padx=(0, 2))
+        self.lever_segment_var = tk.StringVar()
+        segmentos_es = ["cabeza", "tronco", "brazo_superior", "antebrazo", "mano", "muslo", "pierna", "pie"]
+        self.lever_segment_combo = ttk.Combobox(controls, textvariable=self.lever_segment_var, values=segmentos_es, state="readonly", width=14)
+        self.lever_segment_combo.pack(side="left", padx=(0, 8))
+        ttk.Label(controls, text="LE (cm):", style="Body.TLabel").pack(side="left", padx=(0, 2))
+        self.lever_le_var = tk.StringVar()
+        ttk.Entry(controls, textvariable=self.lever_le_var, width=6).pack(side="left", padx=(0, 8))
+        ttk.Label(controls, text="LR (cm):", style="Body.TLabel").pack(side="left", padx=(0, 2))
+        self.lever_lr_var = tk.StringVar()
+        ttk.Entry(controls, textvariable=self.lever_lr_var, width=6).pack(side="left", padx=(0, 8))
+        ttk.Label(controls, text="CO (mm):", style="Body.TLabel").pack(side="left", padx=(0, 2))
+        self.lever_co_var = tk.StringVar()
+        ttk.Entry(controls, textvariable=self.lever_co_var, width=6).pack(side="left", padx=(0, 8))
+        ttk.Label(controls, text="H (mm):", style="Body.TLabel").pack(side="left", padx=(0, 2))
+        self.lever_h_var = tk.StringVar()
+        ttk.Entry(controls, textvariable=self.lever_h_var, width=6).pack(side="left", padx=(0, 8))
+        ttk.Button(controls, text="Calcular", style="Primary.TButton", command=self._calculate_lever).pack(side="left", padx=8)
+
+        # Área de resultados
+        self.lever_result_text = tk.Text(self.tab_lever, height=12)
+        self.lever_result_text.pack(fill="both", padx=10, pady=10)
+        self._configure_text_widget(self.lever_result_text)
+    def _load_lever_image(self):
+        from tkinter import filedialog
+        import cv2
+        path = filedialog.askopenfilename(
+            title="Selecciona imagen",
+            filetypes=[("Imágenes", "*.jpg *.jpeg *.png *.bmp *.tif *.tiff")],
+        )
+        if not path:
+            return
+        img = cv2.imread(path)
+        if img is None:
+            messagebox.showerror("Imagen", "No se pudo cargar la imagen.")
+            return
+        self.lever_captured_image = img
+        self.lever_points = []
+        self._draw_lever_image()
+        self.lever_result_text.delete("1.0", tk.END)
+        self.lever_result_text.insert(tk.END, "Imagen cargada. Haz clic en 4 puntos anatómicos: \n1) Fulcro, 2) Inserción esfuerzo, 3) Punto resistencia, 4) Inserción antagonista.\n")
+
+
+        # (Se elimina la barra superior de controles y canvas de imagen para dejar solo los campos manuales)
+
+        # Resultados (debe ir después de los controles y canvas)
+
+    def _capture_lever_photo(self):
+        idx = self._get_camera_index(self.lever_camera_var.get())
+        if idx is None:
+            messagebox.showerror("Cámara", "Selecciona una cámara válida.")
+            return
+        dialog = CameraCaptureDialog(self.root, camera_index=idx)
+        self.root.wait_window(dialog)
+        if getattr(dialog, "captured_frame", None) is None:
+            return
+        self.lever_captured_image = dialog.captured_frame
+        self.lever_points = []
+        self._draw_lever_image()
+        self.lever_result_text.delete("1.0", tk.END)
+        self.lever_result_text.insert(tk.END, "Imagen capturada. Haz clic en 4 puntos anatómicos: \n1) Fulcro, 2) Inserción esfuerzo, 3) Punto resistencia, 4) Inserción antagonista.\n")
+
+    def _draw_lever_image(self):
+        if self.lever_captured_image is None:
+            self.lever_image_canvas.delete("all")
+            return
+        import cv2
+        from PIL import Image, ImageTk
+        img = self.lever_captured_image.copy()
+        h, w = img.shape[:2]
+        scale = min(640 / w, 480 / h)
+        new_w, new_h = int(w * scale), int(h * scale)
+        img_resized = cv2.resize(img, (new_w, new_h), interpolation=cv2.INTER_AREA)
+        # Dibujar puntos
+        for i, (x, y) in enumerate(self.lever_points):
+            cv2.circle(img_resized, (int(x), int(y)), 7, (0, 255, 0), -1)
+            cv2.putText(img_resized, str(i+1), (int(x)+8, int(y)-8), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255,255,0), 2)
+        img_rgb = cv2.cvtColor(img_resized, cv2.COLOR_BGR2RGB)
+        pil_img = Image.fromarray(img_rgb)
+        self.lever_tk_img = ImageTk.PhotoImage(pil_img)
+        self.lever_image_canvas.config(width=new_w, height=new_h)
+        self.lever_image_canvas.delete("all")
+        self.lever_image_canvas.create_image(0, 0, anchor="nw", image=self.lever_tk_img)
+        # Redibujar puntos encima
+        for i, (x, y) in enumerate(self.lever_points):
+            self.lever_image_canvas.create_oval(x-7, y-7, x+7, y+7, fill="#22c55e", outline="white", width=2)
+            self.lever_image_canvas.create_text(x+14, y-10, text=str(i+1), fill="yellow", font=("Segoe UI", 12, "bold"))
+
+    def _on_lever_image_click(self, event):
+        if self.lever_captured_image is None:
+            return
+        # Ajustar coordenadas al tamaño de la imagen mostrada
+        canvas_w = self.lever_image_canvas.winfo_width()
+        canvas_h = self.lever_image_canvas.winfo_height()
+        img_h, img_w = self.lever_captured_image.shape[:2]
+        scale = min(640 / img_w, 480 / img_h)
+        x = event.x
+        y = event.y
+        self.lever_points.append((x, y))
+        self._draw_lever_image()
+        if len(self.lever_points) == 4:
+            self._calculate_lever_from_points()
+
+    def _calculate_lever_from_points(self):
+        import math
+        # Asignación: 0=Fulcro, 1=Esfuerzo, 2=Resistencia, 3=Antagonista
+        f, e, r, a = self.lever_points
+        # LE: distancia Fulcro-Esfuerzo
+        le = math.dist(f, e) / 10  # px a cm (aprox, depende de escala real)
+        # LR: distancia Fulcro-Resistencia
+        lr = math.dist(f, r) / 10
+        # CO: distancia perpendicular entre esfuerzo y antagonista
+        co = math.dist(e, a)  # px
+        # H: distancia esfuerzo-antagonista
+        h = math.dist(e, a)  # px
+        # Mostrar resultados y permitir editar escala real si se desea
+        self.lever_result_text.delete("1.0", tk.END)
+        self.lever_result_text.insert(tk.END, f"LE (cm): {le:.2f}\nLR (cm): {lr:.2f}\nCO (px): {co:.2f}\nH (px): {h:.2f}\n\nPuedes ajustar la escala real si tienes referencia de longitud en la imagen.\nLuego, usa estos valores para el cálculo biomecánico.")
+
+    def _calculate_lever(self):
+        if not hasattr(self, "lever_result_text") or self.lever_result_text is None:
+            messagebox.showerror("Error", "El área de resultados no está disponible. Por favor, cambia de pestaña y vuelve a Palancas y Torque.")
+            return
+        try:
+            from lever_analysis.calculations import mechanical_advantage, interpret_mechanical_advantage, calculate_alpha, round_rule, calculate_mass, calculate_force, calculate_torque
+            import json
+            from pathlib import Path
+            segments_path = Path(__file__).parent.parent / "lever_analysis/data/segments.json"
+            with open(segments_path, 'r', encoding='utf-8') as f:
+                segments = json.load(f)
+            peso = float(self.lever_weight_var.get())
+            segmento = self.lever_segment_var.get().strip()
+            if segmento not in segments:
+                self.lever_result_text.delete("1.0", tk.END)
+                self.lever_result_text.insert(tk.END, f"Segmento no válido. Usa uno de: {', '.join(segments.keys())}\n")
+                return
+            le = float(self.lever_le_var.get()) / 100
+            lr = float(self.lever_lr_var.get()) / 100
+            co = float(self.lever_co_var.get()) / 1000
+            h = float(self.lever_h_var.get()) / 1000
+            vm = mechanical_advantage(le, lr)
+            vm_interp = interpret_mechanical_advantage(vm)
+            alpha = calculate_alpha(co, h)
+            alpha_r = round_rule(alpha)
+            masa = calculate_mass(peso, segments[segmento])
+            fuerza = calculate_force(masa)
+            torque = calculate_torque(fuerza, le, alpha)
+            result = (
+                f"Ventaja mecánica: {vm:.2f} ({vm_interp})\n"
+                f"Ángulo alfa: {alpha:.2f}° (redondeado: {alpha_r}°)\n"
+                f"Masa segmento: {masa:.2f} kg\n"
+                f"Fuerza: {fuerza:.2f} N\n"
+                f"Torque: {torque:.2f} Nm\n"
+            )
+            self.lever_result_text.delete("1.0", tk.END)
+            self.lever_result_text.insert(tk.END, result)
+        except Exception as e:
+            self.lever_result_text.delete("1.0", tk.END)
+            self.lever_result_text.insert(tk.END, f"Error: {e}\n")
 
         status_frame = ttk.Frame(self.root, style="App.TFrame")
         status_frame.pack(fill="x", padx=14, pady=(0, 10))
@@ -255,14 +517,39 @@ class BiomechanicsApp:
     def _build_foot_tab(self):
         controls = ttk.Frame(self.tab_foot, style="Card.TFrame")
         controls.pack(fill="x", padx=10, pady=8)
+        # Resultados
+        self.lever_result_text = tk.Text(self.tab_lever, height=12)
+        self.lever_result_text.pack(fill="both", padx=10, pady=10)
+        self._configure_text_widget(self.lever_result_text)
 
-        ttk.Label(controls, text="Cámara:", style="Body.TLabel").pack(side="left", padx=(0, 2))
-        cam_combo = ttk.Combobox(controls, textvariable=self.foot_camera_var, state="readonly", width=32)
-        cam_combo['values'] = [name for idx, name in self._camera_options]
-        cam_combo.pack(side="left", padx=(0, 2))
-        ttk.Button(controls, text="Actualizar cámaras", command=lambda: self._update_camera_combo(cam_combo, self.foot_camera_var)).pack(side="left", padx=(0, 8))
+        controls = ttk.Frame(self.tab_lever, style="Card.TFrame")
+        controls.pack(fill="x", padx=10, pady=8)
 
-        ttk.Button(controls, text="Cargar imagen", command=lambda: self._load_image(self.foot_state, self.foot_original_lbl, self.foot_result_lbl)).pack(side="left", padx=4)
+        ttk.Label(controls, text="Peso (kg):", style="Body.TLabel").pack(side="left", padx=(0, 2))
+        self.lever_weight_var = tk.StringVar()
+        ttk.Entry(controls, textvariable=self.lever_weight_var, width=8).pack(side="left", padx=(0, 8))
+
+        ttk.Label(controls, text="Segmento:", style="Body.TLabel").pack(side="left", padx=(0, 2))
+        self.lever_segment_var = tk.StringVar()
+        segmentos_es = ["cabeza", "tronco", "brazo_superior", "antebrazo", "mano", "muslo", "pierna", "pie"]
+        self.lever_segment_combo = ttk.Combobox(controls, textvariable=self.lever_segment_var, values=segmentos_es, state="readonly", width=14)
+        self.lever_segment_combo.pack(side="left", padx=(0, 8))
+
+        controls3 = ttk.Frame(self.tab_lever, style="Card.TFrame")
+        controls3.pack(fill="x", padx=10, pady=(2, 8))
+        ttk.Label(controls3, text="LE (cm):", style="Body.TLabel").pack(side="left", padx=(0, 2))
+        self.lever_le_var = tk.StringVar()
+        ttk.Entry(controls3, textvariable=self.lever_le_var, width=6).pack(side="left", padx=(0, 8))
+        ttk.Label(controls3, text="LR (cm):", style="Body.TLabel").pack(side="left", padx=(0, 2))
+        self.lever_lr_var = tk.StringVar()
+        ttk.Entry(controls3, textvariable=self.lever_lr_var, width=6).pack(side="left", padx=(0, 8))
+        ttk.Label(controls3, text="CO (mm):", style="Body.TLabel").pack(side="left", padx=(0, 2))
+        self.lever_co_var = tk.StringVar()
+        ttk.Entry(controls3, textvariable=self.lever_co_var, width=6).pack(side="left", padx=(0, 8))
+        ttk.Label(controls3, text="H (mm):", style="Body.TLabel").pack(side="left", padx=(0, 2))
+        self.lever_h_var = tk.StringVar()
+        ttk.Entry(controls3, textvariable=self.lever_h_var, width=6).pack(side="left", padx=(0, 8))
+        ttk.Button(controls3, text="Calcular", style="Primary.TButton", command=self._calculate_lever).pack(side="left", padx=8)
         ttk.Button(controls, text="Tomar foto", command=lambda: self._capture_image(self.foot_state, self.foot_original_lbl, self.foot_result_lbl, self._get_camera_index(self.foot_camera_var.get()))).pack(side="left", padx=4)
         ttk.Button(controls, text="Analizar", style="Primary.TButton", command=self._analyze_foot).pack(side="left", padx=4)
         ttk.Button(controls, text="Guardar resultados", command=self._save_foot).pack(side="left", padx=4)
@@ -308,60 +595,77 @@ class BiomechanicsApp:
         ttk.Button(controls, text="Guardar resultado", command=self._save_knee).pack(side="left", padx=4)
 
         self.knee_original_lbl, self.knee_result_lbl = self._build_common_image_area(self.tab_knee)
-        def _capture_posture_photo(self):
-            if not self._camera_options:
-                messagebox.showerror("Cámara", "No hay cámaras disponibles para capturar.")
-                return
-            idx = self._get_camera_index(self.posture_camera_var.get())
-            if idx is None:
-                messagebox.showerror("Cámara", "Selecciona una cámara válida.")
-                return
-            self._capture_image(self.posture_state, self.posture_original_lbl, self.posture_result_lbl, idx)
+        def _build_lever_tab(self):
+            # Limpiar widgets antiguos de la pestaña antes de reconstruir
+            # Limpiar widgets antiguos y referencias
+            for child in self.tab_lever.winfo_children():
+                child.destroy()
+            self.lever_result_text = None
+            self.lever_image_canvas = None
+            self.lever_weight_var = None
+            self.lever_segment_var = None
+            self.lever_segment_combo = None
+            self.lever_camera_var = None
+            self.lever_le_var = None
+            self.lever_lr_var = None
+            self.lever_co_var = None
+            self.lever_h_var = None
+            self.lever_points = []
+            self.lever_captured_image = None
+            self.lever_tk_img = None
 
-        metrics_frame = ttk.LabelFrame(self.tab_knee, text="Métricas", style="Card.TLabelframe")
-        metrics_frame.pack(fill="x", padx=10, pady=(0, 10))
-        self.knee_metrics_text = tk.Text(metrics_frame, height=5)
-        self.knee_metrics_text.pack(fill="x", padx=8, pady=8)
-        self._configure_text_widget(self.knee_metrics_text)
+            # Resultados (debe ir primero para estar disponible en todos los métodos)
+            self.lever_result_text = tk.Text(self.tab_lever, height=12)
+            self.lever_result_text.pack(fill="both", padx=10, pady=10)
+            self._configure_text_widget(self.lever_result_text)
 
+            controls1 = ttk.Frame(self.tab_lever, style="Card.TFrame")
+            controls1.pack(fill="x", padx=10, pady=(8, 2))
+            ttk.Label(controls1, text="Peso de la persona (kg):", style="Body.TLabel").pack(side="left", padx=(0, 2))
+            self.lever_weight_var = tk.StringVar()
+            ttk.Entry(controls1, textvariable=self.lever_weight_var, width=8).pack(side="left", padx=(0, 8))
+            ttk.Label(controls1, text="Segmento:", style="Body.TLabel").pack(side="left", padx=(0, 2))
+            self.lever_segment_var = tk.StringVar()
+            segmentos_es = ["cabeza", "tronco", "brazo_superior", "antebrazo", "mano", "muslo", "pierna", "pie"]
+            self.lever_segment_combo = ttk.Combobox(controls1, textvariable=self.lever_segment_var, values=segmentos_es, state="readonly", width=14)
+            self.lever_segment_combo.pack(side="left", padx=(0, 8))
 
+            controls2 = ttk.Frame(self.tab_lever, style="Card.TFrame")
+            controls2.pack(fill="x", padx=10, pady=(2, 2))
+            ttk.Label(controls2, text="Cámara:", style="Body.TLabel").pack(side="left", padx=(0, 2))
+            self.lever_camera_var = tk.StringVar()
+            cam_combo = ttk.Combobox(controls2, textvariable=self.lever_camera_var, state="readonly", width=32)
+            cam_combo['values'] = [name for idx, name in self._camera_options]
+            cam_combo.pack(side="left", padx=(0, 8))
+            if self._camera_options:
+                self.lever_camera_var.set(self._camera_options[0][1])
+            ttk.Button(controls2, text="Actualizar cámaras", command=lambda: self._update_camera_combo(cam_combo, self.lever_camera_var)).pack(side="left", padx=(0, 8))
+            ttk.Button(controls2, text="Tomar foto", style="Primary.TButton", command=self._capture_lever_photo).pack(side="left", padx=8)
+            ttk.Button(controls2, text="Subir imagen", command=self._load_lever_image).pack(side="left", padx=4)
 
-    def _build_posture_tab(self):
-        controls = ttk.Frame(self.tab_posture, style="Card.TFrame")
-        controls.pack(fill="x", padx=10, pady=8)
+            controls3 = ttk.Frame(self.tab_lever, style="Card.TFrame")
+            controls3.pack(fill="x", padx=10, pady=(2, 8))
+            ttk.Label(controls3, text="LE (cm):", style="Body.TLabel").pack(side="left", padx=(0, 2))
+            self.lever_le_var = tk.StringVar()
+            ttk.Entry(controls3, textvariable=self.lever_le_var, width=6).pack(side="left", padx=(0, 8))
+            ttk.Label(controls3, text="LR (cm):", style="Body.TLabel").pack(side="left", padx=(0, 2))
+            self.lever_lr_var = tk.StringVar()
+            ttk.Entry(controls3, textvariable=self.lever_lr_var, width=6).pack(side="left", padx=(0, 8))
+            ttk.Label(controls3, text="CO (mm):", style="Body.TLabel").pack(side="left", padx=(0, 2))
+            self.lever_co_var = tk.StringVar()
+            ttk.Entry(controls3, textvariable=self.lever_co_var, width=6).pack(side="left", padx=(0, 8))
+            ttk.Label(controls3, text="H (mm):", style="Body.TLabel").pack(side="left", padx=(0, 2))
+            self.lever_h_var = tk.StringVar()
+            ttk.Entry(controls3, textvariable=self.lever_h_var, width=6).pack(side="left", padx=(0, 8))
+            ttk.Button(controls3, text="Calcular", style="Primary.TButton", command=self._calculate_lever).pack(side="left", padx=8)
 
-        ttk.Label(controls, text="Cámara:", style="Body.TLabel").pack(side="left", padx=(0, 2))
-        cam_combo = ttk.Combobox(controls, textvariable=self.posture_camera_var, state="readonly", width=32)
-        cam_combo['values'] = [name for idx, name in self._camera_options_posture]
-        cam_combo.pack(side="left", padx=(0, 2))
-        ttk.Button(controls, text="Actualizar cámaras", command=lambda: self._update_camera_combo(cam_combo, self.posture_camera_var)).pack(side="left", padx=(0, 8))
-
-        # Inicializa los labels ANTES de crear los botones
-        self.posture_original_lbl, self.posture_result_lbl = self._build_common_image_area(self.tab_posture)
-
-
-        ttk.Button(controls, text="Cargar imagen", command=lambda: self._load_image(self.posture_state, self.posture_original_lbl, self.posture_result_lbl)).pack(side="left", padx=4)
-
-        ttk.Button(controls, text="Analizar", style="Primary.TButton", command=self._analyze_posture).pack(side="left", padx=4)
-
-        capture_btn = ttk.Button(
-            controls,
-            text="Tomar foto",
-            command=lambda: self._capture_posture_photo()
-        )
-        capture_btn.pack(side="left", padx=4)
-        if not self._camera_options:
-            capture_btn.state(["disabled"])
-
-    def _capture_posture_photo(self):
-        if not self._camera_options:
-            messagebox.showerror("Cámara", "No hay cámaras disponibles para capturar.")
-            return
-        idx = self._get_camera_index(self.posture_camera_var.get())
-        if idx is None:
-            messagebox.showerror("Cámara", "Selecciona una cámara válida.")
-            return
-        self._capture_image(self.posture_state, self.posture_original_lbl, self.posture_result_lbl, idx)
+            # Área para mostrar la imagen capturada y seleccionar puntos
+            self.lever_image_canvas = tk.Canvas(self.tab_lever, width=640, height=480, bg="#0b1220", highlightthickness=0)
+            self.lever_image_canvas.pack(padx=10, pady=(10, 0))
+            self.lever_image_canvas.bind("<Button-1>", self._on_lever_image_click)
+            self.lever_points = []  # [(x, y), ...]
+            self.lever_captured_image = None
+            self.lever_tk_img = None
         # Ejecutar análisis automáticamente si se capturó imagen
         if self.posture_state.source_image is not None:
             try:
@@ -378,59 +682,63 @@ class BiomechanicsApp:
             except Exception as e:
                 messagebox.showerror("Postura", f"Error en el análisis: {e}")
             finally:
-                self._clear_status()
+                def _build_lever_tab(self):
+                    # Limpiar widgets antiguos de la pestaña antes de reconstruir
+                    for child in self.tab_lever.winfo_children():
+                        child.destroy()
 
+                    # Resultados (debe ir primero para estar disponible en todos los métodos)
+                    self.lever_result_text = tk.Text(self.tab_lever, height=12)
+                    self.lever_result_text.pack(fill="both", padx=10, pady=10)
+                    self._configure_text_widget(self.lever_result_text)
 
-    def _update_camera_combo(self, combo, var):
-        self._refresh_cameras()
-        combo['values'] = [name for idx, name in self._camera_options]
-        if self._camera_options:
-            var.set(self._camera_options[0][1])
-            combo.state(["!disabled"])
-        else:
-            var.set("")
-            combo.state(["disabled"])
+                    controls1 = ttk.Frame(self.tab_lever, style="Card.TFrame")
+                    controls1.pack(fill="x", padx=10, pady=(8, 2))
+                    ttk.Label(controls1, text="Peso de la persona (kg):", style="Body.TLabel").pack(side="left", padx=(0, 2))
+                    self.lever_weight_var = tk.StringVar()
+                    ttk.Entry(controls1, textvariable=self.lever_weight_var, width=8).pack(side="left", padx=(0, 8))
+                    ttk.Label(controls1, text="Segmento:", style="Body.TLabel").pack(side="left", padx=(0, 2))
+                    self.lever_segment_var = tk.StringVar()
+                    segmentos_es = ["cabeza", "tronco", "brazo_superior", "antebrazo", "mano", "muslo", "pierna", "pie"]
+                    self.lever_segment_combo = ttk.Combobox(controls1, textvariable=self.lever_segment_var, values=segmentos_es, state="readonly", width=14)
+                    self.lever_segment_combo.pack(side="left", padx=(0, 8))
 
+                    controls2 = ttk.Frame(self.tab_lever, style="Card.TFrame")
+                    controls2.pack(fill="x", padx=10, pady=(2, 2))
+                    ttk.Label(controls2, text="Cámara:", style="Body.TLabel").pack(side="left", padx=(0, 2))
+                    self.lever_camera_var = tk.StringVar()
+                    cam_combo = ttk.Combobox(controls2, textvariable=self.lever_camera_var, state="readonly", width=32)
+                    cam_combo['values'] = [name for idx, name in self._camera_options]
+                    cam_combo.pack(side="left", padx=(0, 8))
+                    if self._camera_options:
+                        self.lever_camera_var.set(self._camera_options[0][1])
+                    ttk.Button(controls2, text="Actualizar cámaras", command=lambda: self._update_camera_combo(cam_combo, self.lever_camera_var)).pack(side="left", padx=(0, 8))
+                    ttk.Button(controls2, text="Tomar foto", style="Primary.TButton", command=self._capture_lever_photo).pack(side="left", padx=8)
+                    ttk.Button(controls2, text="Subir imagen", command=self._load_lever_image).pack(side="left", padx=4)
 
-    def _get_camera_index(self, name):
-        for idx, label in self._camera_options:
-            if label == name:
-                return idx
-        return None
-        ttk.Button(controls, text="Analizar", style="Primary.TButton", command=self._analyze_posture).pack(side="left", padx=4)
-        ttk.Button(controls, text="Guardar resultado", command=self._save_posture).pack(side="left", padx=4)
+                    controls3 = ttk.Frame(self.tab_lever, style="Card.TFrame")
+                    controls3.pack(fill="x", padx=10, pady=(2, 8))
+                    ttk.Label(controls3, text="LE (cm):", style="Body.TLabel").pack(side="left", padx=(0, 2))
+                    self.lever_le_var = tk.StringVar()
+                    ttk.Entry(controls3, textvariable=self.lever_le_var, width=6).pack(side="left", padx=(0, 8))
+                    ttk.Label(controls3, text="LR (cm):", style="Body.TLabel").pack(side="left", padx=(0, 2))
+                    self.lever_lr_var = tk.StringVar()
+                    ttk.Entry(controls3, textvariable=self.lever_lr_var, width=6).pack(side="left", padx=(0, 8))
+                    ttk.Label(controls3, text="CO (mm):", style="Body.TLabel").pack(side="left", padx=(0, 2))
+                    self.lever_co_var = tk.StringVar()
+                    ttk.Entry(controls3, textvariable=self.lever_co_var, width=6).pack(side="left", padx=(0, 8))
+                    ttk.Label(controls3, text="H (mm):", style="Body.TLabel").pack(side="left", padx=(0, 2))
+                    self.lever_h_var = tk.StringVar()
+                    ttk.Entry(controls3, textvariable=self.lever_h_var, width=6).pack(side="left", padx=(0, 8))
+                    ttk.Button(controls3, text="Calcular", style="Primary.TButton", command=self._calculate_lever).pack(side="left", padx=8)
 
-        self.posture_original_lbl, self.posture_result_lbl = self._build_common_image_area(self.tab_posture)
-
-        metrics_frame = ttk.LabelFrame(self.tab_posture, text="Métricas", style="Card.TLabelframe")
-        metrics_frame.pack(fill="x", padx=10, pady=(0, 10))
-        self.posture_metrics_text = tk.Text(metrics_frame, height=5)
-        self.posture_metrics_text.pack(fill="x", padx=8, pady=8)
-        self._configure_text_widget(self.posture_metrics_text)
-
-    def _choose_output_dir(self):
-        path = filedialog.askdirectory(title="Selecciona carpeta de salida")
-        if path:
-            self.save_dir_var.set(path)
-
-    def _load_image(self, state: ModuleState, label: ttk.Label, result_label: ttk.Label):
-        path = filedialog.askopenfilename(
-            title="Selecciona imagen",
-            filetypes=[("Imágenes", "*.jpg *.jpeg *.png *.bmp *.tif *.tiff")],
-        )
-        if not path:
-            return
-
-        image = cv2.imread(path)
-        if image is None:
-            messagebox.showerror("Imagen", "No se pudo cargar la imagen.")
-            return
-
-        state.source_image = image
-        state.source_path = path
-        state.result = None
-        self._set_image_on_label(label, image)
-        self._clear_image_label(result_label, "Resultado no disponible")
+                    # Área para mostrar la imagen capturada y seleccionar puntos
+                    self.lever_image_canvas = tk.Canvas(self.tab_lever, width=640, height=480, bg="#0b1220", highlightthickness=0)
+                    self.lever_image_canvas.pack(padx=10, pady=(10, 0))
+                    self.lever_image_canvas.bind("<Button-1>", self._on_lever_image_click)
+                    self.lever_points = []  # [(x, y), ...]
+                    self.lever_captured_image = None
+                    self.lever_tk_img = None
 
     def _capture_image(self, state: ModuleState, label: ttk.Label, result_label: ttk.Label, camera_index: int = 0):
         dialog = CameraCaptureDialog(self.root, camera_index=camera_index)
@@ -470,12 +778,10 @@ class BiomechanicsApp:
         if self.foot_state.source_image is None:
             messagebox.showwarning("Baropodometría", "Primero carga o captura una imagen.")
             return
-
         try:
             self._set_status("Analizando huella plantar...", busy=True)
             self.foot_state.result = self.foot_analyzer.analyze(self.foot_state.source_image)
             self._refresh_foot_view()
-
             m = self.foot_state.result["metrics"]
             text = (
                 f"Índice plantar: {m['plantar_index']:.2f}\n"
@@ -484,6 +790,11 @@ class BiomechanicsApp:
                 f"Clasificación: {m['classification']}"
             )
             self._write_metrics(self.foot_metrics_text, text)
+            # Guardar imagen temporal para PDF
+            out_dir = self._ensure_output_dir()
+            img_path = os.path.join(out_dir, "foot_pdf_temp.jpg")
+            save_image(img_path, self.foot_state.result["images"]["annotated"])
+            self._generate_pdf_report("pie", m, img_path, text)
         except Exception as e:
             messagebox.showerror("Baropodometría", f"Error: {e}")
         finally:
@@ -506,19 +817,16 @@ class BiomechanicsApp:
         if self.knee_state.source_image is None:
             messagebox.showwarning("Rodilla", "Primero carga o captura una imagen.")
             return
-
         try:
             if self.knee_analyzer is None:
                 self._set_status("Inicializando modelo de rodilla (primera vez puede tardar y descargar modelo)...", busy=True)
             else:
                 self._set_status("Analizando rodilla...", busy=True)
-
             self.knee_state.result = self._get_knee_analyzer().analyze(
                 self.knee_state.source_image,
                 plane=self.knee_plane_var.get(),
             )
             self._set_image_on_label(self.knee_result_lbl, self.knee_state.result["images"]["annotated"])
-
             m = self.knee_state.result["metrics"]
             text = (
                 f"Plano: {m['plane']}\n"
@@ -527,6 +835,10 @@ class BiomechanicsApp:
                 f"Clasificación: {m['classification']}"
             )
             self._write_metrics(self.knee_metrics_text, text)
+            out_dir = self._ensure_output_dir()
+            img_path = os.path.join(out_dir, "knee_pdf_temp.jpg")
+            save_image(img_path, self.knee_state.result["images"]["annotated"])
+            self._generate_pdf_report("rodilla", m, img_path, text)
         except Exception as e:
             messagebox.showerror("Rodilla", f"Error: {e}")
         finally:
@@ -536,16 +848,13 @@ class BiomechanicsApp:
         if self.posture_state.source_image is None:
             messagebox.showwarning("Postura", "Primero carga o captura una imagen.")
             return
-
         try:
             if self.posture_analyzer is None:
                 self._set_status("Inicializando modelo postural (primera vez puede tardar y descargar modelo)...", busy=True)
             else:
                 self._set_status("Analizando postura...", busy=True)
-
             self.posture_state.result = self._get_posture_analyzer().analyze(self.posture_state.source_image)
             self._set_image_on_label(self.posture_result_lbl, self.posture_state.result["images"]["annotated"])
-
             m = self.posture_state.result["metrics"]
             text = (
                 f"Lado analizado: {m['side']}\n"
@@ -553,6 +862,10 @@ class BiomechanicsApp:
                 f"Clasificación: {m['classification']}"
             )
             self._write_metrics(self.posture_metrics_text, text)
+            out_dir = self._ensure_output_dir()
+            img_path = os.path.join(out_dir, "posture_pdf_temp.jpg")
+            save_image(img_path, self.posture_state.result["images"]["annotated"])
+            self._generate_pdf_report("postura", m, img_path, text)
         except Exception as e:
             messagebox.showerror("Postura", f"Error: {e}")
         finally:
