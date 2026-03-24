@@ -23,16 +23,22 @@ def list_cameras(max_devices=10):
                     # Considerar frame válido si no es todo negro o gris
                     if frame.sum() > 10000:  # Umbral simple para descartar frames vacíos
                         label = name
+                        # Obtener nombre real de la cámara
                         try:
                             import subprocess
                             out = subprocess.check_output(["v4l2-ctl", "-d", name, "--info"], stderr=subprocess.DEVNULL, timeout=1)
+                            card_name = None
                             for line in out.decode().splitlines():
-                                if "Card type" in line:
-                                    label = line.split(":", 1)[-1].strip()
+                                if b"Card type" in line or b"Card" in line:
+                                    card_name = line.split(b":", 1)[-1].strip().decode(errors="ignore")
                                     break
+                            if card_name:
+                                label = f"{card_name} (índice {idx})"
+                            else:
+                                label = f"{name} (índice {idx})"
                         except Exception:
-                            pass
-                        cameras.append((idx, f"{label} (índice {idx})"))
+                            label = f"{name} (índice {idx})"
+                        cameras.append((idx, label))
             cap.release()
         if cameras:
             return cameras
