@@ -30,18 +30,6 @@ def list_cameras(max_devices=10):
                     pass
                 cameras.append((idx, f"{label} (índice {idx})"))
             cap.release()
-        # Intentar detectar la cámara CSI de Raspberry Pi si no aparece en /dev/video*
-        try:
-            import subprocess
-            # Buscar cámaras con libcamera-hello (requiere que esté instalado)
-            out = subprocess.check_output(["libcamera-hello", "--list-cameras"], stderr=subprocess.DEVNULL, timeout=3)
-            for line in out.decode().splitlines():
-                if line.strip().startswith("0:") or line.strip().startswith("1:"):
-                    # Si la cámara CSI no está en la lista de /dev/video*, agregarla como especial
-                    if not any("CSI" in c[1] for c in cameras):
-                        cameras.append((-1, "Cámara CSI Raspberry Pi (usar libcamera)"))
-        except Exception:
-            pass
         if cameras:
             return cameras
     # Fallback: probar con OpenCV

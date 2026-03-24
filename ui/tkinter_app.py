@@ -33,62 +33,29 @@ class CameraCaptureDialog(tk.Toplevel):
         self.transient(parent)
         self.grab_set()
 
+        self.cap = cv2.VideoCapture(camera_index)
+        if not self.cap.isOpened():
+            messagebox.showerror("Cámara", f"No se pudo abrir la cámara #{camera_index}.")
+            self.cap = None
+            self.captured_frame = None
+            self.destroy()
+            return
+
         self.current_frame: Optional[np.ndarray] = None
         self.captured_frame: Optional[np.ndarray] = None
         self._tk_image = None
-        self.cap = None
 
-        if camera_index == -1:
-            # Cámara CSI: capturar imagen con libcamera-still
-            import tempfile, subprocess, cv2
-            with tempfile.NamedTemporaryFile(suffix='.jpg', delete=False) as tmp:
-                tmp_path = tmp.name
-            try:
-                result = subprocess.run([
-                    'libcamera-still', '-o', tmp_path, '-t', '1000', '--nopreview', '--width', '1280', '--height', '720'
-                ], timeout=5)
-                if result.returncode != 0:
-                    raise RuntimeError('libcamera-still falló')
-                image = cv2.imread(tmp_path)
-                if image is None:
-                    raise RuntimeError('No se pudo leer la imagen capturada')
-                self.captured_frame = image
-                self.current_frame = image
-            except Exception as e:
-                messagebox.showerror("Cámara CSI", f"No se pudo capturar imagen con la cámara CSI: {e}")
-                self.captured_frame = None
-                self.destroy()
-                return
-            finally:
-                try:
-                    os.remove(tmp_path)
-                except Exception:
-                    pass
-            # No hay previsualización en vivo para CSI, cerrar ventana tras captura
-            self.after(500, self.destroy)
-        else:
-            # Cámara USB: usar OpenCV
-            self.cap = cv2.VideoCapture(camera_index)
-            if not self.cap.isOpened():
-                messagebox.showerror("Cámara", f"No se pudo abrir la cámara #{camera_index}.")
-                self.cap = None
-                self.captured_frame = None
-                self.destroy()
-                return
+        self.preview = ttk.Label(self)
+        self.preview.pack(fill="both", expand=True, padx=12, pady=12)
 
-        # Solo mostrar previsualización y controles si es cámara USB
-        if self.cap is not None:
-            self.preview = ttk.Label(self)
-            self.preview.pack(fill="both", expand=True, padx=12, pady=12)
+        controls = ttk.Frame(self)
+        controls.pack(fill="x", padx=12, pady=(0, 12))
 
-            controls = ttk.Frame(self)
-            controls.pack(fill="x", padx=12, pady=(0, 12))
+        ttk.Button(controls, text="Capturar", command=self._capture).pack(side="left", padx=4)
+        ttk.Button(controls, text="Cancelar", command=self._close).pack(side="left", padx=4)
 
-            ttk.Button(controls, text="Capturar", command=self._capture).pack(side="left", padx=4)
-            ttk.Button(controls, text="Cancelar", command=self._close).pack(side="left", padx=4)
-
-            self.protocol("WM_DELETE_WINDOW", self._close)
-            self._update_frame()
+        self.protocol("WM_DELETE_WINDOW", self._close)
+        self._update_frame()
 
     def _update_frame(self):
         if self.cap is None:
