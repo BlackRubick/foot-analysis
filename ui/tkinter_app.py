@@ -121,16 +121,23 @@ class BiomechanicsApp:
         self._camera_options = []
         self._refresh_cameras()
     def _refresh_cameras(self):
+        import sys
+        # Para pie/baropodometría, activar opción CSI
+        sys._is_foot_study = True
         self._camera_options = list_cameras()
+        sys._is_foot_study = False
+        self._camera_options_knee = list_cameras()
+        self._camera_options_posture = self._camera_options_knee
         if self._camera_options:
             self.foot_camera_var.set(self._camera_options[0][1])
-            self.knee_camera_var.set(self._camera_options[0][1])
-            self.posture_camera_var.set(self._camera_options[0][1])
         else:
             self.foot_camera_var.set("")
+        if self._camera_options_knee:
+            self.knee_camera_var.set(self._camera_options_knee[0][1])
+            self.posture_camera_var.set(self._camera_options_posture[0][1])
+        else:
             self.knee_camera_var.set("")
             self.posture_camera_var.set("")
-
         self._build_ui()
 
     def _setup_styles(self):
@@ -292,7 +299,7 @@ class BiomechanicsApp:
 
         ttk.Label(controls, text="Cámara:", style="Body.TLabel").pack(side="left", padx=(0, 2))
         cam_combo = ttk.Combobox(controls, textvariable=self.knee_camera_var, state="readonly", width=32)
-        cam_combo['values'] = [name for idx, name in self._camera_options]
+        cam_combo['values'] = [name for idx, name in self._camera_options_knee]
         cam_combo.pack(side="left", padx=(0, 2))
         ttk.Button(controls, text="Actualizar cámaras", command=lambda: self._update_camera_combo(cam_combo, self.knee_camera_var)).pack(side="left", padx=(0, 8))
 
@@ -331,7 +338,7 @@ class BiomechanicsApp:
 
         ttk.Label(controls, text="Cámara:", style="Body.TLabel").pack(side="left", padx=(0, 2))
         cam_combo = ttk.Combobox(controls, textvariable=self.posture_camera_var, state="readonly", width=32)
-        cam_combo['values'] = [name for idx, name in self._camera_options]
+        cam_combo['values'] = [name for idx, name in self._camera_options_posture]
         cam_combo.pack(side="left", padx=(0, 2))
         ttk.Button(controls, text="Actualizar cámaras", command=lambda: self._update_camera_combo(cam_combo, self.posture_camera_var)).pack(side="left", padx=(0, 8))
 

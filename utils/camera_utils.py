@@ -10,6 +10,9 @@ def list_cameras(max_devices=20):
     """
     cameras = []
     # Linux: buscar /dev/video* y probar con OpenCV si realmente están disponibles
+    import sys
+    # Permitir pasar un parámetro para indicar si es para pie/baropodometría
+    is_foot_study = getattr(sys, '_is_foot_study', False)
     if os.name == "posix":
         # Buscar hasta /dev/video20 aunque no existan todos
         for idx in range(max_devices):
@@ -41,6 +44,9 @@ def list_cameras(max_devices=20):
                             label = f"{name} (índice {idx})"
                         cameras.append((idx, label))
             cap.release()
+        # Si es para el estudio de pie, agregar opción CSI
+        if is_foot_study:
+            cameras.append((-1, "Cámara Raspberry Pi (CSI)"))
         if cameras:
             return cameras
     # Fallback: probar con OpenCV
