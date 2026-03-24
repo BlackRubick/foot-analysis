@@ -602,6 +602,12 @@ class BiomechanicsApp:
         ttk.Button(controls, text="Guardar resultado", command=self._save_knee).pack(side="left", padx=4)
 
         self.knee_original_lbl, self.knee_result_lbl = self._build_common_image_area(self.tab_knee)
+
+        metrics_frame = ttk.LabelFrame(self.tab_knee, text="Métricas", style="Card.TLabelframe")
+        metrics_frame.pack(fill="x", padx=10, pady=(0, 10))
+        self.knee_metrics_text = tk.Text(metrics_frame, height=5)
+        self.knee_metrics_text.pack(fill="x", padx=8, pady=8)
+        self._configure_text_widget(self.knee_metrics_text)
         def _build_lever_tab(self):
             # Limpiar widgets antiguos de la pestaña antes de reconstruir
             # Limpiar widgets antiguos y referencias

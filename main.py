@@ -2,7 +2,6 @@ from __future__ import annotations
 import argparse
 import os
 from typing import Optional
-
 from foot_analysis.analyzer import FootAnalyzer
 from knee_analysis.analyzer import KneeAnalyzer
 from posture_analysis.analyzer import PostureAnalyzer
