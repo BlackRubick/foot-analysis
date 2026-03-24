@@ -76,7 +76,7 @@ class CameraCaptureDialog(tk.Toplevel):
                     os.remove(tmp_path)
                 except Exception:
                     pass
-        else:
+        elif camera_index is not None and camera_index >= 0:
             # USB: usar OpenCV
             self.cap = cv2.VideoCapture(camera_index)
             if not self.cap.isOpened():
