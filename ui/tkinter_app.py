@@ -36,6 +36,7 @@ class CameraCaptureDialog(tk.Toplevel):
         self.current_frame: Optional[np.ndarray] = None
         self.captured_frame: Optional[np.ndarray] = None
         self._tk_image = None
+        self.cap = None
 
         if camera_index == -1:
             # Cámara CSI: capturar imagen con libcamera-still
@@ -76,7 +77,7 @@ class CameraCaptureDialog(tk.Toplevel):
                 return
 
         # Solo mostrar previsualización y controles si es cámara USB
-        if hasattr(self, 'cap') and self.cap is not None:
+        if self.cap is not None:
             self.preview = ttk.Label(self)
             self.preview.pack(fill="both", expand=True, padx=12, pady=12)
 
