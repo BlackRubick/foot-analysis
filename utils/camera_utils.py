@@ -17,20 +17,22 @@ def list_cameras(max_devices=10):
             name = f"/dev/{dev}"
             cap = cv2.VideoCapture(idx)
             if cap.isOpened():
-                # Probar que realmente devuelve un frame válido
+                # Probar que realmente devuelve un frame válido y no vacío
                 ret, frame = cap.read()
                 if ret and frame is not None:
-                    label = name
-                    try:
-                        import subprocess
-                        out = subprocess.check_output(["v4l2-ctl", "-d", name, "--info"], stderr=subprocess.DEVNULL, timeout=1)
-                        for line in out.decode().splitlines():
-                            if "Card type" in line:
-                                label = line.split(":", 1)[-1].strip()
-                                break
-                    except Exception:
-                        pass
-                    cameras.append((idx, f"{label} (índice {idx})"))
+                    # Considerar frame válido si no es todo negro o gris
+                    if frame.sum() > 10000:  # Umbral simple para descartar frames vacíos
+                        label = name
+                        try:
+                            import subprocess
+                            out = subprocess.check_output(["v4l2-ctl", "-d", name, "--info"], stderr=subprocess.DEVNULL, timeout=1)
+                            for line in out.decode().splitlines():
+                                if "Card type" in line:
+                                    label = line.split(":", 1)[-1].strip()
+                                    break
+                        except Exception:
+                            pass
+                        cameras.append((idx, f"{label} (índice {idx})"))
             cap.release()
         if cameras:
             return cameras
