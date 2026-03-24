@@ -120,21 +120,16 @@ class BiomechanicsApp:
         self._camera_options = []
         self._refresh_cameras()
     def _refresh_cameras(self):
-        import sys
-        # Para pie/baropodometría, activar opción CSI
-        sys._is_foot_study = True
+        # Solo webcams USB
         self._camera_options = list_cameras()
-        sys._is_foot_study = False
-        self._camera_options_knee = list_cameras()
-        self._camera_options_posture = self._camera_options_knee
+        self._camera_options_knee = self._camera_options
+        self._camera_options_posture = self._camera_options
         if self._camera_options:
             self.foot_camera_var.set(self._camera_options[0][1])
+            self.knee_camera_var.set(self._camera_options[0][1])
+            self.posture_camera_var.set(self._camera_options[0][1])
         else:
             self.foot_camera_var.set("")
-        if self._camera_options_knee:
-            self.knee_camera_var.set(self._camera_options_knee[0][1])
-            self.posture_camera_var.set(self._camera_options_posture[0][1])
-        else:
             self.knee_camera_var.set("")
             self.posture_camera_var.set("")
         self._build_ui()
