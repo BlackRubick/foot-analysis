@@ -188,6 +188,19 @@ class DatabaseClient:
         consent_document_bytes: bytes,
         signature_image_bytes: Optional[bytes] = None,
     ) -> None:
+        # Asegurar que los documentos binarios se envíen como BLOB y no se intenten decodificar como UTF-8
+        doc_param = consent_document_bytes
+        sig_img_param = signature_image_bytes
+        try:
+            if consent_document_bytes is not None and hasattr(mysql_connector, "Binary"):
+                doc_param = mysql_connector.Binary(consent_document_bytes)
+            if signature_image_bytes is not None and hasattr(mysql_connector, "Binary"):
+                sig_img_param = mysql_connector.Binary(signature_image_bytes)
+        except Exception:
+            # Si por alguna razón falla, usamos los bytes crudos (comportamiento anterior)
+            doc_param = consent_document_bytes
+            sig_img_param = signature_image_bytes
+
         cursor = self.connection.cursor()
         if getattr(self, "_has_signature_image_col", False):
             cursor.execute(
@@ -200,11 +213,11 @@ class DatabaseClient:
                     patient_uuid,
                     "",
                     "",
-                    consent_document_bytes,
+                    doc_param,
                     consent_text,
                     signed_by,
                     signature_digital_hash,
-                    signature_image_bytes,
+                    sig_img_param,
                 ),
             )
         else:
@@ -218,7 +231,7 @@ class DatabaseClient:
                     patient_uuid,
                     "",
                     "",
-                    consent_document_bytes,
+                    doc_param,
                     consent_text,
                     signed_by,
                     signature_digital_hash,
