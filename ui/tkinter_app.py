@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import os
 import json
-from datetime import datetime
+from datetime import datetime, date
 import tkinter as tk
 from dataclasses import dataclass
 from tkinter import filedialog, messagebox, ttk
@@ -815,9 +815,30 @@ class BiomechanicsApp:
 
         form = tk.Toplevel(self.root)
         form.title("Consentimiento informado")
-        form.geometry("760x620")
+        # Ventana algo más compacta y redimensionable, con scroll interno
+        form.geometry("720x520")
+        form.minsize(640, 480)
+        form.resizable(True, True)
         form.transient(self.root)
         form.grab_set()
+
+        # Contenedor con canvas + scrollbar para que todo el formulario sea desplazable
+        container = ttk.Frame(form)
+        container.pack(fill="both", expand=True)
+
+        canvas = tk.Canvas(container, highlightthickness=0, bg=self.bg_main)
+        vscroll = ttk.Scrollbar(container, orient="vertical", command=canvas.yview)
+        canvas.configure(yscrollcommand=vscroll.set)
+        canvas.pack(side="left", fill="both", expand=True)
+        vscroll.pack(side="right", fill="y")
+
+        inner = ttk.Frame(canvas, style="Card.TFrame")
+        canvas.create_window((0, 0), window=inner, anchor="nw")
+
+        def _on_configure(event):
+            canvas.configure(scrollregion=canvas.bbox("all"))
+
+        inner.bind("<Configure>", _on_configure)
 
         signed_var = tk.StringVar(value=self.patient_data.get("Nombre", ""))
         birth_var = tk.StringVar(value=self.patient_data.get("Fecha de nacimiento", ""))
@@ -826,25 +847,22 @@ class BiomechanicsApp:
         patient_name_var = tk.StringVar(value=self.patient_data.get("Nombre", ""))
         witness1_var = tk.StringVar(value="")
         witness2_var = tk.StringVar(value="")
-        signature_var = tk.StringVar(value="")
         file_var = tk.StringVar(value="")
 
-        tk.Label(form, text="Nombre de quien firma:").pack(anchor="w", padx=10, pady=(10, 2))
-        tk.Entry(form, textvariable=signed_var, width=65).pack(anchor="w", padx=10)
-        tk.Label(form, text="Nombre del paciente:").pack(anchor="w", padx=10, pady=(10, 2))
-        tk.Entry(form, textvariable=patient_name_var, width=65).pack(anchor="w", padx=10)
-        tk.Label(form, text="Fecha de nacimiento:").pack(anchor="w", padx=10, pady=(10, 2))
-        tk.Entry(form, textvariable=birth_var, width=25).pack(anchor="w", padx=10)
-        tk.Label(form, text="Estatura:").pack(anchor="w", padx=10, pady=(10, 2))
-        tk.Entry(form, textvariable=height_var, width=25).pack(anchor="w", padx=10)
-        tk.Label(form, text="Peso:").pack(anchor="w", padx=10, pady=(10, 2))
-        tk.Entry(form, textvariable=weight_var, width=25).pack(anchor="w", padx=10)
-        tk.Label(form, text="Hash/Firma digital:").pack(anchor="w", padx=10, pady=(10, 2))
-        tk.Entry(form, textvariable=signature_var, width=65).pack(anchor="w", padx=10)
+        tk.Label(inner, text="Nombre de quien firma:").pack(anchor="w", padx=10, pady=(10, 2))
+        tk.Entry(inner, textvariable=signed_var, width=65).pack(anchor="w", padx=10)
+        tk.Label(inner, text="Nombre del paciente:").pack(anchor="w", padx=10, pady=(10, 2))
+        tk.Entry(inner, textvariable=patient_name_var, width=65).pack(anchor="w", padx=10)
+        tk.Label(inner, text="Fecha de nacimiento:").pack(anchor="w", padx=10, pady=(10, 2))
+        tk.Entry(inner, textvariable=birth_var, width=25).pack(anchor="w", padx=10)
+        tk.Label(inner, text="Estatura:").pack(anchor="w", padx=10, pady=(10, 2))
+        tk.Entry(inner, textvariable=height_var, width=25).pack(anchor="w", padx=10)
+        tk.Label(inner, text="Peso:").pack(anchor="w", padx=10, pady=(10, 2))
+        tk.Entry(inner, textvariable=weight_var, width=25).pack(anchor="w", padx=10)
 
         # Firma dibujada en pantalla
-        tk.Label(form, text="Firma dibujada (paciente o representante):").pack(anchor="w", padx=10, pady=(10, 2))
-        sign_frame = tk.Frame(form)
+        tk.Label(inner, text="Firma dibujada (paciente o representante):").pack(anchor="w", padx=10, pady=(10, 2))
+        sign_frame = tk.Frame(inner)
         sign_frame.pack(anchor="w", padx=10, pady=(0, 10))
 
         sign_width, sign_height = 420, 140
@@ -883,13 +901,13 @@ class BiomechanicsApp:
         btn_sig.pack(side="left", padx=(8, 0))
         tk.Button(btn_sig, text="Borrar firma", command=_clear_signature).pack(anchor="n", pady=(0, 4))
 
-        tk.Label(form, text="Testigo 1:").pack(anchor="w", padx=10, pady=(10, 2))
-        tk.Entry(form, textvariable=witness1_var, width=65).pack(anchor="w", padx=10)
-        tk.Label(form, text="Testigo 2:").pack(anchor="w", padx=10, pady=(10, 2))
-        tk.Entry(form, textvariable=witness2_var, width=65).pack(anchor="w", padx=10)
+        tk.Label(inner, text="Testigo 1:").pack(anchor="w", padx=10, pady=(10, 2))
+        tk.Entry(inner, textvariable=witness1_var, width=65).pack(anchor="w", padx=10)
+        tk.Label(inner, text="Testigo 2:").pack(anchor="w", padx=10, pady=(10, 2))
+        tk.Entry(inner, textvariable=witness2_var, width=65).pack(anchor="w", padx=10)
 
-        tk.Label(form, text="Documento firmado (opcional):").pack(anchor="w", padx=10, pady=(10, 2))
-        file_row = tk.Frame(form)
+        tk.Label(inner, text="Documento firmado (opcional):").pack(anchor="w", padx=10, pady=(10, 2))
+        file_row = tk.Frame(inner)
         file_row.pack(fill="x", padx=10)
         tk.Entry(file_row, textvariable=file_var, width=62).pack(side="left")
 
@@ -900,8 +918,8 @@ class BiomechanicsApp:
 
         tk.Button(file_row, text="Seleccionar", command=pick_file).pack(side="left", padx=(6, 0))
 
-        tk.Label(form, text="Texto de consentimiento:").pack(anchor="w", padx=10, pady=(10, 2))
-        consent_text = tk.Text(form, height=12)
+        tk.Label(inner, text="Texto de consentimiento:").pack(anchor="w", padx=10, pady=(10, 2))
+        consent_text = tk.Text(inner, height=12)
         consent_text.pack(fill="both", expand=True, padx=10, pady=(0, 10))
 
         def save_consent():
@@ -911,8 +929,6 @@ class BiomechanicsApp:
                     raise ValueError("El texto de consentimiento es obligatorio")
                 if not signed_var.get().strip():
                     raise ValueError("El nombre de quien firma es obligatorio")
-                if not signature_var.get().strip():
-                    raise ValueError("La firma digital/hash es obligatoria")
 
                 out_dir = self._ensure_output_dir()
                 consent_pdf_path = os.path.join(
@@ -965,7 +981,7 @@ class BiomechanicsApp:
                     patient_uuid=self.db_patient_uuid_var.get().strip(),
                     consent_text=text_value,
                     signed_by=signed_var.get().strip(),
-                    signature_digital_hash=signature_var.get().strip(),
+                    signature_digital_hash="",
                     consent_document_bytes=document_bytes,
                     signature_image_bytes=signature_image_bytes,
                 )
@@ -981,7 +997,7 @@ class BiomechanicsApp:
             except Exception as e:
                 messagebox.showerror("Consentimiento", f"No se pudo guardar consentimiento: {e}")
 
-        tk.Button(form, text="Guardar consentimiento", command=save_consent).pack(pady=8)
+        tk.Button(inner, text="Guardar consentimiento", command=save_consent).pack(pady=8)
 
     def _default_cda_body(self) -> str:
         if self.chains_state.result:
@@ -1080,16 +1096,99 @@ class BiomechanicsApp:
         form.geometry("500x600")
         form.transient(self.root)
         form.grab_set()
-        entries = {}
+        entries: dict[str, tk.Entry] = {}
+        birth_entry: Optional[tk.Entry] = None
+        age_entry: Optional[tk.Entry] = None
+
+        def _update_age_from_birth() -> None:
+            if birth_entry is None or age_entry is None:
+                return
+            birth_str = birth_entry.get().strip()
+            if not birth_str:
+                return
+            try:
+                dob = datetime.strptime(birth_str, "%d/%m/%Y").date()
+                today = date.today()
+                years = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+                age_entry.delete(0, tk.END)
+                age_entry.insert(0, str(max(years, 0)))
+            except Exception:
+                # Si el formato no es válido, no forzamos nada
+                pass
+
+        def _open_birthdate_picker() -> None:
+            if birth_entry is None:
+                return
+            picker = tk.Toplevel(form)
+            picker.title("Seleccionar fecha de nacimiento")
+            picker.geometry("260x140")
+            picker.transient(form)
+            picker.grab_set()
+
+            # Fecha inicial (intentar leer del campo, si no usar hoy)
+            initial = date.today()
+            try:
+                current = birth_entry.get().strip()
+                if current:
+                    initial = datetime.strptime(current, "%d/%m/%Y").date()
+            except Exception:
+                pass
+
+            tk.Label(picker, text="Día:").grid(row=0, column=0, padx=6, pady=4, sticky="w")
+            day_var = tk.IntVar(value=initial.day)
+            tk.Spinbox(picker, from_=1, to=31, textvariable=day_var, width=4).grid(row=0, column=1, padx=4, pady=4, sticky="w")
+
+            tk.Label(picker, text="Mes:").grid(row=1, column=0, padx=6, pady=4, sticky="w")
+            month_var = tk.IntVar(value=initial.month)
+            tk.Spinbox(picker, from_=1, to=12, textvariable=month_var, width=4).grid(row=1, column=1, padx=4, pady=4, sticky="w")
+
+            tk.Label(picker, text="Año:").grid(row=2, column=0, padx=6, pady=4, sticky="w")
+            year_to = date.today().year
+            year_from = year_to - 120
+            year_var = tk.IntVar(value=initial.year)
+            tk.Spinbox(picker, from_=year_from, to=year_to, textvariable=year_var, width=6).grid(row=2, column=1, padx=4, pady=4, sticky="w")
+
+            def _apply_date() -> None:
+                try:
+                    chosen = date(year_var.get(), month_var.get(), day_var.get())
+                except Exception:
+                    messagebox.showerror("Fecha", "Fecha de nacimiento no válida")
+                    return
+                birth_entry.delete(0, tk.END)
+                birth_entry.insert(0, chosen.strftime("%d/%m/%Y"))
+                _update_age_from_birth()
+                picker.destroy()
+
+            btn_row = tk.Frame(picker)
+            btn_row.grid(row=3, column=0, columnspan=2, pady=8)
+            tk.Button(btn_row, text="Cancelar", command=picker.destroy).pack(side="left", padx=4)
+            tk.Button(btn_row, text="Aceptar", command=_apply_date).pack(side="left", padx=4)
+
         row = 0
         for k in self.patient_data:
             tk.Label(form, text=k+":").grid(row=row, column=0, sticky="w", padx=8, pady=4)
-            e = tk.Entry(form, width=40)
-            e.insert(0, self.patient_data[k])
-            e.grid(row=row, column=1, padx=8, pady=4)
+            if k == "Fecha de nacimiento":
+                e = tk.Entry(form, width=20)
+                e.insert(0, self.patient_data[k])
+                e.grid(row=row, column=1, padx=8, pady=4, sticky="w")
+                birth_entry = e
+                tk.Button(form, text="Elegir fecha", command=_open_birthdate_picker).grid(
+                    row=row, column=2, padx=(0, 8), pady=4, sticky="w"
+                )
+            else:
+                e = tk.Entry(form, width=40)
+                e.insert(0, self.patient_data[k])
+                e.grid(row=row, column=1, columnspan=2, padx=8, pady=4, sticky="w")
             entries[k] = e
+            if k == "Edad":
+                age_entry = e
             row += 1
+
+        # Si ya hay una fecha cargada, intentar precalcular edad
+        _update_age_from_birth()
         def save_and_close():
+            # Recalcular edad por si la fecha se escribió manualmente
+            _update_age_from_birth()
             for k in self.patient_data:
                 self.patient_data[k] = entries[k].get()
             if self.db_client is not None and self.db_enabled_var.get() and self.db_patient_uuid_var.get().strip():
