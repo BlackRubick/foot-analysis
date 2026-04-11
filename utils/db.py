@@ -57,6 +57,23 @@ class DatabaseClient:
                 cursor.execute("SHOW COLUMNS FROM informed_consents LIKE 'signature_image'")
                 exists = cursor.fetchone() is not None
             self._has_signature_image_col = bool(exists)
+
+            # Asegurar que el documento de consentimiento se almacene como BLOB
+            try:
+                cursor.execute("SHOW COLUMNS FROM informed_consents LIKE 'consent_document'")
+                col = cursor.fetchone()
+                if col is not None:
+                    col_type = str(col[1]).lower()
+                    # Si no es un tipo BLOB, intentar convertirlo a LONGBLOB para evitar decodificación UTF-8
+                    if "blob" not in col_type:
+                        try:
+                            cursor.execute("ALTER TABLE informed_consents MODIFY consent_document LONGBLOB NULL")
+                        except Exception:
+                            # Si falla (permisos, etc.), dejamos el tipo como está
+                            pass
+            except Exception:
+                # Si no podemos inspeccionar/modificar la columna, continuamos en modo compatible
+                pass
         except Exception:
             self._has_signature_image_col = False
         finally:

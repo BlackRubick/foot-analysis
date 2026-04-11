@@ -4,18 +4,31 @@ from datetime import datetime
 
 
 def _configure_unicode_font(pdf: FPDF) -> None:
+    """Intenta usar DejaVu para soportar tildes/acentos.
+
+    Si en alguna plataforma (p.ej. Raspberry) falla la carga de la fuente
+    personalizada, se hace fallback silencioso a Arial para evitar errores
+    de codificación/pickle en fpdf.
+    """
     font_path = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
+    setattr(pdf, "_dejavu_ok", False)
     if os.path.exists(font_path):
-        fonts = getattr(pdf, "fonts", {})
-        if "dejavu" not in fonts:
-            pdf.add_font("DejaVu", "", font_path)
-        if "dejavuB" not in fonts:
-            pdf.add_font("DejaVu", "B", font_path)
-        if "dejavuI" not in fonts:
-            pdf.add_font("DejaVu", "I", font_path)
-        pdf.set_font("DejaVu", "", 10)
-    else:
-        pdf.set_font("Arial", "", 10)
+        try:
+            fonts = getattr(pdf, "fonts", {})
+            if "dejavu" not in {k.lower() for k in fonts.keys()}:
+                pdf.add_font("DejaVu", "", font_path)
+            if "dejavub" not in {k.lower() for k in fonts.keys()}:
+                pdf.add_font("DejaVu", "B", font_path)
+            if "dejavui" not in {k.lower() for k in fonts.keys()}:
+                pdf.add_font("DejaVu", "I", font_path)
+            pdf.set_font("DejaVu", "", 10)
+            setattr(pdf, "_dejavu_ok", True)
+            return
+        except Exception:
+            # Si por cualquier motivo (permisos, pkl corrupto, etc.) falla, usar Arial
+            pass
+    pdf.set_font("Arial", "", 10)
+    setattr(pdf, "_dejavu_ok", False)
 
 
 class ConsentPDF(FPDF):
@@ -25,7 +38,8 @@ class ConsentPDF(FPDF):
         if os.path.exists('logo_der.png'):
             self.image('logo_der.png', 175, 8, 25)
         _configure_unicode_font(self)
-        self.set_font('DejaVu' if os.path.exists('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf') else 'Arial', 'B', 13)
+        use_dejavu = getattr(self, "_dejavu_ok", False)
+        self.set_font('DejaVu' if use_dejavu else 'Arial', 'B', 13)
         self.set_fill_color(17, 24, 39)
         self.set_text_color(255, 255, 255)
         self.cell(0, 12, 'CARTA DE CONSENTIMIENTO INFORMADO Y AVISO DE PRIVACIDAD', 0, 1, 'C', True)
@@ -33,14 +47,16 @@ class ConsentPDF(FPDF):
         self.ln(2)
 
     def section_title(self, title):
-        self.set_font('DejaVu' if os.path.exists('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf') else 'Arial', 'B', 11)
+        use_dejavu = getattr(self, "_dejavu_ok", False)
+        self.set_font('DejaVu' if use_dejavu else 'Arial', 'B', 11)
         self.set_fill_color(31, 41, 55)
         self.set_text_color(255, 255, 255)
         self.cell(0, 9, title, 0, 1, 'L', True)
         self.set_text_color(0, 0, 0)
 
     def paragraph(self, text, font_size=10):
-        self.set_font('DejaVu' if os.path.exists('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf') else 'Arial', '', font_size)
+        use_dejavu = getattr(self, "_dejavu_ok", False)
+        self.set_font('DejaVu' if use_dejavu else 'Arial', '', font_size)
         self.multi_cell(0, 6, text)
         self.ln(1)
 
@@ -126,7 +142,8 @@ def generate_consent_pdf(consent_data, out_path, signature_image_path: str | Non
     )
 
     pdf.section_title("VII. FIRMAS")
-    pdf.set_font('DejaVu' if os.path.exists('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf') else 'Arial', '', 10)
+    use_dejavu = getattr(pdf, "_dejavu_ok", False)
+    pdf.set_font('DejaVu' if use_dejavu else 'Arial', '', 10)
     pdf.multi_cell(0, 6, f"Nombre del paciente: {patient_name}")
     pdf.ln(4)
     pdf.cell(0, 8, "Nombre y Firma del Paciente (o familiar/representante legal)", 0, 1)
