@@ -995,6 +995,12 @@ class BiomechanicsApp:
                 self._refresh_history_view()
                 form.destroy()
             except Exception as e:
+                # Imprimir traza completa en la consola para poder depurar errores de codificación/DB
+                try:
+                    import traceback
+                    traceback.print_exc()
+                except Exception:
+                    pass
                 messagebox.showerror("Consentimiento", f"No se pudo guardar consentimiento: {e}")
 
         tk.Button(inner, text="Guardar consentimiento", command=save_consent).pack(pady=8)
