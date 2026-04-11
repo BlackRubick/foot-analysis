@@ -3,6 +3,30 @@ import os
 from datetime import datetime
 
 
+def _sanitize_for_pdf(text: str) -> str:
+    """Reemplaza caracteres Unicode problemáticos por equivalentes ASCII.
+
+    Esto evita errores de codificación latin-1 en entornos donde fpdf
+    no está configurado en UTF-8 (como algunas instalaciones en Raspberry Pi).
+    """
+    if not isinstance(text, str):
+        text = str(text)
+    replacements = {
+        "\u2018": "'",  # ‘
+        "\u2019": "'",  # ’
+        "\u201c": '"',  # “
+        "\u201d": '"',  # ”
+        "\u2013": "-",  # –
+        "\u2014": "-",  # —
+        "\u2022": "-",  # •
+        "\u2026": "...",  # …
+        "\u00a0": " ",  # NBSP
+    }
+    for bad, good in replacements.items():
+        text = text.replace(bad, good)
+    return text
+
+
 def _configure_unicode_font(pdf: FPDF) -> None:
     """Intenta usar DejaVu para soportar tildes/acentos.
 
@@ -42,7 +66,7 @@ class ConsentPDF(FPDF):
         self.set_font('DejaVu' if use_dejavu else 'Arial', 'B', 13)
         self.set_fill_color(17, 24, 39)
         self.set_text_color(255, 255, 255)
-        self.cell(0, 12, 'CARTA DE CONSENTIMIENTO INFORMADO Y AVISO DE PRIVACIDAD', 0, 1, 'C', True)
+        self.cell(0, 12, _sanitize_for_pdf('CARTA DE CONSENTIMIENTO INFORMADO Y AVISO DE PRIVACIDAD'), 0, 1, 'C', True)
         self.set_text_color(0, 0, 0)
         self.ln(2)
 
@@ -51,13 +75,13 @@ class ConsentPDF(FPDF):
         self.set_font('DejaVu' if use_dejavu else 'Arial', 'B', 11)
         self.set_fill_color(31, 41, 55)
         self.set_text_color(255, 255, 255)
-        self.cell(0, 9, title, 0, 1, 'L', True)
+        self.cell(0, 9, _sanitize_for_pdf(title), 0, 1, 'L', True)
         self.set_text_color(0, 0, 0)
 
     def paragraph(self, text, font_size=10):
         use_dejavu = getattr(self, "_dejavu_ok", False)
         self.set_font('DejaVu' if use_dejavu else 'Arial', '', font_size)
-        self.multi_cell(0, 6, text)
+        self.multi_cell(0, 6, _sanitize_for_pdf(text))
         self.ln(1)
 
 
@@ -66,7 +90,7 @@ def generate_consent_pdf(consent_data, out_path, signature_image_path: str | Non
     pdf.set_auto_page_break(auto=True, margin=15)
     pdf.add_page()
 
-    project_name = consent_data.get("project_name", "NEXO-POSTURAL: Kyene’is Pøndyam.")
+    project_name = consent_data.get("project_name", "NEXO-POSTURAL: Kyene's Pøndyam.")
     issue_place = consent_data.get("issue_place", "Tuxtla Gutiérrez, Chiapas.")
     issue_date = consent_data.get("issue_date", datetime.now().strftime("%d/%m/%Y"))
     patient_name = consent_data.get("patient_name", "")
@@ -79,72 +103,90 @@ def generate_consent_pdf(consent_data, out_path, signature_image_path: str | Non
     witness_1 = consent_data.get("witness_1", "")
     witness_2 = consent_data.get("witness_2", "")
 
-    pdf.section_title("I. DATOS GENERALES")
-    pdf.paragraph(f"Proyecto: {project_name}")
-    pdf.paragraph(f"Lugar y fecha de emisión: {issue_date} {issue_place}")
+    pdf.section_title(_sanitize_for_pdf("I. DATOS GENERALES"))
+    pdf.paragraph(_sanitize_for_pdf(f"Proyecto: {project_name}"))
+    pdf.paragraph(_sanitize_for_pdf(f"Lugar y fecha de emisión: {issue_date} {issue_place}"))
 
-    pdf.section_title("II. IDENTIDAD Y DOMICILIO DEL RESPONSABLE")
+    pdf.section_title(_sanitize_for_pdf("II. IDENTIDAD Y DOMICILIO DEL RESPONSABLE"))
     pdf.paragraph(
-        "El proyecto NEXO-POSTURAL, bajo la responsabilidad de Liliana Ruiz Alvarado y "
-        "Ángel Enrique Patricio López, con domicilio en la Universidad Politécnica de Chiapas, "
-        "es responsable del uso, tratamiento y protección de sus datos personales."
-    )
-
-    pdf.section_title("III. DATOS PERSONALES Y SENSIBLES SOMETIDOS A TRATAMIENTO")
-    pdf.paragraph(
-        "Para cumplir con las finalidades de este análisis, se recabarán los siguientes datos personales del paciente:"
-    )
-    pdf.paragraph(
-        f"• Nombre completo: {patient_name}\n"
-        f"• Fecha de nacimiento: {patient_birthdate}\n"
-        f"• Sexo: {patient_sex}\n"
-        f"• Estatura: {patient_height}\n"
-        f"• Peso: {patient_weight}"
-    )
-    pdf.paragraph(
-        "Asimismo, se informa que se tratarán datos personales sensibles que requieren protección especial:"
-    )
-    pdf.paragraph(
-        "• Imágenes Biométricas: Registro fotográfico y de video para la detección de puntos anatómicos corporales.\n"
-        "• Información de Salud: Antecedentes médicos y diagnósticos derivados del estudio."
+        _sanitize_for_pdf(
+            "El proyecto NEXO-POSTURAL, bajo la responsabilidad de Liliana Ruiz Alvarado y "
+            "Ángel Enrique Patricio López, con domicilio en la Universidad Politécnica de Chiapas, "
+            "es responsable del uso, tratamiento y protección de sus datos personales."
+        )
     )
 
-    pdf.section_title("IV. FINALIDADES DEL ANÁLISIS (ACTO AUTORIZADO)")
+    pdf.section_title(_sanitize_for_pdf("III. DATOS PERSONALES Y SENSIBLES SOMETIDOS A TRATAMIENTO"))
     pdf.paragraph(
-        "Los datos personales y sensibles recabados se utilizarán exclusivamente para los siguientes procedimientos técnicos:"
+        _sanitize_for_pdf(
+            "Para cumplir con las finalidades de este análisis, se recabarán los siguientes datos personales del paciente:"
+        )
     )
     pdf.paragraph(
-        "1. Evaluación de Miembros Inferiores (Consecuencias mecánicas):\n"
-        "• Podometría Digital: Análisis de la huella plantar para determinar la distribución de presiones.\n"
-        "• Ángulo Tibiofemoral: Medición de la alineación y biomecánica de la rodilla.\n"
-        "• Análisis de Cadena Miofascial: Identificación de la cadena causal (ascendente o descendente) que afecta la postura.\n\n"
-        "2. Evaluación de Miembros Superiores y Tronco:\n"
-        "• Análisis Dinámico: Determinación del Tipo de Palanca (1er, 2do o 3er género) en las articulaciones.\n"
-        "• Eficiencia Mecánica: Cálculo de la Ventaja Mecánica y Momento de Fuerza (Torque) generado en extremidades y tronco.\n\n"
-        "3. Gestión Clínica:\n"
-        "• Integración de su expediente clínico digital.\n"
-        "• Generación de reportes de resultados en formato PDF."
+        _sanitize_for_pdf(
+            f"- Nombre completo: {patient_name}\n"
+            f"- Fecha de nacimiento: {patient_birthdate}\n"
+            f"- Sexo: {patient_sex}\n"
+            f"- Estatura: {patient_height}\n"
+            f"- Peso: {patient_weight}"
+        )
     )
-
-    pdf.section_title("V. DERECHOS ARCO Y CONFIDENCIALIDAD")
     pdf.paragraph(
-        "Usted tiene derecho a conocer qué datos tenemos de usted, solicitar correcciones o la cancelación de los mismos "
-        "(Derechos ARCO). Sin embargo, se hace de su conocimiento que por disposición de la NOM-004-SSA3-2012, los "
-        "expedientes clínicos deben ser conservados por un periodo mínimo de 5 años tras el último acto médico. Sus datos "
-        "personales no serán divulgados y, en caso de usarse para fines de investigación o docencia, se garantiza que no podrá ser identificado."
+        _sanitize_for_pdf(
+            "Asimismo, se informa que se tratarán datos personales sensibles que requieren protección especial:"
+        )
     )
-
-    pdf.section_title("VI. DECLARACIÓN DE CONSENTIMIENTO")
     pdf.paragraph(
-        "Por medio de la presente, autorizo al personal de NEXO-POSTURAL para la realización de los diagnósticos biomecánicos anteriormente descritos. "
-        "He sido informado sobre los riesgos mínimos y los beneficios esperados de este análisis para mi salud postural. "
-        "Otorgo mi consentimiento expreso para el tratamiento de mis datos personales y sensibles conforme a este aviso."
+        _sanitize_for_pdf(
+            "- Imagenes Biométricas: Registro fotográfico y de video para la detección de puntos anatómicos corporales.\n"
+            "- Información de Salud: Antecedentes médicos y diagnósticos derivados del estudio."
+        )
     )
 
-    pdf.section_title("VII. FIRMAS")
+    pdf.section_title(_sanitize_for_pdf("IV. FINALIDADES DEL ANÁLISIS (ACTO AUTORIZADO)"))
+    pdf.paragraph(
+        _sanitize_for_pdf(
+            "Los datos personales y sensibles recabados se utilizarán exclusivamente para los siguientes procedimientos técnicos:"
+        )
+    )
+    pdf.paragraph(
+        _sanitize_for_pdf(
+            "1. Evaluación de Miembros Inferiores (Consecuencias mecánicas):\n"
+            "- Podometría Digital: Análisis de la huella plantar para determinar la distribución de presiones.\n"
+            "- Ángulo Tibiofemoral: Medición de la alineación y biomecánica de la rodilla.\n"
+            "- Análisis de Cadena Miofascial: Identificación de la cadena causal (ascendente o descendente) que afecta la postura.\n\n"
+            "2. Evaluación de Miembros Superiores y Tronco:\n"
+            "- Análisis Dinámico: Determinación del Tipo de Palanca (1er, 2do o 3er genero) en las articulaciones.\n"
+            "- Eficiencia Mecánica: Calculo de la Ventaja Mecánica y Momento de Fuerza (Torque) generado en extremidades y tronco.\n\n"
+            "3. Gestion Clínica:\n"
+            "- Integración de su expediente clínico digital.\n"
+            "- Generación de reportes de resultados en formato PDF."
+        )
+    )
+
+    pdf.section_title(_sanitize_for_pdf("V. DERECHOS ARCO Y CONFIDENCIALIDAD"))
+    pdf.paragraph(
+        _sanitize_for_pdf(
+            "Usted tiene derecho a conocer que datos tenemos de usted, solicitar correcciones o la cancelación de los mismos "
+            "(Derechos ARCO). Sin embargo, se hace de su conocimiento que por disposición de la NOM-004-SSA3-2012, los "
+            "expedientes clínicos deben ser conservados por un periodo mínimo de 5 años tras el ultimo acto médico. Sus datos "
+            "personales no serán divulgados y, en caso de usarse para fines de investigación o docencia, se garantiza que no podra ser identificado."
+        )
+    )
+
+    pdf.section_title(_sanitize_for_pdf("VI. DECLARACIÓN DE CONSENTIMIENTO"))
+    pdf.paragraph(
+        _sanitize_for_pdf(
+            "Por medio de la presente, autorizo al personal de NEXO-POSTURAL para la realización de los diagnósticos biomecánicos anteriormente descritos. "
+            "He sido informado sobre los riesgos mínimos y los beneficios esperados de este análisis para mi salud postural. "
+            "Otorgo mi consentimiento expreso para el tratamiento de mis datos personales y sensibles conforme a este aviso."
+        )
+    )
+
+    pdf.section_title(_sanitize_for_pdf("VII. FIRMAS"))
     use_dejavu = getattr(pdf, "_dejavu_ok", False)
     pdf.set_font('DejaVu' if use_dejavu else 'Arial', '', 10)
-    pdf.multi_cell(0, 6, f"Nombre del paciente: {patient_name}")
+    pdf.multi_cell(0, 6, _sanitize_for_pdf(f"Nombre del paciente: {patient_name}"))
     pdf.ln(4)
     pdf.cell(0, 8, "Nombre y Firma del Paciente (o familiar/representante legal)", 0, 1)
     # Línea de firma del paciente
