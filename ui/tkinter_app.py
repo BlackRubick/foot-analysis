@@ -564,11 +564,12 @@ class BiomechanicsApp:
         except Exception as e:
             messagebox.showerror("PDF", f"Error al generar PDF: {e}")
 
+
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Sistema de Análisis Biomecánico")
         self.root.geometry("1450x860")
-        self.root.minsize(1280, 760)
+        self.root.minsize(800, 600)
 
         self.bg_main = "#0f172a"
         self.bg_card = "#111827"
@@ -579,6 +580,22 @@ class BiomechanicsApp:
         self.accent_alt = "#0ea5e9"
 
         self._setup_styles()
+
+        # --- SCROLL GLOBAL ---
+        self.main_canvas = tk.Canvas(self.root, bg=self.bg_main, highlightthickness=0)
+        self.main_scrollbar = ttk.Scrollbar(self.root, orient="vertical", command=self.main_canvas.yview)
+        self.main_canvas.configure(yscrollcommand=self.main_scrollbar.set)
+        self.main_canvas.pack(side="left", fill="both", expand=True)
+        self.main_scrollbar.pack(side="right", fill="y")
+
+        self.main_frame = ttk.Frame(self.main_canvas, style="App.TFrame")
+        self.main_canvas.create_window((0, 0), window=self.main_frame, anchor="nw")
+
+        def _on_configure(event):
+            self.main_canvas.configure(scrollregion=self.main_canvas.bbox("all"))
+        self.main_frame.bind("<Configure>", _on_configure)
+
+        # --- FIN SCROLL GLOBAL ---
 
         self.foot_analyzer = FootAnalyzer()
         self.knee_analyzer = None
@@ -641,6 +658,8 @@ class BiomechanicsApp:
         self.posture_camera_var = tk.StringVar()
         self._camera_options = []
         self._refresh_cameras()
+
+    # --- Cambiar todos los self.root a self.main_frame en _build_ui y subcomponentes ---
 
     def _ensure_db_connection(self) -> bool:
         if not self.db_enabled_var.get():
