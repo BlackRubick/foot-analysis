@@ -1360,6 +1360,11 @@ class BiomechanicsApp:
         # Solo mostramos la evaluación completa en la interfaz
         self.notebook.add(self.tab_fulltest, text="Evaluación completa")
 
+        # Cambiar nombres técnicos en las pestañas y títulos
+        self._build_foot_tab = self._build_foot_tab_with_technical_name
+        self._build_knee_tab = self._build_knee_tab_with_technical_name
+        self._build_chains_tab = self._build_chains_tab_with_technical_name
+
         self._build_foot_tab()
         self._build_knee_tab()
         self._build_posture_tab()
@@ -1367,6 +1372,54 @@ class BiomechanicsApp:
         self._build_lever_tab()
         self._build_history_tab()
         self._build_fulltest_tab()
+
+    def _build_foot_tab_with_technical_name(self):
+        # ...existing code...
+        self.tab_foot_title = "Podometría digital - Huella plantar"
+        self._build_foot_tab_original()
+
+    def _build_knee_tab_with_technical_name(self):
+        # ...existing code...
+        self.tab_knee_title = "Ángulo de tibiofemoral – rodilla"
+        self._build_knee_tab_original()
+
+    def _build_chains_tab_with_technical_name(self):
+        # ...existing code...
+        self.tab_chains_title = "Cadena miofascial causal – cadenas"
+        self._build_chains_tab_original()
+
+    # Guardar los métodos originales para no perder funcionalidad
+    _build_foot_tab_original = _build_foot_tab
+    _build_knee_tab_original = _build_knee_tab
+    _build_chains_tab_original = _build_chains_tab
+
+    # Cambiar títulos en los tabs y en los pasos del flujo guiado
+    def _fulltest_render_foot_step(self):
+        ttk.Label(self.fulltest_body, text="Podometría digital - Huella plantar", style="Body.TLabel").pack(anchor="w", pady=(0, 4))
+        ttk.Label(
+            self.fulltest_body,
+            text="1) Captura la huella plantar desde aquí y 2) Ejecuta el análisis y guardado como parte de este test.",
+            style="Hint.TLabel",
+        ).pack(anchor="w", pady=(0, 6))
+        # ...existing code...
+
+    def _fulltest_render_knee_step(self):
+        ttk.Label(self.fulltest_body, text="Ángulo de tibiofemoral – rodilla", style="Body.TLabel").pack(anchor="w", pady=(0, 4))
+        ttk.Label(
+            self.fulltest_body,
+            text="1) Captura la imagen de rodilla y ejecuta el análisis.",
+            style="Hint.TLabel",
+        ).pack(anchor="w", pady=(0, 6))
+        # ...existing code...
+
+    def _fulltest_render_chains_step(self):
+        ttk.Label(self.fulltest_body, text="Cadena miofascial causal – cadenas", style="Body.TLabel").pack(anchor="w", pady=(0, 4))
+        ttk.Label(
+            self.fulltest_body,
+            text="Puedes analizar cadenas musculares aquí mismo usando la cámara en vivo. Elige cámara y usa 'Iniciar/Detener video'.",
+            style="Hint.TLabel",
+        ).pack(anchor="w", pady=(0, 6))
+        # ...existing code...
 
     def _build_chains_tab(self):
         for child in self.tab_chains.winfo_children():
