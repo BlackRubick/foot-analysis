@@ -1360,11 +1360,8 @@ class BiomechanicsApp:
         # Solo mostramos la evaluación completa en la interfaz
         self.notebook.add(self.tab_fulltest, text="Evaluación completa")
 
-        # Cambiar nombres técnicos en las pestañas y títulos
-        self._build_foot_tab = self._build_foot_tab_with_technical_name
-        self._build_knee_tab = self._build_knee_tab_with_technical_name
-        self._build_chains_tab = self._build_chains_tab_with_technical_name
 
+        # Construir tabs con nombres técnicos directamente
         self._build_foot_tab()
         self._build_knee_tab()
         self._build_posture_tab()
@@ -1373,25 +1370,7 @@ class BiomechanicsApp:
         self._build_history_tab()
         self._build_fulltest_tab()
 
-    def _build_foot_tab_with_technical_name(self):
-        # ...existing code...
-        self.tab_foot_title = "Podometría digital - Huella plantar"
-        self._build_foot_tab_original()
 
-    def _build_knee_tab_with_technical_name(self):
-        # ...existing code...
-        self.tab_knee_title = "Ángulo de tibiofemoral – rodilla"
-        self._build_knee_tab_original()
-
-    def _build_chains_tab_with_technical_name(self):
-        # ...existing code...
-        self.tab_chains_title = "Cadena miofascial causal – cadenas"
-        self._build_chains_tab_original()
-
-    # Guardar los métodos originales para no perder funcionalidad
-    _build_foot_tab_original = _build_foot_tab
-    _build_knee_tab_original = _build_knee_tab
-    _build_chains_tab_original = _build_chains_tab
 
     # Cambiar títulos en los tabs y en los pasos del flujo guiado
     def _fulltest_render_foot_step(self):
