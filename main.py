@@ -228,7 +228,7 @@ def run_chains(
 def parse_args():
     parser = argparse.ArgumentParser(
         description="Sistema biomecanico por imagenes (pie, rodilla, postura y cadenas musculares)")
-    parser.add_argument("--mode", type=str, default="tk", choices=["tk", "cli"], help="Modo de ejecución: tk (interfaz gráfica) o cli")
+    parser.add_argument("--mode", type=str, default="tk", choices=["tk", "cli", "web"], help="Modo de ejecución: tk (interfaz gráfica), cli o web (navegador)")
     parser.add_argument("--foot-image", type=str, default=None, help="Ruta de imagen de huella plantar")
     parser.add_argument("--knee-image", type=str, default=None, help="Ruta de imagen para análisis de rodilla")
     parser.add_argument("--posture-image", type=str, default=None, help="Ruta de imagen para análisis postural")
@@ -261,6 +261,14 @@ def main():
 
     if args.mode == "tk":
         run_tkinter_app()
+        return
+
+    if args.mode == "web":
+        from webapp.server import run_web_app
+        # Permitir configurar host/puerto por variables de entorno si se desea
+        host = os.environ.get("FOOT_ANALYSIS_WEB_HOST", "0.0.0.0")
+        port = int(os.environ.get("FOOT_ANALYSIS_WEB_PORT", "5000"))
+        run_web_app(host=host, port=port, debug=False)
         return
 
     os.makedirs(args.save_dir, exist_ok=True)

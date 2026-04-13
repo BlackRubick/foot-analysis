@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="space-y-6">
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+    <div>
+      <h2 class="text-lg font-semibold text-gray-900">Ficha de paciente y consentimiento</h2>
+      <p class="text-sm text-gray-600">Registra los datos básicos del paciente y su consentimiento informado antes de la evaluación.</p>
+    </div>
+    {% if patient_fhir_id %}
+      <div class="text-xs text-gray-600 border rounded px-3 py-1 bg-gray-50">
+        Paciente activo: <span class="font-mono">{{ patient_fhir_id }}</span>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Datos de paciente -->
+    <section class="bg-white border rounded-lg p-5 space-y-4">
+      <div>
+        <h3 class="text-sm font-semibold text-gray-900">Datos generales del paciente</h3>
+        <p class="text-xs text-gray-600">Esta información se usará en reportes y en el consentimiento.</p>
+      </div>
+      <form action="{{ url_for('save_patient') }}" method="post" class="space-y-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <div>
+            <label class="block text-gray-600 mb-1">Nombre completo</label>
+            <input type="text" name="nombre" value="{{ patient_data['Nombre'] }}" class="w-full border rounded px-2 py-1.5 text-xs" required />
+          </div>
+          <div>
+            <label class="block text-gray-600 mb-1">Sexo</label>
+            <select name="sexo" class="w-full border rounded px-2 py-1.5 text-xs">
+              <option value="" {% if not patient_data['Sexo'] %}selected{% endif %}>--</option>
+              <option value="F" {% if patient_data['Sexo'] == 'F' %}selected{% endif %}>Femenino</option>
+              <option value="M" {% if patient_data['Sexo'] == 'M' %}selected{% endif %}>Masculino</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-gray-600 mb-1">Fecha de nacimiento</label>
+            <input type="date" name="fecha_nacimiento" value="{{ patient_data['Fecha de nacimiento'] }}" class="w-full border rounded px-2 py-1.5 text-xs" />
+          </div>
+          <div>
+            <label class="block text-gray-600 mb-1">Edad (años)</label>
+            <input type="number" name="edad" value="{{ patient_data['Edad'] }}" class="w-full border rounded px-2 py-1.5 text-xs" min="0" />
+          </div>
+          <div>
+            <label class="block text-gray-600 mb-1">Estatura (cm)</label>
+            <input type="text" name="estatura" value="{{ patient_data['Estatura'] }}" class="w-full border rounded px-2 py-1.5 text-xs" />
+          </div>
+          <div>
+            <label class="block text-gray-600 mb-1">Peso (kg)</label>
+            <input type="text" name="peso" value="{{ patient_data['Peso'] }}" class="w-full border rounded px-2 py-1.5 text-xs" />
+          </div>
+          <div>
+            <label class="block text-gray-600 mb-1">Ocupación</label>
+            <input type="text" name="ocupacion" value="{{ patient_data['Ocupación'] }}" class="w-full border rounded px-2 py-1.5 text-xs" />
+          </div>
+          <div>
+            <label class="block text-gray-600 mb-1">Actividad física</label>
+            <input type="text" name="actividad_fisica" value="{{ patient_data['Actividad física'] }}" class="w-full border rounded px-2 py-1.5 text-xs" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <div>
+            <label class="block text-gray-600 mb-1">Antecedentes traumatológicos</label>
+            <input type="text" name="antecedentes" value="{{ patient_data['Antecedentes traumatológicos'] }}" class="w-full border rounded px-2 py-1.5 text-xs" />
+          </div>
+          <div>
+            <label class="block text-gray-600 mb-1">Enfermedades crónico-degenerativas</label>
+            <input type="text" name="cronico" value="{{ patient_data['Enfermedades crónico-degenerativas'] }}" class="w-full border rounded px-2 py-1.5 text-xs" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <div>
+            <label class="block text-gray-600 mb-1">Dolor en pies</label>
+            <select name="dolor_pies" class="w-full border rounded px-2 py-1.5 text-xs">
+              <option value="No" {% if patient_data['Dolor en pies'] == 'No' %}selected{% endif %}>No</option>
+              <option value="Sí" {% if patient_data['Dolor en pies'] == 'Sí' %}selected{% endif %}>Sí</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-gray-600 mb-1">Dolor en oídos</label>
+            <select name="dolor_oidos" class="w-full border rounded px-2 py-1.5 text-xs">
+              <option value="No" {% if patient_data['Dolor en oídos'] == 'No' %}selected{% endif %}>No</option>
+              <option value="Sí" {% if patient_data['Dolor en oídos'] == 'Sí' %}selected{% endif %}>Sí</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-gray-600 mb-1">Alteraciones de la visión</label>
+            <select name="vision" class="w-full border rounded px-2 py-1.5 text-xs">
+              <option value="No" {% if patient_data['Alteraciones de la visión'] == 'No' %}selected{% endif %}>No</option>
+              <option value="Sí" {% if patient_data['Alteraciones de la visión'] == 'Sí' %}selected{% endif %}>Sí</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-gray-600 mb-1">Vértigos</label>
+            <select name="vertigos" class="w-full border rounded px-2 py-1.5 text-xs">
+              <option value="No" {% if patient_data['Vértigos'] == 'No' %}selected{% endif %}>No</option>
+              <option value="Sí" {% if patient_data['Vértigos'] == 'Sí' %}selected{% endif %}>Sí</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-gray-600 mb-1">Inestabilidad</label>
+            <select name="inestabilidad" class="w-full border rounded px-2 py-1.5 text-xs">
+              <option value="No" {% if patient_data['Inestabilidad'] == 'No' %}selected{% endif %}>No</option>
+              <option value="Sí" {% if patient_data['Inestabilidad'] == 'Sí' %}selected{% endif %}>Sí</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-gray-600 mb-1">Malestar en dientes</label>
+            <select name="dientes" class="w-full border rounded px-2 py-1.5 text-xs">
+              <option value="No" {% if patient_data['Malestar en dientes'] == 'No' %}selected{% endif %}>No</option>
+              <option value="Sí" {% if patient_data['Malestar en dientes'] == 'Sí' %}selected{% endif %}>Sí</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-gray-600 mb-1">Presencia de cicatrices</label>
+            <select name="cicatrices" class="w-full border rounded px-2 py-1.5 text-xs">
+              <option value="No" {% if patient_data['Presencia de cicatrices'] == 'No' %}selected{% endif %}>No</option>
+              <option value="Sí" {% if patient_data['Presencia de cicatrices'] == 'Sí' %}selected{% endif %}>Sí</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="px-3 py-1.5 text-xs rounded bg-gray-900 text-white">Guardar datos de paciente</button>
+      </form>
+    </section>
+
+    <!-- Consentimiento informado -->
+    <section class="bg-white border rounded-lg p-5 space-y-4">
+      <div class="flex items-center justify-between gap-2">
+        <div>
+          <h3 class="text-sm font-semibold text-gray-900">Consentimiento informado</h3>
+          <p class="text-xs text-gray-600">Texto resumido más firma dibujada del paciente o representante.</p>
+        </div>
+        {% if has_consent %}
+          <span class="inline-flex items-center px-2 py-1 text-[11px] rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">Consentimiento registrado</span>
+        {% else %}
+          <span class="inline-flex items-center px-2 py-1 text-[11px] rounded-full bg-yellow-50 text-yellow-700 border border-yellow-200">Pendiente de registrar</span>
+        {% endif %}
+      </div>
+
+      <form action="{{ url_for('save_consent') }}" method="post" class="space-y-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <div>
+            <label class="block text-gray-600 mb-1">Nombre de quien firma</label>
+            <input type="text" name="signed_by" class="w-full border rounded px-2 py-1.5 text-xs" value="{{ patient_data['Nombre'] }}" required />
+          </div>
+          <div>
+            <label class="block text-gray-600 mb-1">Nombre del paciente</label>
+            <input type="text" name="patient_name" class="w-full border rounded px-2 py-1.5 text-xs" value="{{ patient_data['Nombre'] }}" />
+          </div>
+          <div>
+            <label class="block text-gray-600 mb-1">Fecha de nacimiento</label>
+            <input type="text" name="birthdate" class="w-full border rounded px-2 py-1.5 text-xs" value="{{ patient_data['Fecha de nacimiento'] }}" />
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-gray-600 mb-1">Estatura (cm)</label>
+              <input type="text" name="height" class="w-full border rounded px-2 py-1.5 text-xs" value="{{ patient_data['Estatura'] }}" />
+            </div>
+            <div>
+              <label class="block text-gray-600 mb-1">Peso (kg)</label>
+              <input type="text" name="weight" class="w-full border rounded px-2 py-1.5 text-xs" value="{{ patient_data['Peso'] }}" />
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <div>
+            <label class="block text-gray-600 mb-1">Testigo 1</label>
+            <input type="text" name="witness1" class="w-full border rounded px-2 py-1.5 text-xs" />
+          </div>
+          <div>
+            <label class="block text-gray-600 mb-1">Testigo 2</label>
+            <input type="text" name="witness2" class="w-full border rounded px-2 py-1.5 text-xs" />
+          </div>
+        </div>
+
+        <div class="text-xs space-y-1">
+          <label class="block text-gray-600 mb-1">Texto de consentimiento</label>
+          <textarea name="consent_text" rows="6" class="w-full border rounded px-2 py-1.5 text-xs" placeholder="Escribe aquí el texto de consentimiento que se leyó al paciente."></textarea>
+        </div>
+
+        <div class="space-y-2 text-xs">
+          <label class="block text-gray-600 mb-1">Firma dibujada</label>
+          <div class="border rounded bg-white p-2 inline-block">
+            <canvas id="signature_canvas" width="420" height="140" class="bg-white border border-gray-300 rounded"></canvas>
+          </div>
+          <input type="hidden" name="signature_data" id="signature_data" />
+          <div class="flex gap-2 mt-1">
+            <button type="button" onclick="clearSignature()" class="px-2 py-1 text-xs border rounded">Borrar firma</button>
+            <span class="text-[11px] text-gray-500">Firma con el mouse o una pantalla táctil.</span>
+          </div>
+        </div>
+
+        <button type="submit" class="px-3 py-1.5 text-xs rounded bg-emerald-600 text-white">Guardar consentimiento</button>
+      </form>
+    </section>
+  </div>
+</div>
+
+<script>
+  (function(){
+    const canvas = document.getElementById('signature_canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let drawing = false;
+    let last = null;
+
+    function getPos(evt){
+      const rect = canvas.getBoundingClientRect();
+      const e = evt.touches ? evt.touches[0] : evt;
+      return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    }
+
+    function start(evt){
+      drawing = true;
+      last = getPos(evt);
+      evt.preventDefault();
+    }
+
+    function move(evt){
+      if (!drawing || !last) return;
+      const pos = getPos(evt);
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 2;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(last.x, last.y);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+      last = pos;
+      evt.preventDefault();
+    }
+
+    function end(evt){
+      drawing = false;
+      last = null;
+      document.getElementById('signature_data').value = canvas.toDataURL('image/png');
+      evt && evt.preventDefault();
+    }
+
+    canvas.addEventListener('mousedown', start);
+    canvas.addEventListener('mousemove', move);
+    canvas.addEventListener('mouseup', end);
+    canvas.addEventListener('mouseleave', end);
+    canvas.addEventListener('touchstart', start, {passive:false});
+    canvas.addEventListener('touchmove', move, {passive:false});
+    canvas.addEventListener('touchend', end, {passive:false});
+    canvas.addEventListener('touchcancel', end, {passive:false});
+
+    window.clearSignature = function(){
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      document.getElementById('signature_data').value = '';
+    }
+  })();
+</script>
+{% endblock %}

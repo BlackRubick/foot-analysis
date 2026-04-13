@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+  <!-- Encabezado general -->
+  <section class="col-span-1 lg:col-span-2">
+    <div class="bg-white border rounded-lg p-6">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+        <div>
+          <h2 class="text-lg font-semibold text-gray-900">Evaluación biomecánica integral</h2>
+          <p class="text-sm text-gray-600 mt-1">
+            Carga de imágenes clínicas para análisis cuantitativo de huella plantar, alineación de rodilla, postura y cadenas miofasciales.
+          </p>
+        </div>
+        <div class="text-xs text-gray-600 space-y-1">
+          {% if patient_fhir_id %}
+            <div>Paciente activo: <span class="font-mono">{{ patient_fhir_id }}</span></div>
+          {% endif %}
+          <div>
+            Estado de consentimiento:
+            {% if has_consent %}
+              <span class="ml-1 inline-flex items-center px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">Registrado</span>
+            {% else %}
+              <span class="ml-1 inline-flex items-center px-2 py-0.5 rounded-full bg-yellow-50 text-yellow-700 border border-yellow-200">Pendiente</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="mt-3 flex flex-wrap gap-2 text-xs text-gray-600">
+        <span class="px-2 py-1 border rounded">Huella plantar</span>
+        <span class="px-2 py-1 border rounded">Rodilla</span>
+        <span class="px-2 py-1 border rounded">Postura</span>
+        <span class="px-2 py-1 border rounded">Cadenas musculares</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Componente reutilizable estilo clínico -->
+  {% macro module_card(title, subtitle) %}
+  <section class="bg-white border rounded-lg p-5 flex flex-col gap-4">
+    <div>
+      <h3 class="text-sm font-semibold text-gray-900">{{ title }}</h3>
+      <p class="text-xs text-gray-600">{{ subtitle }}</p>
+    </div>
+    {{ caller() }}
+  </section>
+  {% endmacro %}
+
+  <!-- Huella plantar -->
+  {% call module_card('Módulo 1 · Huella plantar', 'Evaluación baropodométrica digital.') %}
+  <form action="{{ url_for('analyze_foot') }}" method="post" enctype="multipart/form-data" class="space-y-3">
+    <input type="file" name="foot_image" accept="image/*" class="w-full text-xs border rounded px-2 py-1.5" />
+    <input type="hidden" name="foot_image_data" id="foot_image_data" />
+
+    <div class="flex items-center gap-2 text-xs text-gray-600">
+      <button type="button" class="px-2 py-1 border rounded" onclick="openCamera('foot')">Captura por cámara</button>
+    </div>
+
+    <div id="foot-camera" class="hidden border rounded p-3">
+      <video id="foot_video" autoplay class="w-full rounded bg-black"></video>
+      <canvas id="foot_canvas" class="hidden"></canvas>
+      <div class="mt-2 flex gap-2 text-xs">
+        <button type="button" class="px-2 py-1 border" onclick="captureFromCamera('foot')">Capturar</button>
+        <button type="button" class="px-2 py-1 border" onclick="closeCamera('foot')">Cerrar</button>
+      </div>
+    </div>
+
+    <button type="submit" class="px-3 py-1.5 text-xs border rounded bg-gray-800 text-white">Procesar</button>
+  </form>
+
+  {% if foot_result %}
+  <div class="border-t pt-3 text-xs space-y-2">
+    {% if foot_image_url %}
+      <div>
+        <div class="text-[11px] text-gray-500 mb-1">Imagen anotada</div>
+        <img src="{{ foot_image_url }}" alt="Huella plantar anotada" class="w-full rounded border" loading="lazy" />
+      </div>
+    {% endif %}
+    <div class="font-semibold">Resultados</div>
+    <div>Índice plantar: {{ '%.2f'|format(foot_result.metrics.plantar_index) }}</div>
+    <div>Clasificación: {{ foot_result.metrics.classification }}</div>
+  </div>
+  {% endif %}
+  {% endcall %}
+
+  <!-- Rodilla -->
+  {% call module_card('Módulo 2 · Rodilla', 'Medición del ángulo tibiofemoral.') %}
+  <form action="{{ url_for('analyze_knee') }}" method="post" enctype="multipart/form-data" class="space-y-3">
+    <input type="file" name="knee_image" accept="image/*" class="w-full text-xs border rounded px-2 py-1.5" />
+    <input type="hidden" name="knee_image_data" id="knee_image_data" />
+
+    <div class="flex gap-3 text-xs">
+      <label><input type="radio" name="knee_plane" value="frontal" checked> Frontal</label>
+      <label><input type="radio" name="knee_plane" value="sagital"> Sagital</label>
+    </div>
+
+    <button type="submit" class="px-3 py-1.5 text-xs border rounded bg-gray-800 text-white">Procesar</button>
+  </form>
+
+  {% if knee_result %}
+  <div class="border-t pt-3 text-xs space-y-2">
+    {% if knee_image_url %}
+      <div>
+        <div class="text-[11px] text-gray-500 mb-1">Imagen anotada</div>
+        <img src="{{ knee_image_url }}" alt="Rodilla anotada" class="w-full rounded border" loading="lazy" />
+      </div>
+    {% endif %}
+    <div class="font-semibold">Resultados</div>
+    <div>Ángulo: {{ '%.2f'|format(knee_result.metrics.knee_angle_deg) }}°</div>
+    <div>Clasificación: {{ knee_result.metrics.classification }}</div>
+  </div>
+  {% endif %}
+  {% endcall %}
+
+  <!-- Postura -->
+  {% call module_card('Módulo 3 · Postura', 'Evaluación de alineación corporal.') %}
+  <form action="{{ url_for('analyze_posture') }}" method="post" enctype="multipart/form-data" class="space-y-3">
+    <input type="file" name="posture_image" accept="image/*" class="w-full text-xs border rounded px-2 py-1.5" />
+    <input type="hidden" name="posture_image_data" id="posture_image_data" />
+
+    <button type="submit" class="px-3 py-1.5 text-xs border rounded bg-gray-800 text-white">Procesar</button>
+  </form>
+
+  {% if posture_result %}
+  <div class="border-t pt-3 text-xs space-y-2">
+    {% if posture_image_url %}
+      <div>
+        <div class="text-[11px] text-gray-500 mb-1">Imagen anotada</div>
+        <img src="{{ posture_image_url }}" alt="Postura anotada" class="w-full rounded border" loading="lazy" />
+      </div>
+    {% endif %}
+    <div class="font-semibold">Resultados</div>
+    <div>Desviación: {{ '%.2f'|format(posture_result.metrics.mean_deviation_px) }} px</div>
+    <div>Clasificación: {{ posture_result.metrics.classification }}</div>
+  </div>
+  {% endif %}
+  {% endcall %}
+
+  <!-- Cadenas musculares -->
+  {% call module_card('Módulo 4 · Cadenas musculares', 'Evaluación miofascial lateral.') %}
+  <form action="{{ url_for('analyze_chains') }}" method="post" enctype="multipart/form-data" class="space-y-3">
+    <input type="file" name="chains_image" accept="image/*" class="w-full text-xs border rounded px-2 py-1.5" />
+    <input type="hidden" name="chains_image_data" id="chains_image_data" />
+
+    <button type="submit" class="px-3 py-1.5 text-xs border rounded bg-gray-800 text-white">Procesar</button>
+  </form>
+
+  {% if chains_result %}
+  <div class="border-t pt-3 text-xs space-y-2">
+    {% if chains_image_url %}
+      <div>
+        <div class="text-[11px] text-gray-500 mb-1">Imagen anotada</div>
+        <img src="{{ chains_image_url }}" alt="Cadenas musculares anotadas" class="w-full rounded border" loading="lazy" />
+      </div>
+    {% endif %}
+    <div class="font-semibold">Resultados</div>
+    <div>Plano: {{ chains_result.metrics.plane }}</div>
+    <div>Calibración: {{ '%.4f'|format(chains_result.metrics.calibration_mm_per_px) }}</div>
+  </div>
+  {% endif %}
+  {% endcall %}
+
+</div>
+
+<script>
+const cameraStreams = {};
+async function openCamera(prefix){
+  const panel=document.getElementById(prefix+'-camera');
+  const video=document.getElementById(prefix+'_video');
+  const stream=await navigator.mediaDevices.getUserMedia({video:true});
+  video.srcObject=stream;
+  cameraStreams[prefix]=stream;
+  panel.classList.remove('hidden');
+}
+function closeCamera(prefix){
+  const stream=cameraStreams[prefix];
+  if(stream){stream.getTracks().forEach(t=>t.stop());}
+  document.getElementById(prefix+'-camera').classList.add('hidden');
+}
+function captureFromCamera(prefix){
+  const video=document.getElementById(prefix+'_video');
+  const canvas=document.getElementById(prefix+'_canvas');
+  const input=document.getElementById(prefix+'_image_data');
+  canvas.width=video.videoWidth;
+  canvas.height=video.videoHeight;
+  canvas.getContext('2d').drawImage(video,0,0);
+  input.value=canvas.toDataURL('image/png');
+}
+</script>
+{% endblock %}

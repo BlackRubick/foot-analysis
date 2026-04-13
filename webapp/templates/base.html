@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistema de Análisis Biomecánico</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
+</head>
+<body class="bg-gray-100 text-gray-800 antialiased">
+  <div class="min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="border-b bg-white shadow-sm sticky top-0 z-20">
+      <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+        <div>
+          <h1 class="text-xl font-semibold text-gray-900">Sistema de Análisis Biomecánico</h1>
+          <p class="text-sm text-gray-500">Evaluación clínica de postura, marcha y estructura musculoesquelética</p>
+        </div>
+        <div class="flex items-center gap-4 text-xs text-gray-600">
+          <nav class="flex gap-3">
+            <a href="{{ url_for('patient_form') }}" class="px-2 py-1 rounded {{ 'bg-gray-900 text-white' if request.endpoint == 'patient_form' else 'border border-gray-300 hover:bg-gray-50' }}">Paciente</a>
+            <a href="{{ url_for('index') }}" class="px-2 py-1 rounded {{ 'bg-gray-900 text-white' if request.endpoint == 'index' else 'border border-gray-300 hover:bg-gray-50' }}">Evaluación</a>
+          </nav>
+          <div class="text-xs text-gray-500 border px-3 py-1 rounded-md hidden sm:block">
+            Interfaz Clínica Web
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1">
+      <div class="max-w-7xl mx-auto px-6 py-8">
+        
+        <!-- Alerts -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="space-y-3 mb-6">
+              {% for category, message in messages %}
+                <div class="border-l-4 px-4 py-3 text-sm rounded-sm 
+                  {% if category == 'error' %}
+                    border-red-400 bg-red-50 text-red-700
+                  {% else %}
+                    border-gray-400 bg-gray-50 text-gray-700
+                  {% endif %}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <!-- Dynamic Content -->
+        <section class="bg-white shadow-sm rounded-lg border p-6">
+          {% block content %}{% endblock %}
+        </section>
+
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t bg-white">
+      <div class="max-w-7xl mx-auto px-6 py-4 text-xs text-gray-500 flex justify-between items-center">
+        <span>Sistema clínico de análisis biomecánico basado en imágenes</span>
+        <span>Versión Web</span>
+      </div>
+    </footer>
+
+  </div>
+</body>
+</html>

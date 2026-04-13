@@ -187,9 +187,11 @@ class BiomechanicsApp:
     def _get_chains_camera_index(self, camera_name: str) -> int:
         return self._get_camera_index(camera_name)
 
+
     def _get_current_chains_calibration(self, image_bgr: Optional[np.ndarray] = None) -> Calibration:
         mode = self._calibration_mode_key(self.chains_calibration_mode_var.get())
         reference_mm = float(self.chains_reference_mm_var.get() or 0)
+
         reference_px = float(self.chains_reference_px_var.get() or 0)
         patient_height_mm = float(self.chains_patient_height_mm_var.get() or 0)
         marker_mm = float(self.chains_aruco_marker_mm_var.get() or 0)
@@ -216,6 +218,7 @@ class BiomechanicsApp:
                     self.chains_reference_px_var.set(f"{reference_px:.2f}")
                     return Calibration.from_reference(reference_mm, reference_px)
             return None
+
 
         def try_height() -> Optional[Calibration]:
             if image_bgr is None or patient_height_mm <= 0:
@@ -1677,17 +1680,43 @@ class BiomechanicsApp:
         ttk.Label(self.fulltest_body, text="Cadenas musculares", style="Body.TLabel").pack(anchor="w", pady=(0, 4))
         ttk.Label(
             self.fulltest_body,
-            text=(
-                "Para cadenas musculares usa preferentemente la pestaña dedicada. "
-                "Desde aquí solo guiamos el flujo del estudio."
-            ),
+            text="Puedes analizar cadenas musculares aquí mismo usando la cámara en vivo. Elige cámara y usa 'Iniciar/Detener video'.",
             style="Hint.TLabel",
         ).pack(anchor="w", pady=(0, 6))
 
-        btns = ttk.Frame(self.fulltest_body, style="Card.TFrame")
-        btns.pack(fill="x", pady=(4, 4))
+        # Controles de cámara y análisis en vivo
+        controls = ttk.Frame(self.fulltest_body, style="Card.TFrame")
+        controls.pack(fill="x", padx=10, pady=8)
 
-        ttk.Button(btns, text="Marcar cadenas como completadas", command=lambda: self._fulltest_mark_completed("chains")).pack(side="left", padx=(0, 8))
+        # Selección de cámara
+        ttk.Label(controls, text="Cámara:", style="Body.TLabel").pack(side="left", padx=(0, 2))
+        if not hasattr(self, "chains_camera_var_fulltest"):
+            self.chains_camera_var_fulltest = tk.StringVar()
+            if self._camera_options:
+                self.chains_camera_var_fulltest.set(self._camera_options[0][1])
+        cam_combo = ttk.Combobox(controls, textvariable=self.chains_camera_var_fulltest, state="readonly", width=30)
+        cam_combo['values'] = [name for idx, name in self._camera_options]
+        cam_combo.pack(side="left", padx=(0, 8))
+        ttk.Button(controls, text="Actualizar cámaras", command=lambda: self._update_camera_combo(cam_combo, self.chains_camera_var_fulltest)).pack(side="left", padx=(0, 8))
+
+        # Botón para iniciar/detener video en vivo
+        ttk.Button(controls, text="Iniciar/Detener video", style="Primary.TButton", command=lambda: self._toggle_chains_live_fulltest()).pack(side="left", padx=4)
+
+        # Área de previsualización
+        if not hasattr(self, "chains_preview_canvas_fulltest"):
+            self.chains_preview_canvas_fulltest = tk.Canvas(self.fulltest_body, width=700, height=350, bg="#0b1220", highlightthickness=0)
+        self.chains_preview_canvas_fulltest.pack(fill="x", padx=10, pady=(10, 0))
+
+        # Métricas
+        metrics_frame = ttk.LabelFrame(self.fulltest_body, text="Métricas y cadenas", style="Card.TLabelframe")
+        metrics_frame.pack(fill="x", padx=10, pady=10)
+        if not hasattr(self, "chains_metrics_text_fulltest"):
+            self.chains_metrics_text_fulltest = tk.Text(metrics_frame, height=8)
+            self._configure_text_widget(self.chains_metrics_text_fulltest)
+        self.chains_metrics_text_fulltest.pack(fill="x", padx=8, pady=8)
+
+        # Botón para marcar como completado
+        ttk.Button(self.fulltest_body, text="Marcar cadenas como completadas", command=lambda: self._fulltest_mark_completed("chains")).pack(anchor="w", pady=(8, 0))
 
     def _fulltest_render_lever_step(self):
         ttk.Label(self.fulltest_body, text="Palancas y torque", style="Body.TLabel").pack(anchor="w", pady=(0, 4))
