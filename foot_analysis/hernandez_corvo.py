@@ -20,19 +20,14 @@ class HCResult:
 
 
 def classify_plantar_index(index_value: float) -> str:
-    # Tabla estándar de Hernández-Corvo
-    if index_value < 35:
-        return "Pie plano"
-    elif 35 <= index_value < 40:
-        return "Pie plano-normal"
-    elif 40 <= index_value < 55:
-        return "Pie normal"
-    elif 55 <= index_value < 60:
-        return "Pie normal-cavo"
-    elif 60 <= index_value < 65:
+    # Clasificación visual basada en proporción relativa (Chippaux-Smirak modificado)
+    # index_value debe estar entre 0 y 1 (y_width/x_width)
+    if index_value < 0.3:
         return "Pie cavo"
+    elif index_value < 0.45:
+        return "Pie normal"
     else:
-        return "Pie cavo extremo"
+        return "Pie plano"
 
 
 def _principal_axis_from_contour(contour: np.ndarray):
@@ -105,7 +100,7 @@ def apply_hernandez_corvo(mask: np.ndarray, contour: np.ndarray):
 
     x_width = widths_info["x_width"]
     y_width = widths_info["y_width"]
-    index_value = (y_width / x_width) * 100.0 if x_width > 0 else float("nan")
+    index_value = (y_width / x_width) if x_width > 0 else float("nan")
     classification = classify_plantar_index(index_value)
 
     return HCResult(
