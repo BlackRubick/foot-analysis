@@ -29,5 +29,4 @@
       {"name": "Rotación externa", "fulcrum": "articulación", "effort": "músculo agonista", "resistance": "peso brazo"}
     ]
   }
-  // ... Agregar el resto de articulaciones y movimientos siguiendo este formato
 }

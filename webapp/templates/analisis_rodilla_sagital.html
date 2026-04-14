@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-lg mx-auto mt-10 bg-white border rounded-lg p-6">
+  <h2 class="text-lg font-semibold mb-2">Módulo 2 · Rodilla (Plano Sagital)</h2>
+  <p class="text-sm text-gray-600 mb-4">Sube la imagen de la rodilla en plano sagital.</p>
+  <form action="{{ url_for('analisis_rodilla', plane='sagital') }}" method="post" enctype="multipart/form-data" class="space-y-3">
+    <input type="file" name="knee_image" accept="image/*" class="w-full text-xs border rounded px-2 py-1.5" required />
+    <div class="flex items-center gap-2 text-xs text-gray-600">
+      <button type="button" class="px-2 py-1 border rounded" onclick="openCamera('knee_sagital')">Captura por cámara</button>
+    </div>
+    <div id="knee_sagital-camera" class="hidden border rounded p-3">
+      <div class="mb-2">
+        <label for="knee_sagital_camera_select" class="text-xs mr-2">Seleccionar cámara:</label>
+        <select id="knee_sagital_camera_select" class="border rounded px-2 py-1 text-xs"></select>
+      </div>
+      <video id="knee_sagital_video" autoplay class="w-full rounded bg-black"></video>
+      <canvas id="knee_sagital_canvas" class="hidden"></canvas>
+      <div class="mt-2 flex gap-2 text-xs">
+        <button type="button" class="px-2 py-1 border" onclick="captureFromCamera('knee_sagital')">Capturar</button>
+        <button type="button" class="px-2 py-1 border" onclick="closeCamera('knee_sagital')">Cerrar</button>
+      </div>
+    </div>
+    <button type="submit" class="px-3 py-1.5 text-xs border rounded bg-gray-800 text-white">Procesar sagital</button>
+  </form>
+</div>
+{% endblock %}

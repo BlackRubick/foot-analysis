@@ -19,7 +19,7 @@
         </div>
         <div class="flex items-center gap-4 text-xs text-gray-600">
           <nav class="flex gap-3">
-            <a href="{{ url_for('patient_form') }}" class="px-2 py-1 rounded {{ 'bg-gray-900 text-white' if request.endpoint == 'patient_form' else 'border border-gray-300 hover:bg-gray-50' }}">Paciente</a>
+            <a href="{{ url_for('paciente') }}" class="px-2 py-1 rounded {{ 'bg-gray-900 text-white' if request.endpoint == 'paciente' else 'border border-gray-300 hover:bg-gray-50' }}">Paciente</a>
             <a href="{{ url_for('index') }}" class="px-2 py-1 rounded {{ 'bg-gray-900 text-white' if request.endpoint == 'index' else 'border border-gray-300 hover:bg-gray-50' }}">Evaluación</a>
           </nav>
           <div class="text-xs text-gray-500 border px-3 py-1 rounded-md hidden sm:block">
@@ -69,4 +69,6 @@
 
   </div>
 </body>
+  <!-- Camera selection JS for all modules -->
+  <script src="{{ url_for('static', filename='js/camera_select.js') }}"></script>
 </html>

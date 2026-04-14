@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <div class="bg-white rounded-lg shadow border p-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2 text-center uppercase tracking-wide">CARTA DE CONSENTIMIENTO INFORMADO Y AVISO DE PRIVACIDAD</h2>
+        <div class="text-center text-gray-700 mb-6">
+            <div class="font-semibold">Proyecto: NEXO-POSTURAL: Kyene’is Pøndyam.</div>
+            <div>Lugar y fecha de emisión: <span class="font-mono">00/00/0000 Tuxtla Gutiérrez, Chiapas.</span></div>
+        </div>
+        <div class="prose prose-sm max-w-none text-gray-800">
+            <h3 class="font-bold text-gray-900 mt-6 mb-2">I. IDENTIDAD Y DOMICILIO DEL RESPONSABLE</h3>
+            <p>El proyecto NEXO-POSTURAL, bajo la responsabilidad de Liliana Ruiz Alvarado y Ángel Enrique Patricio López, con domicilio en la Universidad Politécnica de Chiapas, es responsable del uso, tratamiento y protección de sus datos personales.</p>
+
+            <h3 class="font-bold text-gray-900 mt-6 mb-2">II. DATOS PERSONALES Y SENSIBLES SOMETIDOS A TRATAMIENTO</h3>
+            <p>Para cumplir con las finalidades de este análisis, se recabarán los siguientes datos personales: nombre completo, fecha de nacimiento, sexo, estatura y peso. Asimismo, se informa que se tratarán datos personales sensibles que requieren protección especial:</p>
+            <ul class="list-disc ml-6">
+                <li><span class="font-semibold">Imágenes Biométricas:</span> Registro fotográfico y de video para la detección de puntos anatómicos corporales.</li>
+                <li><span class="font-semibold">Información de Salud:</span> Antecedentes médicos y diagnósticos derivados del estudio.</li>
+            </ul>
+
+            <h3 class="font-bold text-gray-900 mt-6 mb-2">III. FINALIDADES DEL ANÁLISIS (ACTO AUTORIZADO)</h3>
+            <p>Los datos personales y sensibles recabados se utilizarán exclusivamente para los siguientes procedimientos técnicos:</p>
+            <ol class="list-decimal ml-6">
+                <li>
+                    <span class="font-semibold">Evaluación de Miembros Inferiores (Consecuencias mecánicas):</span>
+                    <ul class="list-disc ml-6">
+                        <li><span class="font-semibold">Podometría Digital:</span> Análisis de la huella plantar para determinar la distribución de presiones.</li>
+                        <li><span class="font-semibold">Ángulo Tibiofemoral:</span> Medición de la alineación y biomecánica de la rodilla.</li>
+                        <li><span class="font-semibold">Análisis de Cadena Miofascial:</span> Identificación de la cadena causal (ascendente o descendente) que afecta la postura.</li>
+                    </ul>
+                </li>
+                <li>
+                    <span class="font-semibold">Evaluación de Miembros Superiores y Tronco:</span>
+                    <ul class="list-disc ml-6">
+                        <li><span class="font-semibold">Análisis Dinámico:</span> Determinación del Tipo de Palanca (1er, 2do o 3er género) en las articulaciones.</li>
+                        <li><span class="font-semibold">Eficiencia Mecánica:</span> Cálculo de la Ventaja Mecánica y Momento de Fuerza (Torque) generado en extremidades y tronco.Base de datos</li>
+                    </ul>
+                </li>
+                <li>
+                    <span class="font-semibold">Gestión Clínica:</span>
+                    <ul class="list-disc ml-6">
+                        <li>Integración de su expediente clínico digital.</li>
+                        <li>Generación de reportes de resultados en formato PDF.</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h3 class="font-bold text-gray-900 mt-6 mb-2">IV. DERECHOS ARCO Y CONFIDENCIALIDAD</h3>
+            <p>Usted tiene derecho a conocer qué datos tenemos de usted, solicitar correcciones o la cancelación de los mismos (Derechos ARCO). Sin embargo, se hace de su conocimiento que por disposición de la NOM-004-SSA3-2012, los expedientes clínicos deben ser conservados por un periodo mínimo de 5 años tras el último acto médico. Sus datos personales no serán divulgados y, en caso de usarse para fines de investigación o docencia, se garantiza que no podrá ser identificado.</p>
+
+            <h3 class="font-bold text-gray-900 mt-6 mb-2">V. DECLARACIÓN DE CONSENTIMIENTO</h3>
+            <p>Por medio de la presente, autorizo al personal de NEXO-POSTURAL para la realización de los diagnósticos biomecánicos anteriormente descritos. He sido informado sobre los riesgos mínimos y los beneficios esperados de este análisis para mi salud postural. Otorgo mi consentimiento expreso para el tratamiento de mis datos personales y sensibles conforme a este aviso.</p>
+        </div>
+        <form method="post" class="mt-8 flex flex-col items-center gap-4">
+            <label class="flex items-center gap-2 text-gray-800">
+                <input type="checkbox" name="consentimiento" required class="form-checkbox h-5 w-5 text-blue-600 border-gray-300 rounded">
+                <span class="text-sm">He leído y acepto el consentimiento informado y aviso de privacidad</span>
+            </label>
+            <button type="submit" class="bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 px-8 rounded shadow">Continuar</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

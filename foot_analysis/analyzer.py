@@ -10,12 +10,14 @@ from foot_analysis.preprocessing import largest_contour, preprocess_foot_image
 
 
 class FootAnalyzer:
+
     def analyze(self, image: np.ndarray) -> Dict:
         steps = preprocess_foot_image(image)
-        contour = largest_contour(steps["clean"])
+        # Filtro de área: solo contornos razonables para pie
+        contour = largest_contour(steps["clean"], min_area_ratio=0.01, max_area_ratio=0.8)
 
         if contour is None:
-            raise ValueError("No se detectó contorno de pie")
+            raise ValueError("No se detectó contorno de pie (verifica fondo y calidad de imagen)")
 
         hc_result, widths_info = apply_hernandez_corvo(steps["clean"], contour)
 

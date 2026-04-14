@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultado</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h2>Resultados del Análisis</h2>
+    {% if metrics %}
+    <div class="metrics">
+        <strong>Índice plantar:</strong> {{ metrics.plantar_index }}<br>
+        <strong>X (antepié):</strong> {{ metrics.x_width_px }} px<br>
+        <strong>Y (arco):</strong> {{ metrics.y_width_px }} px<br>
+        <strong>Clasificación:</strong> {{ metrics.classification }}<br>
+    </div>
+    {% endif %}
+    {% if annotated_url %}
+    <h3>Imagen procesada:</h3>
+    <img src="{{ annotated_url }}" alt="Resultado anotado" style="max-width:500px; border:2px solid #0ea5e9;">
+    {% endif %}
+    <br>
+    <form action="{{ url_for('descargar_pdf') }}" method="get">
+        <button type="submit">Descargar PDF</button>
+    </form>
+</body>
+</html>

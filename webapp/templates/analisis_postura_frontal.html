@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-lg mx-auto mt-10 bg-white border rounded-lg p-6">
+  <h2 class="text-lg font-semibold mb-2">Módulo 3 · Postura (Plano Frontal)</h2>
+  <p class="text-sm text-gray-600 mb-4">Sube la imagen de postura en plano frontal.</p>
+  <form action="{{ url_for('analisis_postura') }}" method="post" enctype="multipart/form-data" class="space-y-3">
+    <input type="file" name="posture_image" accept="image/*" class="w-full text-xs border rounded px-2 py-1.5" required />
+    <div class="flex gap-3 text-xs">
+      <label><input type="radio" name="posture_plane" value="frontal" checked> Frontal</label>
+      <label><input type="radio" name="posture_plane" value="sagital" disabled> Sagital</label>
+    </div>
+    <div class="flex items-center gap-2 text-xs text-gray-600">
+      <button type="button" class="px-2 py-1 border rounded" onclick="openCamera('posture_frontal')">Captura por cámara</button>
+    </div>
+    <div id="posture_frontal-camera" class="hidden border rounded p-3">
+      <div class="mb-2">
+        <label for="posture_frontal_camera_select" class="text-xs mr-2">Seleccionar cámara:</label>
+        <select id="posture_frontal_camera_select" class="border rounded px-2 py-1 text-xs"></select>
+      </div>
+      <video id="posture_frontal_video" autoplay class="w-full rounded bg-black"></video>
+      <canvas id="posture_frontal_canvas" class="hidden"></canvas>
+      <div class="mt-2 flex gap-2 text-xs">
+        <button type="button" class="px-2 py-1 border" onclick="captureFromCamera('posture_frontal')">Capturar</button>
+        <button type="button" class="px-2 py-1 border" onclick="closeCamera('posture_frontal')">Cerrar</button>
+      </div>
+    </div>
+    <button type="submit" class="px-3 py-1.5 text-xs border rounded bg-gray-800 text-white">Procesar frontal</button>
+  </form>
+</div>
+{% endblock %}

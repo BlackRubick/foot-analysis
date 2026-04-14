@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Análisis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h2>Subir imagen para análisis</h2>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="imagen" accept="image/*" required><br>
+        <button type="submit">Analizar</button>
+    </form>
+</body>
+</html>

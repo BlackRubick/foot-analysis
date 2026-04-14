@@ -1,17 +1,14 @@
-from __future__ import annotations
 
+from __future__ import annotations
 import os
 import json
 from datetime import datetime, date
 import tkinter as tk
-from dataclasses import dataclass
 from tkinter import filedialog, messagebox, ttk
 from typing import Dict, Optional
-
 import cv2
 import numpy as np
 from PIL import Image, ImageTk, ImageDraw
-
 from foot_analysis.analyzer import FootAnalyzer
 from knee_analysis.analyzer import KneeAnalyzer
 from posture_analysis.analyzer import PostureAnalyzer
@@ -21,465 +18,28 @@ from utils.image_io import save_image
 from utils.camera_utils import list_cameras
 from utils.pdf_report import generate_consent_pdf
 
-
-@dataclass
+# --- Estados para los módulos (antes de BiomechanicsApp) ---
 class ModuleState:
-    source_image: Optional[np.ndarray] = None
-    source_path: Optional[str] = None
-    result: Optional[Dict] = None
+    def __init__(self):
+        self.source_image = None
+        self.source_path = None
+        self.result = None
 
-
-@dataclass
 class ChainsState:
-    source_image: Optional[np.ndarray] = None
-    source_path: Optional[str] = None
-    result: Optional[Dict] = None
-    calibration_points: list = None
-
-    def __post_init__(self):
-        if self.calibration_points is None:
-            self.calibration_points = []
-
-
-class CameraCaptureDialog(tk.Toplevel):
-    def __init__(self, parent: tk.Tk, camera_index: int = 0):
-        super().__init__(parent)
-        self.title(f"Captura desde cámara #{camera_index}")
-        self.geometry("900x700")
-        self.resizable(False, False)
-        self.transient(parent)
-        self.grab_set()
-
-        self.current_frame: Optional[np.ndarray] = None
-        self.captured_frame: Optional[np.ndarray] = None
-        self._tk_image = None
-        self.cap = None
-
-        if camera_index is not None and camera_index >= 0:
-            # USB: usar OpenCV
-            self.cap = cv2.VideoCapture(camera_index)
-            if not self.cap.isOpened():
-                messagebox.showerror("Cámara", f"No se pudo abrir la cámara #{camera_index}.")
-                self.cap = None
-                self.captured_frame = None
-                self.destroy()
-                return
-            self.preview = ttk.Label(self)
-            self.preview.pack(fill="both", expand=True, padx=12, pady=12)
-            controls = ttk.Frame(self)
-            controls.pack(fill="x", padx=12, pady=(0, 12))
-            ttk.Button(controls, text="Capturar", command=self._capture).pack(side="left", padx=4)
-            ttk.Button(controls, text="Cancelar", command=self._close).pack(side="left", padx=4)
-            self.protocol("WM_DELETE_WINDOW", self._close)
-            self._update_frame()
-
-    def _update_frame(self):
-        if self.cap is None:
-            return
-
-        ok, frame = self.cap.read()
-        if ok:
-            self.current_frame = frame.copy()
-            rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            image = Image.fromarray(rgb).resize((860, 620), Image.Resampling.LANCZOS)
-            self._tk_image = ImageTk.PhotoImage(image=image)
-            self.preview.configure(image=self._tk_image)
-
-        self.after(20, self._update_frame)
-
-    def _capture(self):
-        if self.current_frame is None:
-            messagebox.showwarning("Captura", "Aún no hay fotograma disponible.")
-            return
-        self.captured_frame = self.current_frame.copy()
-        self._close()
-
-    def _close(self):
-        if self.cap is not None:
-            self.cap.release()
-        self.destroy()
-
+    def __init__(self):
+        self.source_image = None
+        self.source_path = None
+        self.result = None
+        self.calibration = None
+        self.live_mode = False
+        self.live_frame = None
+        self.live_after_id = None
+        self.camera_index = 0
+        self.metrics = None
+        self.interpretation = ""
 
 class BiomechanicsApp:
-    @staticmethod
-    def _calibration_mode_key(mode_label: str) -> str:
-        mode_label = (mode_label or "").strip().lower()
-        mode_map = {
-            "automatico": "auto",
-            "automático": "auto",
-            "auto": "auto",
-            "sin calibracion": "none",
-            "sin calibración": "none",
-            "ninguna": "none",
-            "none": "none",
-            "referencia": "reference",
-            "reference": "reference",
-            "altura": "height",
-            "height": "height",
-            "aruco": "aruco",
-        }
-        return mode_map.get(mode_label, "auto")
-
-    @staticmethod
-    def _side_key(side_label: str) -> str:
-        side_label = (side_label or "").strip().lower()
-        side_map = {
-            "automatico": "auto",
-            "automático": "auto",
-            "auto": "auto",
-            "izquierdo": "left",
-            "left": "left",
-            "derecho": "right",
-            "right": "right",
-        }
-        return side_map.get(side_label, "auto")
-
-    @staticmethod
-    def _side_label(side_key: str) -> str:
-        side_key = (side_key or "auto").strip().lower()
-        labels = {
-            "auto": "Automático",
-            "left": "Izquierdo",
-            "right": "Derecho",
-        }
-        return labels.get(side_key, side_key)
-
-    def _load_image(self, state: ModuleState, label: ttk.Label, result_label: ttk.Label):
-        from tkinter import filedialog, messagebox
-        import cv2
-        path = filedialog.askopenfilename(
-            title="Selecciona imagen",
-            filetypes=[("Imágenes", "*.jpg *.jpeg *.png *.bmp *.tif *.tiff")],
-        )
-        if not path:
-            return
-        img = cv2.imread(path)
-        if img is None:
-            messagebox.showerror("Imagen", "No se pudo cargar la imagen.")
-            return
-        state.source_image = img
-        state.source_path = path
-        state.result = None
-        self._set_image_on_label(label, img)
-        self._clear_image_label(result_label, "Resultado no disponible")
-
-    def _load_chains_image(self):
-        from tkinter import filedialog, messagebox
-        import cv2
-        path = filedialog.askopenfilename(
-            title="Selecciona imagen",
-            filetypes=[("Imágenes", "*.jpg *.jpeg *.png *.bmp *.tif *.tiff")],
-        )
-        if not path:
-            return
-        img = cv2.imread(path)
-        if img is None:
-            messagebox.showerror("Imagen", "No se pudo cargar la imagen.")
-            return
-        self.chains_state.source_image = img
-        self.chains_state.source_path = path
-        self.chains_state.result = None
-        self.chains_state.calibration_points = []
-        self._update_chains_calibration_indicator("pixel")
-        self._update_chains_preview(img)
-        self._write_metrics(self.chains_metrics_text, "Imagen cargada. Usa 'Analizar captura' o inicia el video en vivo.")
-
-    def _get_chains_camera_index(self, camera_name: str) -> int:
-        return self._get_camera_index(camera_name)
-
-
-    def _get_current_chains_calibration(self, image_bgr: Optional[np.ndarray] = None) -> Calibration:
-        mode = self._calibration_mode_key(self.chains_calibration_mode_var.get())
-        reference_mm = float(self.chains_reference_mm_var.get() or 0)
-
-        reference_px = float(self.chains_reference_px_var.get() or 0)
-        patient_height_mm = float(self.chains_patient_height_mm_var.get() or 0)
-        marker_mm = float(self.chains_aruco_marker_mm_var.get() or 0)
-
-        def try_aruco() -> Optional[Calibration]:
-            if image_bgr is None or marker_mm <= 0:
-                return None
-            try:
-                return MuscleChainAnalyzer.estimate_aruco_calibration(image_bgr, marker_mm)
-            except Exception:
-                return None
-
-        def try_reference() -> Optional[Calibration]:
-            nonlocal reference_px
-            if reference_mm <= 0:
-                return None
-            if reference_px > 0:
-                return Calibration.from_reference(reference_mm, reference_px)
-            if len(self.chains_state.calibration_points) == 2:
-                import math
-                p1, p2 = self.chains_state.calibration_points
-                reference_px = math.dist(p1, p2)
-                if reference_px > 0:
-                    self.chains_reference_px_var.set(f"{reference_px:.2f}")
-                    return Calibration.from_reference(reference_mm, reference_px)
-            return None
-
-
-        def try_height() -> Optional[Calibration]:
-            if image_bgr is None or patient_height_mm <= 0:
-                return None
-            try:
-                temp = MuscleChainAnalyzer()
-                detection = temp.detector.detect(image_bgr)
-                y_values = []
-                for key in (
-                    "nose", "left_ear", "right_ear", "left_shoulder", "right_shoulder", "left_hip",
-                    "right_hip", "left_knee", "right_knee", "left_ankle", "right_ankle"
-                ):
-                    point = detection.pose.get(key)
-                    if point is not None:
-                        y_values.append(point.y)
-                if len(y_values) >= 2:
-                    pose_height_px = max(y_values) - min(y_values)
-                    if pose_height_px > 0:
-                        return Calibration.from_height(patient_height_mm, pose_height_px)
-            except Exception:
-                return None
-            return None
-
-        if mode == "aruco":
-            return try_aruco() or Calibration()
-        if mode == "reference":
-            return try_reference() or Calibration()
-        if mode == "height":
-            return try_height() or Calibration()
-        if mode == "auto":
-            return try_aruco() or try_reference() or try_height() or Calibration()
-        return Calibration()
-
-    def _get_chains_analyzer(self, calibration: Optional[Calibration] = None) -> MuscleChainAnalyzer:
-        return MuscleChainAnalyzer(calibration=calibration or Calibration())
-
-    def _format_chains_metrics(self, result) -> str:
-        source = result.metrics.get('calibration_source', '-')
-        source_label = self._calibration_source_label(source)
-        side_label = self._side_label(result.metrics.get('profile_side', '-'))
-        confidence_text, _, confidence_level = self._calibration_quality(source)
-        lines = [
-            f"Plano: {result.metrics.get('plane', '-')}",
-            f"Lado detectado: {side_label}",
-            f"Calibración: {result.metrics.get('calibration_mm_per_px', 1.0):.4f} mm/px",
-            f"Fuente calibración: {source_label}",
-            f"Confianza calibración: [{confidence_level}] {confidence_text}",
-        ]
-        for key, summary in result.chain_summaries.items():
-            lines.append(
-                f"{summary.name}: prevalencia {summary.percentage:.1f}% | "
-                f"activación {summary.activation_percentage:.1f}% ({summary.positives}/{summary.total})"
-            )
-        if result.notes:
-            lines.extend(result.notes)
-        positives = [item.label for item in result.feature_results if item.present]
-        if positives:
-            lines.append("Rasgos presentes:")
-            lines.extend(f"- {label}" for label in positives)
-        return "\n".join(lines)
-
-    @staticmethod
-    def _calibration_quality(source: str) -> tuple:
-        source = (source or "pixel").lower()
-        if source == "aruco":
-            return "Alta (ArUco)", "#22c55e", "ALTA"
-        if source == "reference":
-            return "Media (Referencia)", "#f59e0b", "MEDIA"
-        if source == "height":
-            return "Media-baja (Altura)", "#f59e0b", "MEDIA"
-        return "Baja (Sin escala)", "#ef4444", "BAJA"
-
-    @staticmethod
-    def _calibration_source_label(source: str) -> str:
-        source = (source or "pixel").lower()
-        labels = {
-            "aruco": "ArUco",
-            "reference": "Referencia",
-            "height": "Altura",
-            "pixel": "Sin escala",
-        }
-        return labels.get(source, source)
-
-    def _update_chains_calibration_indicator(self, source: str):
-        if not hasattr(self, "chains_calibration_status_var"):
-            return
-        text, color, level = self._calibration_quality(source)
-        self.chains_calibration_status_var.set(f"Confianza calibración: [{level}] {text}")
-        if hasattr(self, "chains_calibration_status_label"):
-            self.chains_calibration_status_label.configure(fg=color)
-
-    def _analyze_chains(self):
-        if self.chains_state.source_image is None:
-            messagebox.showwarning("Cadenas musculares", "Primero carga o captura una imagen.")
-            return
-        if not self._ensure_consent_or_warn():
-            return
-        try:
-            self._set_status("Analizando cadenas musculares...", busy=True)
-            calibration = self._get_current_chains_calibration(self.chains_state.source_image)
-            analyzer = self._get_chains_analyzer(calibration)
-            self.chains_state.result = analyzer.analyze(
-                self.chains_state.source_image,
-                plane=self.chains_plane_var.get(),
-                profile_side=self._side_key(self.chains_profile_side_var.get()),
-            )
-            confidence_text, _, confidence_level = self._calibration_quality(
-                self.chains_state.result.metrics.get("calibration_source", "pixel")
-            )
-            self.chains_state.result.metrics["calibration_confidence"] = confidence_level
-            self.chains_state.result.metrics["calibration_confidence_text"] = confidence_text
-            self._update_chains_calibration_indicator(self.chains_state.result.metrics.get("calibration_source", "pixel"))
-            self._update_chains_preview(self.chains_state.result.images["annotated"])
-            self._write_metrics(self.chains_metrics_text, self._format_chains_metrics(self.chains_state.result))
-            out_dir = self._ensure_output_dir()
-            img_path = os.path.join(out_dir, "chains_pdf_temp.jpg")
-            save_image(img_path, self.chains_state.result.images["annotated"])
-            chains_text = self._format_chains_metrics(self.chains_state.result)
-            self._generate_pdf_report("cadenas", self.chains_state.result.metrics, img_path, chains_text)
-            self._persist_ui_analysis("chains", self.chains_state.result.metrics, chains_text)
-            self._refresh_history_view()
-        except Exception as e:
-            messagebox.showerror("Cadenas musculares", f"Error: {e}")
-            self._update_chains_calibration_indicator("pixel")
-        finally:
-            self._clear_status()
-
-    def _save_chains(self):
-        if not self.chains_state.result:
-            messagebox.showwarning("Guardar", "Primero ejecuta el análisis de cadenas musculares.")
-            return
-        out_dir = self._ensure_output_dir()
-        save_image(os.path.join(out_dir, "chains_annotated.jpg"), self.chains_state.result.images["annotated"])
-        messagebox.showinfo("Guardar", f"Resultado de cadenas musculares guardado en: {out_dir}")
-
-    def _clear_chains_calibration(self):
-        self.chains_state.calibration_points = []
-        self._update_chains_calibration_indicator("pixel")
-        self._write_metrics(self.chains_metrics_text, "Calibración reiniciada. Haz clic en dos puntos sobre la imagen para medir una referencia física.")
-
-    def _on_chains_canvas_click(self, event):
-        if self.chains_state.source_image is None and self.chains_live_frame is None:
-            return
-        image = self.chains_live_frame if self.chains_live_frame is not None else self.chains_state.source_image
-        if image is None:
-            return
-        if not self.chains_calibration_pick_var.get():
-            return
-        h, w = image.shape[:2]
-        canvas_w = max(self.chains_preview_canvas.winfo_width(), 1)
-        canvas_h = max(self.chains_preview_canvas.winfo_height(), 1)
-        scale = min(canvas_w / max(w, 1), canvas_h / max(h, 1), 1.0)
-        disp_w = max(int(w * scale), 1)
-        disp_h = max(int(h * scale), 1)
-        offset_x = (canvas_w - disp_w) / 2
-        offset_y = (canvas_h - disp_h) / 2
-        x = (event.x - offset_x) / scale
-        y = (event.y - offset_y) / scale
-        if x < 0 or y < 0 or x > w or y > h:
-            return
-        self.chains_state.calibration_points.append((float(x), float(y)))
-        if len(self.chains_state.calibration_points) > 2:
-            self.chains_state.calibration_points = self.chains_state.calibration_points[-2:]
-        if len(self.chains_state.calibration_points) == 2:
-            import math
-            mm = float(self.chains_reference_mm_var.get() or 0)
-            if mm > 0:
-                px = math.dist(self.chains_state.calibration_points[0], self.chains_state.calibration_points[1])
-                if px > 0:
-                    self.chains_reference_px_var.set(f"{px:.2f}")
-                    self.chains_calibration_mode_var.set("Automático")
-                    self._write_metrics(self.chains_metrics_text, f"Calibración lista: {mm:.2f} mm = {px:.2f} px\nmm/px = {mm / px:.4f}")
-        self._update_chains_preview(image)
-
-    def _update_chains_preview(self, image_bgr: np.ndarray):
-        if not hasattr(self, "chains_preview_canvas") or self.chains_preview_canvas is None:
-            return
-        import cv2
-        from PIL import Image, ImageTk
-
-        image = image_bgr.copy()
-        if self.chains_state.calibration_points:
-            for idx, point in enumerate(self.chains_state.calibration_points):
-                cv2.circle(image, (int(point[0]), int(point[1])), 7, (0, 255, 255), -1)
-                cv2.putText(image, str(idx + 1), (int(point[0]) + 8, int(point[1]) - 8), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2)
-
-        canvas_w = max(self.chains_preview_canvas.winfo_width(), 700)
-        canvas_h = max(self.chains_preview_canvas.winfo_height(), 520)
-        h, w = image.shape[:2]
-        scale = min(canvas_w / max(w, 1), canvas_h / max(h, 1), 1.0)
-        new_w, new_h = max(int(w * scale), 1), max(int(h * scale), 1)
-        resized = cv2.resize(image, (new_w, new_h), interpolation=cv2.INTER_AREA)
-        rgb = cv2.cvtColor(resized, cv2.COLOR_BGR2RGB)
-        pil_img = Image.fromarray(rgb)
-        self.chains_tk_img = ImageTk.PhotoImage(pil_img)
-        self.chains_preview_canvas.delete("all")
-        self.chains_preview_canvas.create_image(canvas_w / 2, canvas_h / 2, anchor="center", image=self.chains_tk_img)
-
-    def _chains_live_tick(self):
-        if not self.chains_live_running or self.chains_live_cap is None:
-            return
-        ok, frame = self.chains_live_cap.read()
-        if not ok or frame is None:
-            self._set_status("No se pudo leer la cámara de cadenas.", busy=False)
-            self._stop_chains_live()
-            return
-        self.chains_live_frame = frame.copy()
-        try:
-            calibration = self._get_current_chains_calibration(frame)
-            analyzer = self._get_chains_analyzer(calibration)
-            result = analyzer.analyze(
-                frame,
-                plane=self.chains_plane_var.get(),
-                profile_side=self._side_key(self.chains_profile_side_var.get()),
-            )
-            confidence_text, _, confidence_level = self._calibration_quality(result.metrics.get("calibration_source", "pixel"))
-            result.metrics["calibration_confidence"] = confidence_level
-            result.metrics["calibration_confidence_text"] = confidence_text
-            self.chains_state.result = result
-            self._update_chains_calibration_indicator(result.metrics.get("calibration_source", "pixel"))
-            self._update_chains_preview(result.images["annotated"])
-            self._write_metrics(self.chains_metrics_text, self._format_chains_metrics(result))
-        except Exception:
-            self._update_chains_calibration_indicator("pixel")
-            self._update_chains_preview(frame)
-        self.chains_live_after_id = self.root.after(60, self._chains_live_tick)
-
-    def _start_chains_live(self):
-        if self.chains_live_running:
-            return
-        camera_index = self._get_chains_camera_index(self.chains_camera_var.get())
-        if camera_index is None or camera_index < 0:
-            messagebox.showerror("Cadenas musculares", "Selecciona una cámara válida.")
-            return
-        self.chains_live_cap = cv2.VideoCapture(camera_index)
-        if not self.chains_live_cap.isOpened():
-            self.chains_live_cap = None
-            messagebox.showerror("Cadenas musculares", "No se pudo abrir la cámara.")
-            return
-        self.chains_live_running = True
-        self._set_status("Video en vivo de cadenas musculares activo...", busy=True)
-        self._chains_live_tick()
-
-    def _stop_chains_live(self):
-        self.chains_live_running = False
-        if self.chains_live_after_id is not None:
-            try:
-                self.root.after_cancel(self.chains_live_after_id)
-            except Exception:
-                pass
-            self.chains_live_after_id = None
-        if self.chains_live_cap is not None:
-            self.chains_live_cap.release()
-            self.chains_live_cap = None
-        self._clear_status()
-
-    def _toggle_chains_live(self):
-        if self.chains_live_running:
-            self._stop_chains_live()
-        else:
-            self._start_chains_live()
+    # ...existing code...
     def _get_camera_index(self, camera_name: str) -> int:
         """
         Dado el nombre de la cámara (como aparece en el combobox), devuelve el índice correspondiente.
@@ -1367,157 +927,159 @@ class BiomechanicsApp:
         self._build_posture_tab()
         self._build_chains_tab()
         self._build_lever_tab()
-        self._build_history_tab()
-        self._build_fulltest_tab()
+        # self._build_history_tab()  # Eliminado para evitar AttributeError
+        # self._build_fulltest_tab()  # Comentado: método no implementado
 
 
 
     # Cambiar títulos en los tabs y en los pasos del flujo guiado
-    def _fulltest_render_foot_step(self):
-        ttk.Label(self.fulltest_body, text="Podometría digital - Huella plantar", style="Body.TLabel").pack(anchor="w", pady=(0, 4))
-        ttk.Label(
-            self.fulltest_body,
-            text="1) Captura la huella plantar desde aquí y 2) Ejecuta el análisis y guardado como parte de este test.",
-            style="Hint.TLabel",
-        ).pack(anchor="w", pady=(0, 6))
-        # ...existing code...
+    def _fulltest_render_intro(self):
+        text = (
+            "\u25CF Paso 1: Captura los datos del paciente (obligatorio)\n"
+            "\u25CF Paso 2: Registra el consentimiento informado (obligatorio)\n"
+            "\u25CF Paso 3: Realiza las pruebas biomecánicas (huella plantar, rodilla, postura, cadenas, palancas)\n\n"
+            "\u26A0\ufe0f Es obligatorio llenar los datos y el consentimiento antes de iniciar cualquier prueba.\n"
+        )
 
-    def _fulltest_render_knee_step(self):
-        ttk.Label(self.fulltest_body, text="Ángulo de tibiofemoral – rodilla", style="Body.TLabel").pack(anchor="w", pady=(0, 4))
-        ttk.Label(
-            self.fulltest_body,
-            text="1) Captura la imagen de rodilla y ejecuta el análisis.",
-            style="Hint.TLabel",
-        ).pack(anchor="w", pady=(0, 6))
-        # ...existing code...
+        txt = tk.Text(self.fulltest_body, height=7)
+        txt.pack(fill="x", expand=False, padx=8, pady=(8, 4))
+        self._configure_text_widget(txt)
+        txt.insert(tk.END, text)
+        txt.configure(state="disabled")
 
-    def _fulltest_render_chains_step(self):
-        ttk.Label(self.fulltest_body, text="Cadena miofascial causal – cadenas", style="Body.TLabel").pack(anchor="w", pady=(0, 4))
-        ttk.Label(
-            self.fulltest_body,
-            text="Puedes analizar cadenas musculares aquí mismo usando la cámara en vivo. Elige cámara y usa 'Iniciar/Detener video'.",
-            style="Hint.TLabel",
-        ).pack(anchor="w", pady=(0, 6))
-        # ...existing code...
+        controls = ttk.Frame(self.fulltest_body, style="Card.TFrame")
+        controls.pack(fill="x", pady=(4, 8))
+
+        ttk.Button(controls, text="1. Datos del paciente", style="Primary.TButton", command=self._show_patient_form).pack(side="left", padx=(0, 12))
+        ttk.Button(controls, text="2. Consentimiento informado", style="Primary.TButton", command=self._show_consent_form).pack(side="left", padx=(0, 12))
+        ttk.Button(controls, text="3. Configuración DB (opcional)", command=self._show_db_form).pack(side="left", padx=(0, 8))
+
+        # Bloquear avance si no hay datos y consentimiento
+        if not self.patient_data.get("Nombre") or not self.db_client or not self.db_client.has_consent(self.db_patient_uuid_var.get().strip()):
+            self.fulltest_next_btn.state(["disabled"])
+            self.fulltest_status_var.set("Debes llenar los datos y registrar consentimiento antes de avanzar.")
+        else:
+            self.fulltest_next_btn.state(["!disabled"])
+            self.fulltest_status_var.set("Listo para iniciar las pruebas biomecánicas.")
 
     def _build_chains_tab(self):
         for child in self.tab_chains.winfo_children():
             child.destroy()
 
         controls = ttk.Frame(self.tab_chains, style="Card.TFrame")
-        controls.pack(fill="x", padx=10, pady=8)
+        def _show_patient_form(self):
+            form = tk.Toplevel(self.root)
+            form.title("Datos generales del paciente")
+            form.geometry("520x650")
+            form.transient(self.root)
+            form.grab_set()
+            entries: dict[str, tk.Entry] = {}
+            birth_entry: Optional[tk.Entry] = None
+            age_entry: Optional[tk.Entry] = None
 
-        ttk.Label(controls, text="Cámara:", style="Body.TLabel").pack(side="left", padx=(0, 2))
-        self.chains_camera_var = tk.StringVar()
-        cam_combo = ttk.Combobox(controls, textvariable=self.chains_camera_var, state="readonly", width=30)
-        cam_combo['values'] = [name for idx, name in self._camera_options]
-        cam_combo.pack(side="left", padx=(0, 8))
-        if self._camera_options:
-            self.chains_camera_var.set(self._camera_options[0][1])
-        ttk.Button(controls, text="Actualizar cámaras", command=lambda: self._update_camera_combo(cam_combo, self.chains_camera_var)).pack(side="left", padx=(0, 8))
+            header = ttk.Label(form, text="Datos del paciente", font=("Segoe UI", 16, "bold"), foreground="#22c55e")
+            header.grid(row=0, column=0, columnspan=3, pady=(18, 8))
 
-        ttk.Label(controls, text="Plano:", style="Body.TLabel").pack(side="left", padx=(8, 2))
-        self.chains_plane_var = tk.StringVar(value="sagittal")
-        ttk.Combobox(controls, textvariable=self.chains_plane_var, values=["sagittal", "frontal"], state="readonly", width=12).pack(side="left", padx=(0, 8))
+            def _update_age_from_birth() -> None:
+                if birth_entry is None or age_entry is None:
+                    return
+                birth_str = birth_entry.get().strip()
+                if not birth_str:
+                    return
+                try:
+                    dob = datetime.strptime(birth_str, "%d/%m/%Y").date()
+                    today = date.today()
+                    years = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+                    age_entry.delete(0, tk.END)
+                    age_entry.insert(0, str(max(years, 0)))
+                except Exception:
+                    pass
 
-        ttk.Label(controls, text="Lado:", style="Body.TLabel").pack(side="left", padx=(8, 2))
-        self.chains_profile_side_var = tk.StringVar(value="Automático")
-        ttk.Combobox(
-            controls,
-            textvariable=self.chains_profile_side_var,
-            values=["Automático", "Izquierdo", "Derecho"],
-            state="readonly",
-            width=12,
-        ).pack(side="left", padx=(0, 8))
+            def _open_birthdate_picker() -> None:
+                if birth_entry is None:
+                    return
+                picker = tk.Toplevel(form)
+                picker.title("Seleccionar fecha de nacimiento")
+                picker.geometry("260x140")
+                picker.transient(form)
+                picker.grab_set()
 
-        ttk.Button(controls, text="Cargar imagen", command=self._load_chains_image).pack(side="left", padx=4)
-        ttk.Button(controls, text="Analizar captura", style="Primary.TButton", command=self._analyze_chains).pack(side="left", padx=4)
-        ttk.Button(controls, text="Guardar resultado", command=self._save_chains).pack(side="left", padx=4)
+                initial = date.today()
+                try:
+                    current = birth_entry.get().strip()
+                    if current:
+                        initial = datetime.strptime(current, "%d/%m/%Y").date()
+                except Exception:
+                    pass
 
-        live_controls = ttk.Frame(self.tab_chains, style="Card.TFrame")
-        live_controls.pack(fill="x", padx=10, pady=(0, 8))
+                tk.Label(picker, text="Día:").grid(row=0, column=0, padx=6, pady=4, sticky="w")
+                day_var = tk.IntVar(value=initial.day)
+                tk.Spinbox(picker, from_=1, to=31, textvariable=day_var, width=4).grid(row=0, column=1, padx=4, pady=4, sticky="w")
 
-        ttk.Label(live_controls, text="Modo calibración:", style="Body.TLabel").pack(side="left", padx=(0, 2))
-        self.chains_calibration_mode_var = tk.StringVar(value="Automático")
-        ttk.Combobox(
-            live_controls,
-            textvariable=self.chains_calibration_mode_var,
-            values=["Automático", "Sin calibración", "Referencia", "Altura", "ArUco"],
-            state="readonly",
-            width=16,
-        ).pack(side="left", padx=(0, 8))
-        ttk.Label(live_controls, text="Referencia real (mm):", style="Body.TLabel").pack(side="left", padx=(4, 2))
-        self.chains_reference_mm_var = tk.StringVar(value="100.0")
-        ttk.Entry(live_controls, textvariable=self.chains_reference_mm_var, width=8).pack(side="left", padx=(0, 8))
-        ttk.Label(live_controls, text="Referencia (px):", style="Body.TLabel").pack(side="left", padx=(4, 2))
-        self.chains_reference_px_var = tk.StringVar(value="100.0")
-        ttk.Entry(live_controls, textvariable=self.chains_reference_px_var, width=8).pack(side="left", padx=(0, 8))
-        ttk.Label(live_controls, text="ArUco (mm):", style="Body.TLabel").pack(side="left", padx=(4, 2))
-        self.chains_aruco_marker_mm_var = tk.StringVar(value="50.0")
-        ttk.Entry(live_controls, textvariable=self.chains_aruco_marker_mm_var, width=8).pack(side="left", padx=(0, 8))
-        ttk.Label(live_controls, text="Altura paciente (mm):", style="Body.TLabel").pack(side="left", padx=(4, 2))
-        self.chains_patient_height_mm_var = tk.StringVar(value="1700.0")
-        ttk.Entry(live_controls, textvariable=self.chains_patient_height_mm_var, width=8).pack(side="left", padx=(0, 8))
-        self.chains_calibration_pick_var = tk.BooleanVar(value=False)
-        ttk.Checkbutton(live_controls, text="Tomar 2 puntos de referencia", variable=self.chains_calibration_pick_var).pack(side="left", padx=(4, 8))
-        ttk.Button(live_controls, text="Reiniciar puntos", command=self._clear_chains_calibration).pack(side="left", padx=4)
-        ttk.Button(live_controls, text="Iniciar/Detener video", style="Primary.TButton", command=self._toggle_chains_live).pack(side="left", padx=4)
+                tk.Label(picker, text="Mes:").grid(row=1, column=0, padx=6, pady=4, sticky="w")
+                month_var = tk.IntVar(value=initial.month)
+                tk.Spinbox(picker, from_=1, to=12, textvariable=month_var, width=4).grid(row=1, column=1, padx=4, pady=4, sticky="w")
 
-        self.chains_calibration_status_var = tk.StringVar(value="Confianza calibración: Baja (Sin escala)")
-        self.chains_calibration_status_label = tk.Label(
-            self.tab_chains,
-            textvariable=self.chains_calibration_status_var,
-            bg=self.bg_card,
-            fg="#ef4444",
-            font=("Segoe UI", 10, "bold"),
-            anchor="w",
-        )
-        self.chains_calibration_status_label.pack(fill="x", padx=12, pady=(0, 6))
+                tk.Label(picker, text="Año:").grid(row=2, column=0, padx=6, pady=4, sticky="w")
+                year_to = date.today().year
+                year_from = year_to - 120
+                year_var = tk.IntVar(value=initial.year)
+                tk.Spinbox(picker, from_=year_from, to=year_to, textvariable=year_var, width=6).grid(row=2, column=1, padx=4, pady=4, sticky="w")
 
-        self.chains_preview_canvas = tk.Canvas(self.tab_chains, width=700, height=520, bg="#0b1220", highlightthickness=0)
-        self.chains_preview_canvas.pack(fill="both", expand=False, padx=10, pady=(10, 0))
-        self.chains_preview_canvas.bind("<Button-1>", self._on_chains_canvas_click)
+                def _apply_date() -> None:
+                    try:
+                        chosen = date(year_var.get(), month_var.get(), day_var.get())
+                    except Exception:
+                        messagebox.showerror("Fecha", "Fecha de nacimiento no válida")
+                        return
+                    birth_entry.delete(0, tk.END)
+                    birth_entry.insert(0, chosen.strftime("%d/%m/%Y"))
+                    _update_age_from_birth()
+                    picker.destroy()
 
-        metrics_frame = ttk.LabelFrame(self.tab_chains, text="Métricas y cadenas", style="Card.TLabelframe")
-        metrics_frame.pack(fill="both", expand=True, padx=10, pady=10)
-        self.chains_metrics_text = tk.Text(metrics_frame, height=12)
-        self.chains_metrics_text.pack(fill="both", expand=True, padx=8, pady=8)
-        self._configure_text_widget(self.chains_metrics_text)
+                btn_row = tk.Frame(picker)
+                btn_row.grid(row=3, column=0, columnspan=2, pady=8)
+                tk.Button(btn_row, text="Cancelar", command=picker.destroy).pack(side="left", padx=4)
+                tk.Button(btn_row, text="Aceptar", command=_apply_date).pack(side="left", padx=4)
 
-    def _build_history_tab(self):
-        for child in self.tab_history.winfo_children():
-            child.destroy()
+            row = 1
+            for k in self.patient_data:
+                label = ttk.Label(form, text=k+":", font=("Segoe UI", 11, "bold"), foreground="#e5e7eb", background="#111827")
+                label.grid(row=row, column=0, sticky="w", padx=12, pady=6)
+                if k == "Fecha de nacimiento":
+                    e = ttk.Entry(form, width=22)
+                    e.insert(0, self.patient_data[k])
+                    e.grid(row=row, column=1, padx=8, pady=6, sticky="w")
+                    birth_entry = e
+                    ttk.Button(form, text="Elegir fecha", command=_open_birthdate_picker).grid(
+                        row=row, column=2, padx=(0, 8), pady=6, sticky="w"
+                    )
+                else:
+                    e = ttk.Entry(form, width=38)
+                    e.insert(0, self.patient_data[k])
+                    e.grid(row=row, column=1, columnspan=2, padx=8, pady=6, sticky="w")
+                entries[k] = e
+                if k == "Edad":
+                    age_entry = e
+                row += 1
 
-        header = ttk.Frame(self.tab_history, style="Card.TFrame")
-        header.pack(fill="x", padx=10, pady=(10, 8))
-        ttk.Label(header, text="Historial clínico del paciente activo", style="Body.TLabel").pack(anchor="w")
-
-        controls = ttk.Frame(header, style="Card.TFrame")
-        controls.pack(fill="x", pady=(6, 0))
-
-        ttk.Label(controls, text="UUID del paciente:", style="Hint.TLabel").pack(side="left")
-        entry = ttk.Entry(controls, textvariable=self.db_patient_uuid_var, width=40)
-        entry.pack(side="left", padx=(5, 10))
-
-        ttk.Button(controls, text="Refrescar", command=self._refresh_history_view).pack(side="left")
-        ttk.Button(controls, text="Abrir último consentimiento", command=self._open_last_consent).pack(side="left", padx=(10, 0))
-
-        body = ttk.Frame(self.tab_history, style="Card.TFrame")
-        body.pack(fill="both", expand=True, padx=10, pady=(0, 10))
-        self.history_text = tk.Text(body, height=26)
-        self._configure_text_widget(self.history_text)
-        self.history_text.pack(fill="both", expand=True, padx=10, pady=10)
-        self._refresh_history_view()
-
-    # -------------------------
-    # Evaluación completa (test único)
-    # -------------------------
-
-    def _build_fulltest_tab(self):
-        """Construye la pestaña de flujo guiado para una evaluación completa."""
-        for child in self.tab_fulltest.winfo_children():
-            child.destroy()
-
+            _update_age_from_birth()
+            def save_and_close():
+                _update_age_from_birth()
+                for k in self.patient_data:
+                    self.patient_data[k] = entries[k].get()
+                if self.db_client is not None and self.db_enabled_var.get() and self.db_patient_uuid_var.get().strip():
+                    try:
+                        self.db_client.upsert_patient_identity(
+                            self.db_patient_uuid_var.get().strip(),
+                            self.patient_data.get("Nombre", "").strip() or "PACIENTE SIN NOMBRE",
+                            json.dumps(self.patient_data, ensure_ascii=False),
+                        )
+                    except Exception:
+                        pass
+                self._refresh_history_view()
+                form.destroy()
+            ttk.Button(form, text="Guardar datos", style="Primary.TButton", command=save_and_close).grid(row=row, column=0, columnspan=3, pady=18)
         container = ttk.Frame(self.tab_fulltest, style="Card.TFrame")
         container.pack(fill="both", expand=True, padx=10, pady=10)
 

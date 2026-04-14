@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Análisis de Cadenas Musculares</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h2>Subir imagen para análisis de cadenas musculares</h2>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="imagen" accept="image/*" required><br>
+        Plano:
+        <select name="plane">
+            <option value="sagittal">Sagital</option>
+            <option value="frontal">Frontal</option>
+        </select><br>
+        Lado de perfil:
+        <select name="profile_side">
+            <option value="auto">Auto</option>
+            <option value="left">Izquierdo</option>
+            <option value="right">Derecho</option>
+        </select><br>
+        <button type="submit">Analizar</button>
+    </form>
+</body>
+</html>

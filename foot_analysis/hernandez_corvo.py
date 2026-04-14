@@ -20,11 +20,19 @@ class HCResult:
 
 
 def classify_plantar_index(index_value: float) -> str:
-    if index_value < 30:
-        return "Pie cavo"
-    if index_value <= 45:
+    # Tabla estándar de Hernández-Corvo
+    if index_value < 35:
+        return "Pie plano"
+    elif 35 <= index_value < 40:
+        return "Pie plano-normal"
+    elif 40 <= index_value < 55:
         return "Pie normal"
-    return "Pie plano"
+    elif 55 <= index_value < 60:
+        return "Pie normal-cavo"
+    elif 60 <= index_value < 65:
+        return "Pie cavo"
+    else:
+        return "Pie cavo extremo"
 
 
 def _principal_axis_from_contour(contour: np.ndarray):

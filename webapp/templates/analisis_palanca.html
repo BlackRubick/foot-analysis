@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Análisis de Palancas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h2>Datos para análisis de palancas</h2>
+    <form method="post">
+        Peso de la persona (kg): <input type="number" step="0.01" name="peso" required><br>
+        Articulación: <input type="text" name="articulacion" required><br>
+        Movimiento: <input type="text" name="movimiento" required><br>
+        Segmento corporal: <input type="text" name="segmento" required><br>
+        Brazo de esfuerzo (LE, cm): <input type="number" step="0.01" name="medida_le" required><br>
+        Brazo de resistencia (LR, cm): <input type="number" step="0.01" name="medida_lr" required><br>
+        Cateto opuesto para alfa (mm): <input type="number" step="0.01" name="co" required><br>
+        Hipotenusa para alfa (mm): <input type="number" step="0.01" name="h" required><br>
+        <button type="submit">Analizar</button>
+    </form>
+    {% if resultado %}
+    <h3>Resultados:</h3>
+    <ul>
+        <li>Tipo de palanca: {{ resultado.tipo_palanca }}</li>
+        <li>Ventaja mecánica: {{ resultado.ventaja_mecanica }} ({{ resultado.ventaja_interp }})</li>
+        <li>Ángulo alfa: {{ resultado.alpha }}° (redondeado: {{ resultado.alpha_redondeado }}°)</li>
+        <li>Masa segmento: {{ resultado.masa_segmento }} kg</li>
+        <li>Fuerza: {{ resultado.fuerza }} N</li>
+        <li>Torque: {{ resultado.torque }} Nm</li>
+    </ul>
+    {% endif %}
+    <br>
+    <a href="/">Volver al inicio</a>
+</body>
+</html>
