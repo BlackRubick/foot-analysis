@@ -153,6 +153,8 @@ def analisis():
         session['metrics'] = resultado['metrics']
         session['annotated_path'] = out_path
     except Exception as e:
+        print("Error en /analisis:", e)
+        import traceback; traceback.print_exc()
         return redirect(url_for('index'))
     return redirect(url_for('index'))
 
