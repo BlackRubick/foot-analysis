@@ -100,7 +100,7 @@ def apply_hernandez_corvo(mask: np.ndarray, contour: np.ndarray):
 
     x_width = widths_info["x_width"]
     y_width = widths_info["y_width"]
-    index_value = (y_width / x_width) if x_width > 0 else float("nan")
+    index_value = ((x_width - y_width) / x_width * 100) if x_width > 0 else float("nan")
     classification = classify_plantar_index(index_value)
 
     return HCResult(

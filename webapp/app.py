@@ -93,18 +93,36 @@ def index():
             import shutil
             shutil.copyfile(posture_annotated_path_sagital, static_path)
         context['posture_image_url_sagital'] = url_for('static', filename=static_name)
-    # Cadenas musculares
-    chains_metrics = session.get('chains_metrics')
-    chains_notes = session.get('chains_notes')
-    chains_annotated_path = session.get('chains_annotated_path')
-    if chains_metrics:
-        context['chains_result'] = {'metrics': chains_metrics, 'notes': chains_notes}
-    if chains_annotated_path and os.path.exists(chains_annotated_path):
-        context['chains_image_url'] = url_for('static', filename='chains_annotated.jpg')
-        static_path = os.path.join(app.static_folder, 'chains_annotated.jpg')
+    # Cadenas musculares (frontal y sagital por separado)
+    chains_metrics_frontal = session.get('chains_metrics_frontal')
+    chains_notes_frontal = session.get('chains_notes_frontal')
+    chains_annotated_path_frontal = session.get('chains_annotated_path_frontal')
+    chains_metrics_sagital = session.get('chains_metrics_sagital')
+    chains_notes_sagital = session.get('chains_notes_sagital')
+    chains_annotated_path_sagital = session.get('chains_annotated_path_sagital')
+    if chains_metrics_frontal:
+        context['chains_metrics_frontal'] = chains_metrics_frontal
+    if chains_notes_frontal:
+        context['chains_notes_frontal'] = chains_notes_frontal
+    if chains_annotated_path_frontal and os.path.exists(chains_annotated_path_frontal):
+        static_name = os.path.basename(chains_annotated_path_frontal)
+        static_path = os.path.join(app.static_folder, static_name)
         if not os.path.exists(static_path):
             import shutil
-            shutil.copyfile(chains_annotated_path, static_path)
+            shutil.copyfile(chains_annotated_path_frontal, static_path)
+        context['chains_annotated_path_frontal'] = os.path.join('static', static_name)
+    if chains_metrics_sagital:
+        context['chains_metrics_sagital'] = chains_metrics_sagital
+    if chains_notes_sagital:
+        context['chains_notes_sagital'] = chains_notes_sagital
+    if chains_annotated_path_sagital and os.path.exists(chains_annotated_path_sagital):
+        static_name = os.path.basename(chains_annotated_path_sagital)
+        static_path = os.path.join(app.static_folder, static_name)
+        if not os.path.exists(static_path):
+            import shutil
+            shutil.copyfile(chains_annotated_path_sagital, static_path)
+        context['chains_annotated_path_sagital'] = os.path.join('static', static_name)
+    context['now'] = int(time.time())
     # Palancas
     lever_result = session.get('lever_result')
     if lever_result:
@@ -190,8 +208,11 @@ def analisis_rodilla():
             cv2.imwrite(out_path, annotated)
             session['knee_metrics_frontal'] = resultado['metrics']
             session['knee_annotated_path_frontal'] = out_path
+            # Mensaje si no se detectaron landmarks
+            if resultado['metrics'].get('classification') == 'No detectado' or resultado['metrics'].get('knee_angle_deg', 0) == 0.0:
+                flash('No se detectaron puntos anatómicos en la imagen frontal. Verifica la calidad y orientación de la foto.', 'error')
         except Exception as e:
-            flash(f'Error en el análisis frontal: {e}')
+            flash(f'Error en el análisis frontal: {e}', 'error')
     # Sagital
     if imagen_sagital or imagen_sagital_data:
         try:
@@ -210,8 +231,11 @@ def analisis_rodilla():
             cv2.imwrite(out_path, annotated)
             session['knee_metrics_sagital'] = resultado['metrics']
             session['knee_annotated_path_sagital'] = out_path
+            # Mensaje si no se detectaron landmarks
+            if resultado['metrics'].get('classification') == 'No detectado' or resultado['metrics'].get('knee_angle_deg', 0) == 0.0:
+                flash('No se detectaron puntos anatómicos en la imagen sagital. Verifica la calidad y orientación de la foto.', 'error')
         except Exception as e:
-            flash(f'Error en el análisis sagital: {e}')
+            flash(f'Error en el análisis sagital: {e}', 'error')
     return redirect(url_for('index'))
 
 
@@ -270,34 +294,105 @@ def analisis_postura():
             flash(f'Error en el análisis sagital: {e}')
     return redirect(url_for('index'))
 
-# --- Restaurar endpoint de cadenas musculares ---
+
+# --- Nuevo endpoint de cadenas musculares: permite imagen frontal y sagital, y análisis clínico completo para cadena de espiración ---
 @app.route('/analisis_cadenas', methods=['POST'])
 def analisis_cadenas():
     import base64
-    chains_image_data = request.form.get('chains_image_data')
-    if not chains_image_data:
-        flash('Debes capturar una imagen con la cámara')
-        return redirect(url_for('index'))
-    try:
-        # Extraer base64 puro si viene como data:image/png;base64,...
-        if ',' in chains_image_data:
-            chains_image_data = chains_image_data.split(',')[1]
-        img_bytes = base64.b64decode(chains_image_data)
-        np_arr = np.frombuffer(img_bytes, np.uint8)
-        image = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
-        resultado = analizar_cadenas(image)
-        annotated = resultado.images['annotated']
-        paciente = session.get('paciente', {})
-        nombre = paciente.get('nombre', 'anon')
-        timestamp = int(time.time())
-        out_name = f"chains_annotated_{nombre}_{timestamp}.jpg".replace(' ', '_')
-        out_path = os.path.join(UPLOAD_FOLDER, out_name)
-        cv2.imwrite(out_path, annotated)
-        session['chains_metrics'] = resultado.metrics
-        session['chains_notes'] = resultado.notes
-        session['chains_annotated_path'] = out_path
-    except Exception as e:
-        flash(f'Error en el análisis: {e}')
+    import numpy as np
+    chains_image_frontal = request.files.get('chains_image_frontal')
+    chains_image_frontal_data = request.form.get('chains_image_frontal_data')
+    chains_image_sagital = request.files.get('chains_image_sagital')
+    chains_image_sagital_data = request.form.get('chains_image_sagital_data')
+    paciente = session.get('paciente', {})
+    nombre = paciente.get('nombre', 'anon')
+    timestamp = int(time.time())
+    # Procesar solo plano sagital (cadena de espiración)
+    import traceback
+    log_path = os.path.join(UPLOAD_FOLDER, 'analisis_cadenas.log')
+    def log(msg):
+        print(msg)
+        with open(log_path, 'a') as f:
+            f.write(str(msg) + '\n')
+
+    log('--- INICIO /analisis_cadenas ---')
+    log(f'chains_image_frontal: {chains_image_frontal}')
+    log(f'chains_image_frontal_data: {chains_image_frontal_data}')
+    log(f'chains_image_sagital: {chains_image_sagital}')
+    log(f'chains_image_sagital_data: {chains_image_sagital_data}')
+    procesado = False
+    # Procesar plano frontal si hay imagen
+    if chains_image_frontal or chains_image_frontal_data:
+        try:
+            if chains_image_frontal_data:
+                log('Procesando imagen frontal desde base64')
+                if ',' in chains_image_frontal_data:
+                    chains_image_frontal_data = chains_image_frontal_data.split(',')[1]
+                img_bytes = base64.b64decode(chains_image_frontal_data)
+                np_arr = np.frombuffer(img_bytes, np.uint8)
+                img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+            else:
+                log('Procesando imagen frontal desde archivo')
+                img = cv2.imdecode(np.frombuffer(chains_image_frontal.read(), np.uint8), cv2.IMREAD_COLOR)
+            log('Llamando a analizar_cadenas frontal')
+            resultado = analizar_cadenas(img, plane="frontal")
+            log(f'Resultado analizar_cadenas frontal: {resultado}')
+            annotated = resultado.images['annotated'] if hasattr(resultado, 'images') else resultado['images']['annotated']
+            out_name = f"chains_annotated_frontal_{nombre}_{timestamp}.jpg".replace(' ', '_')
+            out_path = os.path.join(UPLOAD_FOLDER, out_name)
+            cv2.imwrite(out_path, annotated)
+            session['chains_annotated_path_frontal'] = out_path
+            if hasattr(resultado, 'metrics') and hasattr(resultado, 'notes'):
+                session['chains_metrics_frontal'] = resultado.metrics
+                session['chains_notes_frontal'] = resultado.notes
+            elif isinstance(resultado, dict):
+                session['chains_metrics_frontal'] = resultado.get('metrics')
+                session['chains_notes_frontal'] = resultado.get('notes')
+            log(f'Imagen anotada guardada en: {out_path}')
+                    # Procesar plano frontal si hay imagen
+        except Exception as e:
+            log(f'Error en el análisis frontal: {e}')
+            log(traceback.format_exc())
+            flash(f'Error en el análisis frontal: {e}')
+
+    # Procesar plano sagital si hay imagen
+    if chains_image_sagital or chains_image_sagital_data:
+        try:
+            if chains_image_sagital_data:
+                log('Procesando imagen sagital desde base64')
+                if ',' in chains_image_sagital_data:
+                    chains_image_sagital_data = chains_image_sagital_data.split(',')[1]
+                img_bytes = base64.b64decode(chains_image_sagital_data)
+                np_arr = np.frombuffer(img_bytes, np.uint8)
+                img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+            else:
+                log('Procesando imagen sagital desde archivo')
+                img = cv2.imdecode(np.frombuffer(chains_image_sagital.read(), np.uint8), cv2.IMREAD_COLOR)
+            log('Llamando a analizar_cadenas sagital')
+            resultado = analizar_cadenas(img, plane="sagittal")
+            log(f'Resultado analizar_cadenas sagital: {resultado}')
+            annotated = resultado.images['annotated'] if hasattr(resultado, 'images') else resultado['images']['annotated']
+            out_name = f"chains_annotated_sagital_{nombre}_{timestamp}.jpg".replace(' ', '_')
+            out_path = os.path.join(UPLOAD_FOLDER, out_name)
+            cv2.imwrite(out_path, annotated)
+            session['chains_annotated_path_sagital'] = out_path
+            if hasattr(resultado, 'metrics') and hasattr(resultado, 'notes'):
+                session['chains_metrics_sagital'] = resultado.metrics
+                session['chains_notes_sagital'] = resultado.notes
+            elif isinstance(resultado, dict):
+                session['chains_metrics_sagital'] = resultado.get('metrics')
+                session['chains_notes_sagital'] = resultado.get('notes')
+            log(f'Imagen anotada guardada en: {out_path}')
+            procesado = True
+        except Exception as e:
+            log(f'Error en el análisis sagital: {e}')
+            log(traceback.format_exc())
+            flash(f'Error en el análisis sagital: {e}')
+
+    if not procesado:
+        log('No se subió/capturó imagen frontal ni sagital')
+        flash('Debes subir o capturar al menos una imagen frontal o sagital para el análisis de cadenas musculares.')
+    log('--- FIN /analisis_cadenas ---')
     return redirect(url_for('index'))
 
 @app.route('/analisis_palanca', methods=['POST'])
@@ -306,13 +401,13 @@ def analisis_palanca():
         try:
             peso = float(request.form['peso'])
             articulacion = request.form['articulacion']
-            movimiento = request.form['movimiento']
+            session['chains_annotated_path_sagital'] = out_path
             segmento = request.form['segmento']
-            medida_le = float(request.form['medida_le']) / 100  # cm a m
-            medida_lr = float(request.form['medida_lr']) / 100
+            session['chains_metrics_sagital'] = resultado.metrics
+            session['chains_notes_sagital'] = resultado.notes
             co = float(request.form['co']) / 1000  # mm a m
-            h = float(request.form['h']) / 1000
-            resultado = analizar_palanca(peso, articulacion, movimiento, segmento, medida_le, medida_lr, co, h)
+            session['chains_metrics_sagital'] = resultado.get('metrics')
+            session['chains_notes_sagital'] = resultado.get('notes')
             session['lever_result'] = resultado
         except Exception as e:
             flash(f'Error en el análisis: {e}')
@@ -395,7 +490,9 @@ def descargar_pdf():
     results_text = ""
     tiene_datos = False
     if plantar_metrics:
-        results_text += f"Índice plantar: {plantar_metrics.get('plantar_index', '')}\nX: {plantar_metrics.get('x_width_px', '')} px\nY: {plantar_metrics.get('y_width_px', '')} px\nClasificación: {plantar_metrics.get('classification', '')}\n\n"
+        x_cm = plantar_metrics.get('x_width_cm', '')
+        y_cm = plantar_metrics.get('y_width_cm', '')
+        results_text += f"Índice plantar: {plantar_metrics.get('plantar_index', '')}\nX: {x_cm:.1f} cm\nY: {y_cm:.1f} cm\nClasificación: {plantar_metrics.get('classification', '')}\n\n"
         tiene_datos = True
     if knee_metrics_frontal:
         results_text += f"Rodilla (frontal): Ángulo: {knee_metrics_frontal.get('knee_angle_deg', '')}°, Clasificación: {knee_metrics_frontal.get('classification', '')}\n"

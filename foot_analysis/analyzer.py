@@ -21,6 +21,11 @@ class FootAnalyzer:
 
         hc_result, widths_info = apply_hernandez_corvo(steps["clean"], contour)
 
+        # FACTOR DE CONVERSIÓN PX->CM (60 cm = 1600 px)
+        PX_TO_CM = 60.0 / 1600.0  # 0.0375 cm/px
+        x_width_cm = hc_result.x_width * PX_TO_CM
+        y_width_cm = hc_result.y_width * PX_TO_CM
+
         annotated = image.copy()
         cv2.drawContours(annotated, [contour], -1, (0, 255, 0), 2)
         cv2.line(
@@ -35,7 +40,7 @@ class FootAnalyzer:
 
         text = (
             f"Indice plantar={hc_result.index:.2f} | "
-            f"X={hc_result.x_width:.1f}px Y={hc_result.y_width:.1f}px | "
+            f"X={x_width_cm:.1f}cm Y={y_width_cm:.1f}cm | "
             f"{hc_result.classification}"
         )
         cv2.putText(annotated, text, (20, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 255), 2)
@@ -53,8 +58,8 @@ class FootAnalyzer:
         return {
             "metrics": {
                 "plantar_index": hc_result.index,
-                "x_width_px": hc_result.x_width,
-                "y_width_px": hc_result.y_width,
+                "x_width_cm": x_width_cm,
+                "y_width_cm": y_width_cm,
                 "classification": hc_result.classification,
             },
             "images": {

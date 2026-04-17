@@ -91,10 +91,11 @@
     {% endif %}
     <div class="font-semibold">Resultados</div>
     <div>Índice plantar: {{ '%.2f'|format(foot_result.metrics.plantar_index) }}</div>
+    <div>X (antepie): {{ '%.1f'|format(foot_result.metrics.x_width_cm|default(foot_result.metrics.x_width_px, true)) }} cm</div>
+    <div>Y (arco): {{ '%.1f'|format(foot_result.metrics.y_width_cm|default(foot_result.metrics.y_width_px, true)) }} cm</div>
     <div>Clasificación: {{ foot_result.metrics.classification }}</div>
   </div>
   {% endif %}
-  {% endcall %}
 
   <!-- Rodilla -->
 
@@ -185,61 +186,6 @@
 
   <!-- Postura -->
 
-  {% call module_card('Módulo 3 · Postura', 'Evaluación de alineación corporal (sube ambos planos o usa cámara).') %}
-  <form action="{{ url_for('analisis_postura') }}" method="post" enctype="multipart/form-data" class="space-y-3" onsubmit="return preparePostureImages()">
-    <label class="block text-xs">Imagen frontal:
-      <input type="file" name="posture_image_frontal" accept="image/*" class="w-full text-xs border rounded px-2 py-1.5 mt-1" />
-      <input type="hidden" name="posture_image_frontal_data" id="posture_image_frontal_data" />
-      <div class="flex items-center gap-2 text-xs text-gray-600 mt-1">
-        <button type="button" class="px-2 py-1 border rounded" onclick="openCamera('posture_frontal')">Captura por cámara</button>
-      </div>
-      <div id="posture_frontal-camera" class="hidden border rounded p-3 mt-2">
-        <div class="mb-2">
-          <label for="posture_frontal_camera_select" class="text-xs mr-2">Seleccionar cámara:</label>
-          <select id="posture_frontal_camera_select" class="border rounded px-2 py-1 text-xs"></select>
-        </div>
-        <video id="posture_frontal_video" autoplay class="w-full rounded bg-black"></video>
-        <canvas id="posture_frontal_canvas" class="hidden"></canvas>
-        <div class="mt-2 flex gap-2 text-xs">
-          <button type="button" class="px-2 py-1 border" onclick="captureFromCamera('posture_frontal')">Capturar</button>
-          <button type="button" class="px-2 py-1 border" onclick="closeCamera('posture_frontal')">Cerrar</button>
-        </div>
-      </div>
-    </label>
-    <label class="block text-xs">Imagen sagital:
-      <input type="file" name="posture_image_sagital" accept="image/*" class="w-full text-xs border rounded px-2 py-1.5 mt-1" />
-      <input type="hidden" name="posture_image_sagital_data" id="posture_image_sagital_data" />
-      <div class="flex items-center gap-2 text-xs text-gray-600 mt-1">
-        <button type="button" class="px-2 py-1 border rounded" onclick="openCamera('posture_sagital')">Captura por cámara</button>
-      </div>
-      <div id="posture_sagital-camera" class="hidden border rounded p-3 mt-2">
-        <div class="mb-2">
-          <label for="posture_sagital_camera_select" class="text-xs mr-2">Seleccionar cámara:</label>
-          <select id="posture_sagital_camera_select" class="border rounded px-2 py-1 text-xs"></select>
-        </div>
-        <video id="posture_sagital_video" autoplay class="w-full rounded bg-black"></video>
-        <canvas id="posture_sagital_canvas" class="hidden"></canvas>
-        <div class="mt-2 flex gap-2 text-xs">
-          <button type="button" class="px-2 py-1 border" onclick="captureFromCamera('posture_sagital')">Capturar</button>
-          <button type="button" class="px-2 py-1 border" onclick="closeCamera('posture_sagital')">Cerrar</button>
-        </div>
-      </div>
-    </label>
-    <button type="submit" class="px-3 py-1.5 text-xs border rounded bg-gray-800 text-white">Procesar</button>
-  </form>
-  <script>
-  function preparePostureImages() {
-    var frontalFile = document.querySelector('input[name="posture_image_frontal"]').files.length;
-    var frontalData = document.getElementById('posture_image_frontal_data').value;
-    var sagitalFile = document.querySelector('input[name="posture_image_sagital"]').files.length;
-    var sagitalData = document.getElementById('posture_image_sagital_data').value;
-    if (!frontalFile && !frontalData && !sagitalFile && !sagitalData) {
-      alert('Debes subir o capturar al menos una imagen de postura.');
-      return false;
-    }
-    return true;
-  }
-  </script>
 
   {% if posture_result_frontal or posture_result_sagital %}
   <div class="border-t pt-3 text-xs space-y-2">
@@ -271,85 +217,107 @@
 
 
   <!-- Cadenas musculares -->
-  {% call module_card('Módulo 4 · Cadenas musculares', 'Evaluación miofascial lateral.') %}
 
-
-  <form action="{{ url_for('analisis_cadenas') }}" method="post" enctype="multipart/form-data" class="space-y-3" onsubmit="return prepareChainsImage()">
-    <input type="hidden" name="chains_image_data" id="chains_image_data" />
-    <div class="flex items-center gap-2 text-xs text-gray-600">
-      <button type="button" class="px-2 py-1 border rounded" onclick="openCamera('chains')">Abrir cámara</button>
-    </div>
-    <div id="chains-camera" class="hidden border rounded p-3">
-      <div class="mb-2">
-        <label for="chains_camera_select" class="text-xs mr-2">Seleccionar cámara:</label>
-        <select id="chains_camera_select" class="border rounded px-2 py-1 text-xs"></select>
+  {% call module_card('Módulo 3 · Cadenas musculares', 'Evaluación miofascial lateral (sube ambos planos o usa cámara).') %}
+  <form action="{{ url_for('analisis_cadenas') }}" method="post" enctype="multipart/form-data" class="space-y-3" onsubmit="return prepareChainsImages()">
+      <label class="block text-xs">Imagen frontal:
+        <input type="file" name="chains_image_frontal" accept="image/*" class="w-full text-xs border rounded px-2 py-1.5 mt-1" />
+      <input type="hidden" name="chains_image_frontal_data" id="chains_image_frontal_data" />
+      <div class="flex items-center gap-2 text-xs text-gray-600 mt-1">
+        <button type="button" class="px-2 py-1 border rounded" onclick="openCamera('chains_frontal')">Captura por cámara</button>
       </div>
-      <video id="chains_video" autoplay class="w-full rounded bg-black"></video>
-      <canvas id="chains_canvas" class="hidden"></canvas>
-      <div class="mt-2 flex gap-2 text-xs">
-        <button type="button" class="px-2 py-1 border" onclick="captureFromCamera('chains')">Capturar</button>
-        <button type="button" class="px-2 py-1 border" onclick="closeCamera('chains')">Cerrar</button>
+      <div id="chains_frontal-camera" class="hidden border rounded p-3 mt-2">
+        <div class="mb-2">
+          <label for="chains_frontal_camera_select" class="text-xs mr-2">Seleccionar cámara:</label>
+          <select id="chains_frontal_camera_select" class="border rounded px-2 py-1 text-xs"></select>
+        </div>
+        <video id="chains_frontal_video" autoplay class="w-full rounded bg-black"></video>
+        <canvas id="chains_frontal_canvas" class="hidden"></canvas>
+        <div class="mt-2 flex gap-2 text-xs">
+          <button type="button" class="px-2 py-1 border" onclick="captureFromCamera('chains_frontal')">Capturar</button>
+          <button type="button" class="px-2 py-1 border" onclick="closeCamera('chains_frontal')">Cerrar</button>
+        </div>
       </div>
-    </div>
+    </label>
+    <label class="block text-xs">Imagen sagital:
+      <input type="file" name="chains_image_sagital" accept="image/*" class="w-full text-xs border rounded px-2 py-1.5 mt-1" />
+      <input type="hidden" name="chains_image_sagital_data" id="chains_image_sagital_data" />
+      <div class="flex items-center gap-2 text-xs text-gray-600 mt-1">
+        <button type="button" class="px-2 py-1 border rounded" onclick="openCamera('chains_sagital')">Captura por cámara</button>
+      </div>
+      <div id="chains_sagital-camera" class="hidden border rounded p-3 mt-2">
+        <div class="mb-2">
+          <label for="chains_sagital_camera_select" class="text-xs mr-2">Seleccionar cámara:</label>
+          <select id="chains_sagital_camera_select" class="border rounded px-2 py-1 text-xs"></select>
+        </div>
+        <video id="chains_sagital_video" autoplay class="w-full rounded bg-black"></video>
+        <canvas id="chains_sagital_canvas" class="hidden"></canvas>
+        <div class="mt-2 flex gap-2 text-xs">
+          <button type="button" class="px-2 py-1 border" onclick="captureFromCamera('chains_sagital')">Capturar</button>
+          <button type="button" class="px-2 py-1 border" onclick="closeCamera('chains_sagital')">Cerrar</button>
+        </div>
+      </div>
+    </label>
     <button type="submit" class="px-3 py-1.5 text-xs border rounded bg-gray-800 text-white">Procesar</button>
   </form>
   <script>
-  function prepareChainsImage() {
-    // Solo permitir enviar si hay imagen capturada
-    var data = document.getElementById('chains_image_data').value;
-    if (!data) {
-      alert('Primero captura una imagen con la cámara.');
+  function prepareChainsImages() {
+    // Permitir enviar si hay archivo o imagen capturada para cada plano
+    var frontalFile = document.querySelector('input[name="chains_image_frontal"]').files.length;
+    var frontalData = document.getElementById('chains_image_frontal_data').value;
+    var sagitalFile = document.querySelector('input[name="chains_image_sagital"]').files.length;
+    var sagitalData = document.getElementById('chains_image_sagital_data').value;
+    if (!frontalFile && !frontalData && !sagitalFile && !sagitalData) {
+      alert('Debes subir o capturar al menos una imagen de cada plano.');
       return false;
     }
     return true;
   }
   </script>
 
-  {% if chains_result %}
+  {% if chains_metrics_frontal or chains_metrics_sagital %}
   <div class="border-t pt-3 text-xs space-y-2">
-    {% if chains_image_url %}
-      <div>
-        <div class="text-[11px] text-gray-500 mb-1">Imagen anotada</div>
-        <img src="{{ chains_image_url }}" alt="Cadenas musculares anotadas" class="w-full rounded border" loading="lazy" />
+    {% if chains_metrics_frontal %}
+      <div class="mb-2">
+        <div class="font-semibold">Frontal</div>
+        {% if chains_annotated_path_frontal %}
+          <div class="text-[11px] text-gray-500 mb-1">Imagen anotada</div>
+          <img src="{{ url_for('static', filename=chains_annotated_path_frontal.split('static/')[-1]) }}?t={{ now }}" alt="Cadenas musculares frontal anotada" class="w-full rounded border" loading="lazy" />
+        {% endif %}
+        <ul class="mt-2 ml-4 text-sm">
+          <li><b>Lado externo:</b> {{ chains_metrics_frontal.lado_externo_px|default('N/A') }} px</li>
+          <li><b>Lado interno:</b> {{ chains_metrics_frontal.lado_interno_px|default('N/A') }} px</li>
+          <li><b>Diferencia:</b> {{ chains_metrics_frontal.diferencia_px|default('N/A') }} px</li>
+        </ul>
+        <div class="mt-2 text-xs text-gray-700">
+          Esos {{ chains_metrics_frontal.diferencia_px|default('N/A') }} píxeles de diferencia son el error de alineación.<br>
+          Como el número menor está del lado de la entrepierna, el software interpreta que la rótula está del lado interno. Por eso se clasifica como rotación interna.
+        </div>
+        <div class="mt-2 text-xs"><b>Nota:</b> El valor es diferente para cada persona.</div>
       </div>
     {% endif %}
-    <div class="font-semibold">Resultados</div>
-    <div>Plano: {{ chains_result.metrics.plane }}</div>
-    <div>Calibración: {{ '%.4f'|format(chains_result.metrics.calibration_mm_per_px) }}</div>
+    {% if chains_metrics_sagital %}
+      <div class="mb-2">
+        <div class="font-semibold">Sagital</div>
+        {% if chains_annotated_path_sagital %}
+          <div class="text-[11px] text-gray-500 mb-1">Imagen anotada</div>
+          <img src="{{ url_for('static', filename=chains_annotated_path_sagital.split('static/')[-1]) }}?t={{ now }}" alt="Cadenas musculares sagital anotada" class="w-full rounded border" loading="lazy" />
+        {% endif %}
+        <ul class="list-disc ml-5">
+          <li><b>Pelvis:</b> {{ chains_notes_sagital.pelvis }}</li>
+          <li><b>Tórax:</b> {{ chains_notes_sagital.torax }}</li>
+          <li><b>Columna torácica:</b> {{ chains_notes_sagital.cifosis }}</li>
+          <li><b>Columna lumbar:</b> {{ chains_notes_sagital.lordosis }}</li>
+          <li class="mt-1"><b>Interpretación clínica:</b> <span class="text-blue-700">{{ chains_notes_sagital.cadena_espiracion }}</span></li>
+        </ul>
+        <div class="mt-2 text-gray-500">Plano: sagital | Calibración: {{ '%.4f'|format(chains_metrics_sagital.calibration_mm_per_px) }}</div>
+      </div>
+    {% endif %}
   </div>
   {% endif %}
   {% endcall %}
 
   <!-- Palancas (ahora dentro del grid, después del 4) -->
-  {% call module_card('Módulo 5 · Palancas', 'Cálculo biomecánico de palancas corporales.') %}
-  <form action="{{ url_for('analisis_palanca') }}" method="post" class="space-y-3">
-    <div class="grid grid-cols-2 gap-2 text-xs">
-      <label>Peso (kg): <input type="number" step="0.01" name="peso" required class="border rounded px-2 py-1 w-full" /></label>
-      <label>Articulación: <input type="text" name="articulacion" required class="border rounded px-2 py-1 w-full" /></label>
-      <label>Movimiento: <input type="text" name="movimiento" required class="border rounded px-2 py-1 w-full" /></label>
-      <label>Segmento: <input type="text" name="segmento" required class="border rounded px-2 py-1 w-full" /></label>
-      <label>Brazo esfuerzo (LE, cm): <input type="number" step="0.01" name="medida_le" required class="border rounded px-2 py-1 w-full" /></label>
-      <label>Brazo resistencia (LR, cm): <input type="number" step="0.01" name="medida_lr" required class="border rounded px-2 py-1 w-full" /></label>
-      <label>Cateto opuesto (mm): <input type="number" step="0.01" name="co" required class="border rounded px-2 py-1 w-full" /></label>
-      <label>Hipotenusa (mm): <input type="number" step="0.01" name="h" required class="border rounded px-2 py-1 w-full" /></label>
-    </div>
-    <button type="submit" class="px-3 py-1.5 text-xs border rounded bg-gray-800 text-white">Procesar</button>
-  </form>
-
-  {% if lever_result %}
-  <div class="border-t pt-3 text-xs space-y-2">
-    <div class="font-semibold">Resultados</div>
-    <ul class="list-disc ml-5">
-      <li>Tipo de palanca: {{ lever_result.tipo_palanca }}</li>
-      <li>Ventaja mecánica: {{ lever_result.ventaja_mecanica }} ({{ lever_result.ventaja_interp }})</li>
-      <li>Ángulo alfa: {{ lever_result.alpha }}° (redondeado: {{ lever_result.alpha_redondeado }}°)</li>
-      <li>Masa segmento: {{ lever_result.masa_segmento }} kg</li>
-      <li>Fuerza: {{ lever_result.fuerza }} N</li>
-      <li>Torque: {{ lever_result.torque }} Nm</li>
-    </ul>
-  </div>
-  {% endif %}
-  {% endcall %}
 
 
   <!-- Botón para generar PDF/reporte -->
@@ -375,6 +343,17 @@ function closeCamera(prefix){
   if(stream){stream.getTracks().forEach(t=>t.stop());}
   document.getElementById(prefix+'-camera').classList.add('hidden');
 }
+// Ocultar panel de cámara tras enviar formulario
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('form').forEach(form=>{
+    form.addEventListener('submit',()=>{
+      ['foot','knee_frontal','knee_sagital','posture_frontal','posture_sagital','chains'].forEach(prefix=>{
+        const panel=document.getElementById(prefix+'-camera');
+        if(panel) panel.classList.add('hidden');
+      });
+    });
+  });
+});
 function captureFromCamera(prefix){
   const video=document.getElementById(prefix+'_video');
   const canvas=document.getElementById(prefix+'_canvas');
@@ -383,6 +362,8 @@ function captureFromCamera(prefix){
   canvas.height=video.videoHeight;
   canvas.getContext('2d').drawImage(video,0,0);
   input.value=canvas.toDataURL('image/png');
+  // Oculta el panel tras capturar
+  document.getElementById(prefix+'-camera').classList.add('hidden');
 }
 </script>
 {% endblock %}

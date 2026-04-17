@@ -319,67 +319,109 @@ class MuscleChainAnalyzer:
         annotated = image.copy()
         pose = detection.pose
 
-        skeleton_pairs = [
-            ("left_ear", "left_shoulder"),
-            ("right_ear", "right_shoulder"),
-            ("left_shoulder", "right_shoulder"),
-            ("left_shoulder", "left_hip"),
-            ("right_shoulder", "right_hip"),
-            ("left_hip", "right_hip"),
-            ("left_hip", "left_knee"),
-            ("right_hip", "right_knee"),
-            ("left_knee", "left_ankle"),
-            ("right_knee", "right_ankle"),
-        ]
-        for a_name, b_name in skeleton_pairs:
-            a = point_xy(pose.get(a_name))
-            b = point_xy(pose.get(b_name))
-            if a is None or b is None:
-                continue
-            cv2.line(annotated, (int(a[0]), int(a[1])), (int(b[0]), int(b[1])), (0, 165, 255), 2)
+        y_offset = 40
+        line_height = 80
+        color_black = (0,0,0)
+        color_yellow = (0,255,255)
+        color_red = (0,0,255)
+        color_green = (0,255,0)
+        color_blue = (255,0,0)
+        color_magenta = (255,0,255)
 
-        key_points = {
-            "C7": proxies.c7,
-            "Xif": proxies.xiphoid,
-            "D7": proxies.d7,
-            "L1": proxies.l1,
-            "S": proxies.sacrum,
-            "ASIS-I": proxies.left_asis,
-            "ASIS-D": proxies.right_asis,
-            "PSIS-I": proxies.left_psis,
-            "PSIS-D": proxies.right_psis,
-        }
-        for label, point in key_points.items():
-            self._draw_point(annotated, point, (0, 255, 0), label)
+        # 1. Pelvis anteriorizada
+        left_ankle = point_xy(pose.get("left_ankle"))
+        right_ankle = point_xy(pose.get("right_ankle"))
+        ankle = None
+        if left_ankle and right_ankle:
+            ankle = ((left_ankle[0] + right_ankle[0]) // 2, (left_ankle[1] + right_ankle[1]) // 2)
+        elif left_ankle:
+            ankle = left_ankle
+        elif right_ankle:
+            ankle = right_ankle
+        head = proxies.mid_head if hasattr(proxies, 'mid_head') else None
+        if ankle and head:
+            cv2.line(annotated, (int(ankle[0]), int(ankle[1])), (int(head[0]), int(head[1])), color_yellow, 2)
+            cv2.circle(annotated, (int(ankle[0]), int(ankle[1])), 8, color_red, -1)
+            cv2.circle(annotated, (int(head[0]), int(head[1])), 8, color_red, -1)
+            if hasattr(proxies, 'sacrum') and proxies.sacrum:
+                cv2.circle(annotated, (int(proxies.sacrum[0]), int(proxies.sacrum[1])), 8, color_blue, -1)
+            desplazamiento = abs(metrics.get('pelvic_tilt_mm', 0))
+            altura = abs(head[1] - ankle[1]) if ankle and head else 1
+            ratio = desplazamiento / altura if altura else 0
+            ratio_text = f"Ratio = {desplazamiento:.2f} / {altura:.2f} = {ratio:.2f}"
+            cv2.putText(annotated, "Pelvis anteriorizada", (30, y_offset), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color_black, 4)
+            cv2.putText(annotated, "Pelvis anteriorizada", (30, y_offset), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color_yellow, 2)
+            cv2.putText(annotated, ratio_text, (30, y_offset+30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, color_black, 4)
+            cv2.putText(annotated, ratio_text, (30, y_offset+30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, color_yellow, 2)
+            if ratio > 0.20:
+                interpretacion = "> 0.20 → anteriorizada"
+            else:
+                interpretacion = "0.0 – 0.10 → normal"
+            cv2.putText(annotated, interpretacion, (30, y_offset+60), cv2.FONT_HERSHEY_SIMPLEX, 0.8, color_black, 4)
+            cv2.putText(annotated, interpretacion, (30, y_offset+60), cv2.FONT_HERSHEY_SIMPLEX, 0.8, color_yellow, 2)
+            y_offset += line_height
 
-        cv2.line(annotated, (int(proxies.plumb_x), 0), (int(proxies.plumb_x), annotated.shape[0] - 1), (255, 255, 0), 2)
+        # 2. Tórax trasladado posteriormente
+        if ankle and head and hasattr(proxies, 'mid_hip') and proxies.mid_hip:
+            for i in range(int(ankle[1]), int(head[1]), 10):
+                cv2.circle(annotated, (int(ankle[0]), i), 2, color_magenta, -1)
+            cv2.circle(annotated, (int(proxies.mid_hip[0]), int(proxies.mid_hip[1])), 10, color_red, -1)
+            troc_text = "Trocánter mayor: positivo si está por delante de la línea"
+            cv2.putText(annotated, "Tórax trasladado posteriormente", (30, y_offset), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color_black, 4)
+            cv2.putText(annotated, "Tórax trasladado posteriormente", (30, y_offset), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color_magenta, 2)
+            cv2.putText(annotated, troc_text, (30, y_offset+30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, color_black, 4)
+            cv2.putText(annotated, troc_text, (30, y_offset+30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, color_magenta, 2)
+            y_offset += line_height
 
-        y = 28
-        cv2.putText(annotated, f"Plano: {plane} | lado: {proxies.side}", (20, y), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
-        y += 28
-        for metric_name in ["knee_angle_deg", "q_angle_deg", "charpy_angle_deg", "cervical_angle_deg", "craniovertebral_angle_deg", "mandibular_angle_deg"]:
-            cv2.putText(annotated, f"{metric_name}: {metrics[metric_name]:.1f}", (20, y), cv2.FONT_HERSHEY_SIMPLEX, 0.55, (220, 220, 220), 1)
-            y += 22
+        # 3. Hipercifosis torácica
+        if hasattr(proxies, 'd7') and hasattr(proxies, 'mid_head') and proxies.d7 and proxies.mid_head:
+            curvatura = abs(metrics.get('thoracic_curve_mm', 0))
+            altura = abs(proxies.mid_head[1] - proxies.d7[1])
+            ratio = curvatura / altura if altura else 0
+            ratio_text = f"Ratio = {curvatura:.2f} / {altura:.2f} = {ratio:.2f}"
+            cv2.circle(annotated, (int(proxies.d7[0]), int(proxies.d7[1])), 8, color_red, -1)
+            cv2.putText(annotated, "Hipercifosis", (30, y_offset), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color_black, 4)
+            cv2.putText(annotated, "Hipercifosis", (30, y_offset), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color_yellow, 2)
+            cv2.putText(annotated, ratio_text, (30, y_offset+30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, color_black, 4)
+            cv2.putText(annotated, ratio_text, (30, y_offset+30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, color_yellow, 2)
+            if ratio > 0.30:
+                interpretacion = "> 0.30 → Hipercifosis"
+            elif ratio >= 0.15:
+                interpretacion = "0.15 – 0.25 → Normal"
+            else:
+                interpretacion = "Rectificación"
+            cv2.putText(annotated, interpretacion, (30, y_offset+60), cv2.FONT_HERSHEY_SIMPLEX, 0.8, color_black, 4)
+            cv2.putText(annotated, interpretacion, (30, y_offset+60), cv2.FONT_HERSHEY_SIMPLEX, 0.8, color_yellow, 2)
+            y_offset += line_height
 
-        y += 6
-        for chain_key in CHAIN_ORDER:
-            summary = chain_summaries.get(chain_key)
-            if summary is None:
-                continue
-            cv2.putText(
-                annotated,
-                f"{summary.name}: {summary.percentage:.1f}% prev | {summary.activation_percentage:.1f}% act",
-                (20, y),
-                cv2.FONT_HERSHEY_SIMPLEX,
-                0.62,
-                (0, 255, 255),
-                2,
-            )
-            y += 24
+        # 4. Hiperlordosis lumbar
+        if hasattr(proxies, 'l1') and hasattr(proxies, 'sacrum') and proxies.l1 and proxies.sacrum and hasattr(proxies, 'mid_head') and proxies.mid_head:
+            curvatura = abs(metrics.get('lumbar_curve_mm', 0))
+            altura = abs(proxies.mid_head[1] - proxies.sacrum[1])
+            ratio = curvatura / altura if altura else 0
+            ratio_text = f"Ratio = {curvatura:.2f} / {altura:.2f} = {ratio:.2f}"
+            cv2.circle(annotated, (int(proxies.l1[0]), int(proxies.l1[1])), 8, color_green, -1)
+            cv2.circle(annotated, (int(proxies.sacrum[0]), int(proxies.sacrum[1])), 8, color_green, -1)
+            cv2.putText(annotated, "Hiperlordosis lumbar", (30, y_offset), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color_black, 4)
+            cv2.putText(annotated, "Hiperlordosis lumbar", (30, y_offset), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color_green, 2)
+            cv2.putText(annotated, ratio_text, (30, y_offset+30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, color_black, 4)
+            cv2.putText(annotated, ratio_text, (30, y_offset+30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, color_green, 2)
+            if ratio > 0.40:
+                interpretacion = "> 0.40 → Hiperlordosis"
+            elif ratio >= 0.20:
+                interpretacion = "0.20 – 0.35 → Normal"
+            else:
+                interpretacion = "Rectificación"
+            cv2.putText(annotated, interpretacion, (30, y_offset+60), cv2.FONT_HERSHEY_SIMPLEX, 0.8, color_black, 4)
+            cv2.putText(annotated, interpretacion, (30, y_offset+60), cv2.FONT_HERSHEY_SIMPLEX, 0.8, color_green, 2)
+            y_offset += line_height
 
-        present_labels = [result.label for result in feature_results if result.present]
-        for index, label in enumerate(present_labels[:6]):
-            cv2.putText(annotated, f"+ {label}", (20, y + index * 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
+        # 5. Pie en pronación (solo etiqueta si se detecta)
+        # Aquí solo mostramos la etiqueta si algún criterio de pie plano/pronación está presente (puedes ajustar la lógica)
+        if metrics.get('pie_pronacion', False):
+            cv2.rectangle(annotated, (30, y_offset), (330, y_offset+50), color_green, -1)
+            cv2.putText(annotated, "Pie en pronación", (40, y_offset+35), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0,0,0), 3)
+            y_offset += 60
 
         return annotated
 

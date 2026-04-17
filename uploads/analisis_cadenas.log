@@ -1,0 +1,1241 @@
+--- INICIO /analisis_cadenas ---
+chains_image_sagital: <FileStorage: 'Sagital_Derecho.jpeg' ('image/jpeg')>
+chains_image_sagital_data: 
+Procesando imagen sagital desde archivo
+Llamando a analizar_cadenas
+Resultado analizar_cadenas: AnalysisResult(metrics={'knee_angle_deg': 178.8167654969083, 'q_angle_deg': 178.8167654969083, 'charpy_angle_deg': 1.5595411635200913, 'clavicular_opening_angle_deg': 0.919711720559542, 'cervical_angle_deg': 167.0791461369973, 'craniovertebral_angle_deg': 102.81710642374594, 'mandibular_angle_deg': 8.477622419959017, 'd7_offset_mm': 28.540342040061944, 'l1_offset_mm': 34.618494939804066, 'sacrum_offset_mm': 43.73572428941725, 'thoracic_curve_mm': -6.078152899742122, 'lumbar_curve_mm': -9.117229349613183, 'pelvic_tilt_mm': 43.73572428941725, 'shoulder_drop_mm': 146.49977806583047, 'head_barre_offset_mm': 65.61402063071728, 'shoulder_barre_offset_mm': 19.42311269044876, 'hip_barre_offset_mm': 41.13080161809921, 'knee_barre_offset_mm': 18.0964557826519, 'ankle_barre_offset_mm': -0.4528268277645111, 'arm_midline_distance_mm': 127.58424186706543, 'arm_rotation_score': -104.99885167181492, 'hip_rotation_score': -174.28309231996536, 'foot_orientation_score': -11.479732871055603, 'plane': 'sagittal', 'profile_side': 'left', 'calibration_mm_per_px': 1.0, 'calibration_source': 'pixel'}, feature_results=[FeatureResult(code='genu_flexum', label='Genu flexum', chain='flexion', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg lt 175.0', note=''), FeatureResult(code='genu_recurvatum', label='Genu recurvatum', chain='extension', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg gt 185.0', note=''), FeatureResult(code='sacro_vertical', label='Sacro vertical', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm abs_le 5.0', note=''), FeatureResult(code='sacro_horizontal', label='Sacro horizontal', chain='extension', present=True, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm abs_ge 20.0', note=''), FeatureResult(code='cifosis', label='Cifosis', chain='flexion', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm gt 10.0', note=''), FeatureResult(code='dorso_plano', label='Dorso plano', chain='extension', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm abs_le 5.0', note=''), FeatureResult(code='inversion_cervical', label='Inversion cervical', chain='flexion', present=False, value=167.0791461369973, unit='deg', rule='cervical_angle_deg lt 155.0', note=''), FeatureResult(code='rectificacion_cervical', label='Rectificacion cervical', chain='extension', present=False, value=167.0791461369973, unit='deg', rule='cervical_angle_deg gt 170.0', note=''), FeatureResult(code='proyeccion_anterior_cabeza', label='Proyeccion anterior de cabeza', chain='flexion', present=False, value=102.81710642374594, unit='deg', rule='craniovertebral_angle_deg lt 50.0', note=''), FeatureResult(code='bascula_posterior_cabeza', label='Bascula posterior de cabeza', chain='extension', present=True, value=102.81710642374594, unit='deg', rule='craniovertebral_angle_deg gt 60.0', note=''), FeatureResult(code='retroversion_pelvica', label='Retroversion pelvica', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='pelvic_tilt_mm lt -10.0', note=''), FeatureResult(code='anteversion_pelvica', label='Anteversion pelvica', chain='extension', present=True, value=43.73572428941725, unit='mm', rule='pelvic_tilt_mm gt 10.0', note=''), FeatureResult(code='coxis_hacia_adentro', label='Coxis hacia adentro', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm lt -6.0', note=''), FeatureResult(code='rectificacion_lumbar', label='Rectificacion lumbar', chain='flexion', present=False, value=-9.117229349613183, unit='mm', rule='lumbar_curve_mm abs_le 5.0', note=''), FeatureResult(code='hiperlordosis', label='Hiperlordosis', chain='extension', present=False, value=-9.117229349613183, unit='mm', rule='lumbar_curve_mm gt 10.0', note=''), FeatureResult(code='descenso_hombros', label='Descenso de hombros', chain='flexion', present=True, value=146.49977806583047, unit='mm', rule='shoulder_drop_mm gt 20.0', note=''), FeatureResult(code='ascenso_hombros', label='Ascenso de hombros', chain='extension', present=False, value=146.49977806583047, unit='mm', rule='shoulder_drop_mm lt 10.0', note=''), FeatureResult(code='hipercifosis', label='Hipercifosis', chain='flexion', present=False, value=28.540342040061944, unit='mm', rule='d7_offset_mm gt 60.0', note=''), FeatureResult(code='espalda_plana', label='Espalda plana', chain='extension', present=False, value=28.540342040061944, unit='mm', rule='d7_offset_mm lt 20.0', note=''), FeatureResult(code='rectificacion_lumbar_baja', label='Rectificacion lumbar', chain='flexion', present=False, value=34.618494939804066, unit='mm', rule='l1_offset_mm lt 20.0', note=''), FeatureResult(code='hiperlordosis_baja', label='Hiperlordosis baja', chain='extension', present=False, value=34.618494939804066, unit='mm', rule='l1_offset_mm gt 45.0', note=''), FeatureResult(code='flexion_msls', label='Flexion de MMII', chain='flexion', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg lt 175.0', note=''), FeatureResult(code='knee_posteriorizada_flexion', label='Rodilla posteriorizada', chain='flexion', present=False, value=18.0964557826519, unit='mm', rule='knee_barre_offset_mm lt -5.0', note=''), FeatureResult(code='ankle_posteriorizado_flexion', label='Tobillo posteriorizado', chain='flexion', present=False, value=-0.4528268277645111, unit='mm', rule='ankle_barre_offset_mm lt -5.0', note=''), FeatureResult(code='extension_msls', label='Extension de MMII', chain='extension', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg gt 185.0', note=''), FeatureResult(code='knee_antepulsion_extension', label='Rodilla en antepulsion', chain='extension', present=True, value=18.0964557826519, unit='mm', rule='knee_barre_offset_mm gt 5.0', note=''), FeatureResult(code='ankle_antepulsion_extension', label='Tobillo en antepulsion', chain='extension', present=False, value=-0.4528268277645111, unit='mm', rule='ankle_barre_offset_mm gt 5.0', note=''), FeatureResult(code='inspiracion_global', label='Patron inspiratorio', chain='inspiracion', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm gt 15.0', note=''), FeatureResult(code='espiracion_global', label='Patron espiratorio', chain='espiracion', present=True, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm lt 8.0', note='')], chain_summaries={'flexion': ChainSummary(name='Cadena de flexion', positives=1, total=14, activation_percentage=7.142857142857142, percentage=5.179282868525896), 'extension': ChainSummary(name='Cadena de extension', positives=4, total=13, activation_percentage=30.76923076923077, percentage=22.31075697211155), 'apertura': ChainSummary(name='Cadena de apertura', positives=0, total=0, activation_percentage=0.0, percentage=0.0), 'cierre': ChainSummary(name='Cadena de cierre', positives=0, total=0, activation_percentage=0.0, percentage=0.0), 'inspiracion': ChainSummary(name='Cadena inspiratoria', positives=0, total=1, activation_percentage=0.0, percentage=0.0), 'espiracion': ChainSummary(name='Cadena espiratoria', positives=1, total=1, activation_percentage=100.0, percentage=72.50996015936255)}, images={'annotated': array([[[ 93, 108, 104],
+        [ 93, 108, 104],
+        [ 92, 107, 103],
+        ...,
+        [ 97, 112, 108],
+        [ 97, 112, 108],
+        [ 98, 113, 109]],
+
+       [[ 93, 108, 104],
+        [ 93, 108, 104],
+        [ 92, 107, 103],
+        ...,
+        [ 97, 112, 108],
+        [ 98, 113, 109],
+        [ 98, 113, 109]],
+
+       [[ 93, 108, 104],
+        [ 93, 108, 104],
+        [ 93, 108, 104],
+        ...,
+        [ 98, 113, 109],
+        [ 98, 113, 109],
+        [ 98, 113, 109]],
+
+       ...,
+
+       [[ 60,  73,  75],
+        [ 59,  72,  74],
+        [ 58,  71,  73],
+        ...,
+        [ 58,  76,  77],
+        [ 60,  78,  79],
+        [ 62,  80,  81]],
+
+       [[ 60,  73,  75],
+        [ 60,  73,  75],
+        [ 59,  72,  74],
+        ...,
+        [ 60,  78,  79],
+        [ 60,  78,  79],
+        [ 59,  77,  78]],
+
+       [[ 60,  73,  75],
+        [ 60,  73,  75],
+        [ 59,  72,  74],
+        ...,
+        [ 56,  74,  75],
+        [ 55,  73,  74],
+        [ 54,  72,  73]]], shape=(1549, 623, 3), dtype=uint8)}, notes=['Cadena predominante: Cadena espiratoria (72.5%).'])
+Imagen anotada guardada en: uploads/chains_annotated_sagital_asd_1776423501.jpg
+--- FIN /analisis_cadenas ---
+--- INICIO /analisis_cadenas ---
+chains_image_sagital: <FileStorage: 'Sagital_Derecho.jpeg' ('image/jpeg')>
+chains_image_sagital_data: 
+Procesando imagen sagital desde archivo
+Llamando a analizar_cadenas
+Resultado analizar_cadenas: AnalysisResult(metrics={'knee_angle_deg': 178.8167654969083, 'q_angle_deg': 178.8167654969083, 'charpy_angle_deg': 1.5595411635200913, 'clavicular_opening_angle_deg': 0.919711720559542, 'cervical_angle_deg': 167.0791461369973, 'craniovertebral_angle_deg': 102.81710642374594, 'mandibular_angle_deg': 8.477622419959017, 'd7_offset_mm': 28.540342040061944, 'l1_offset_mm': 34.618494939804066, 'sacrum_offset_mm': 43.73572428941725, 'thoracic_curve_mm': -6.078152899742122, 'lumbar_curve_mm': -9.117229349613183, 'pelvic_tilt_mm': 43.73572428941725, 'shoulder_drop_mm': 146.49977806583047, 'head_barre_offset_mm': 65.61402063071728, 'shoulder_barre_offset_mm': 19.42311269044876, 'hip_barre_offset_mm': 41.13080161809921, 'knee_barre_offset_mm': 18.0964557826519, 'ankle_barre_offset_mm': -0.4528268277645111, 'arm_midline_distance_mm': 127.58424186706543, 'arm_rotation_score': -105.08998703956604, 'hip_rotation_score': -174.28309231996536, 'foot_orientation_score': -11.479732871055603, 'plane': 'sagittal', 'profile_side': 'left', 'calibration_mm_per_px': 1.0, 'calibration_source': 'pixel'}, feature_results=[FeatureResult(code='genu_flexum', label='Genu flexum', chain='flexion', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg lt 175.0', note=''), FeatureResult(code='genu_recurvatum', label='Genu recurvatum', chain='extension', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg gt 185.0', note=''), FeatureResult(code='sacro_vertical', label='Sacro vertical', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm abs_le 5.0', note=''), FeatureResult(code='sacro_horizontal', label='Sacro horizontal', chain='extension', present=True, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm abs_ge 20.0', note=''), FeatureResult(code='cifosis', label='Cifosis', chain='flexion', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm gt 10.0', note=''), FeatureResult(code='dorso_plano', label='Dorso plano', chain='extension', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm abs_le 5.0', note=''), FeatureResult(code='inversion_cervical', label='Inversion cervical', chain='flexion', present=False, value=167.0791461369973, unit='deg', rule='cervical_angle_deg lt 155.0', note=''), FeatureResult(code='rectificacion_cervical', label='Rectificacion cervical', chain='extension', present=False, value=167.0791461369973, unit='deg', rule='cervical_angle_deg gt 170.0', note=''), FeatureResult(code='proyeccion_anterior_cabeza', label='Proyeccion anterior de cabeza', chain='flexion', present=False, value=102.81710642374594, unit='deg', rule='craniovertebral_angle_deg lt 50.0', note=''), FeatureResult(code='bascula_posterior_cabeza', label='Bascula posterior de cabeza', chain='extension', present=True, value=102.81710642374594, unit='deg', rule='craniovertebral_angle_deg gt 60.0', note=''), FeatureResult(code='retroversion_pelvica', label='Retroversion pelvica', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='pelvic_tilt_mm lt -10.0', note=''), FeatureResult(code='anteversion_pelvica', label='Anteversion pelvica', chain='extension', present=True, value=43.73572428941725, unit='mm', rule='pelvic_tilt_mm gt 10.0', note=''), FeatureResult(code='coxis_hacia_adentro', label='Coxis hacia adentro', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm lt -6.0', note=''), FeatureResult(code='rectificacion_lumbar', label='Rectificacion lumbar', chain='flexion', present=False, value=-9.117229349613183, unit='mm', rule='lumbar_curve_mm abs_le 5.0', note=''), FeatureResult(code='hiperlordosis', label='Hiperlordosis', chain='extension', present=False, value=-9.117229349613183, unit='mm', rule='lumbar_curve_mm gt 10.0', note=''), FeatureResult(code='descenso_hombros', label='Descenso de hombros', chain='flexion', present=True, value=146.49977806583047, unit='mm', rule='shoulder_drop_mm gt 20.0', note=''), FeatureResult(code='ascenso_hombros', label='Ascenso de hombros', chain='extension', present=False, value=146.49977806583047, unit='mm', rule='shoulder_drop_mm lt 10.0', note=''), FeatureResult(code='hipercifosis', label='Hipercifosis', chain='flexion', present=False, value=28.540342040061944, unit='mm', rule='d7_offset_mm gt 60.0', note=''), FeatureResult(code='espalda_plana', label='Espalda plana', chain='extension', present=False, value=28.540342040061944, unit='mm', rule='d7_offset_mm lt 20.0', note=''), FeatureResult(code='rectificacion_lumbar_baja', label='Rectificacion lumbar', chain='flexion', present=False, value=34.618494939804066, unit='mm', rule='l1_offset_mm lt 20.0', note=''), FeatureResult(code='hiperlordosis_baja', label='Hiperlordosis baja', chain='extension', present=False, value=34.618494939804066, unit='mm', rule='l1_offset_mm gt 45.0', note=''), FeatureResult(code='flexion_msls', label='Flexion de MMII', chain='flexion', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg lt 175.0', note=''), FeatureResult(code='knee_posteriorizada_flexion', label='Rodilla posteriorizada', chain='flexion', present=False, value=18.0964557826519, unit='mm', rule='knee_barre_offset_mm lt -5.0', note=''), FeatureResult(code='ankle_posteriorizado_flexion', label='Tobillo posteriorizado', chain='flexion', present=False, value=-0.4528268277645111, unit='mm', rule='ankle_barre_offset_mm lt -5.0', note=''), FeatureResult(code='extension_msls', label='Extension de MMII', chain='extension', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg gt 185.0', note=''), FeatureResult(code='knee_antepulsion_extension', label='Rodilla en antepulsion', chain='extension', present=True, value=18.0964557826519, unit='mm', rule='knee_barre_offset_mm gt 5.0', note=''), FeatureResult(code='ankle_antepulsion_extension', label='Tobillo en antepulsion', chain='extension', present=False, value=-0.4528268277645111, unit='mm', rule='ankle_barre_offset_mm gt 5.0', note=''), FeatureResult(code='inspiracion_global', label='Patron inspiratorio', chain='inspiracion', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm gt 15.0', note=''), FeatureResult(code='espiracion_global', label='Patron espiratorio', chain='espiracion', present=True, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm lt 8.0', note='')], chain_summaries={'flexion': ChainSummary(name='Cadena de flexion', positives=1, total=14, activation_percentage=7.142857142857142, percentage=5.179282868525896), 'extension': ChainSummary(name='Cadena de extension', positives=4, total=13, activation_percentage=30.76923076923077, percentage=22.31075697211155), 'apertura': ChainSummary(name='Cadena de apertura', positives=0, total=0, activation_percentage=0.0, percentage=0.0), 'cierre': ChainSummary(name='Cadena de cierre', positives=0, total=0, activation_percentage=0.0, percentage=0.0), 'inspiracion': ChainSummary(name='Cadena inspiratoria', positives=0, total=1, activation_percentage=0.0, percentage=0.0), 'espiracion': ChainSummary(name='Cadena espiratoria', positives=1, total=1, activation_percentage=100.0, percentage=72.50996015936255)}, images={'annotated': array([[[ 93, 108, 104],
+        [ 93, 108, 104],
+        [ 92, 107, 103],
+        ...,
+        [ 97, 112, 108],
+        [ 97, 112, 108],
+        [ 98, 113, 109]],
+
+       [[ 93, 108, 104],
+        [ 93, 108, 104],
+        [ 92, 107, 103],
+        ...,
+        [ 97, 112, 108],
+        [ 98, 113, 109],
+        [ 98, 113, 109]],
+
+       [[ 93, 108, 104],
+        [ 93, 108, 104],
+        [ 93, 108, 104],
+        ...,
+        [ 98, 113, 109],
+        [ 98, 113, 109],
+        [ 98, 113, 109]],
+
+       ...,
+
+       [[ 60,  73,  75],
+        [ 59,  72,  74],
+        [ 58,  71,  73],
+        ...,
+        [ 58,  76,  77],
+        [ 60,  78,  79],
+        [ 62,  80,  81]],
+
+       [[ 60,  73,  75],
+        [ 60,  73,  75],
+        [ 59,  72,  74],
+        ...,
+        [ 60,  78,  79],
+        [ 60,  78,  79],
+        [ 59,  77,  78]],
+
+       [[ 60,  73,  75],
+        [ 60,  73,  75],
+        [ 59,  72,  74],
+        ...,
+        [ 56,  74,  75],
+        [ 55,  73,  74],
+        [ 54,  72,  73]]], shape=(1549, 623, 3), dtype=uint8)}, notes=['Cadena predominante: Cadena espiratoria (72.5%).'])
+Imagen anotada guardada en: uploads/chains_annotated_sagital_asd_1776423530.jpg
+--- FIN /analisis_cadenas ---
+--- INICIO /analisis_cadenas ---
+chains_image_sagital: <FileStorage: 'Sagital_Derecho.jpeg' ('image/jpeg')>
+chains_image_sagital_data: 
+Procesando imagen sagital desde archivo
+Llamando a analizar_cadenas
+Resultado analizar_cadenas: AnalysisResult(metrics={'knee_angle_deg': 178.8167654969083, 'q_angle_deg': 178.8167654969083, 'charpy_angle_deg': 1.5595411635200913, 'clavicular_opening_angle_deg': 0.919711720559542, 'cervical_angle_deg': 167.0791461369973, 'craniovertebral_angle_deg': 102.81710642374594, 'mandibular_angle_deg': 8.477622419959017, 'd7_offset_mm': 28.540342040061944, 'l1_offset_mm': 34.618494939804066, 'sacrum_offset_mm': 43.73572428941725, 'thoracic_curve_mm': -6.078152899742122, 'lumbar_curve_mm': -9.117229349613183, 'pelvic_tilt_mm': 43.73572428941725, 'shoulder_drop_mm': 146.49977806583047, 'head_barre_offset_mm': 65.61402063071728, 'shoulder_barre_offset_mm': 19.42311269044876, 'hip_barre_offset_mm': 41.13080161809921, 'knee_barre_offset_mm': 18.0964557826519, 'ankle_barre_offset_mm': -0.4528268277645111, 'arm_midline_distance_mm': 127.58424186706543, 'arm_rotation_score': -104.99885167181492, 'hip_rotation_score': -174.28309231996536, 'foot_orientation_score': -11.479732871055603, 'plane': 'sagittal', 'profile_side': 'left', 'calibration_mm_per_px': 1.0, 'calibration_source': 'pixel'}, feature_results=[FeatureResult(code='genu_flexum', label='Genu flexum', chain='flexion', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg lt 175.0', note=''), FeatureResult(code='genu_recurvatum', label='Genu recurvatum', chain='extension', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg gt 185.0', note=''), FeatureResult(code='sacro_vertical', label='Sacro vertical', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm abs_le 5.0', note=''), FeatureResult(code='sacro_horizontal', label='Sacro horizontal', chain='extension', present=True, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm abs_ge 20.0', note=''), FeatureResult(code='cifosis', label='Cifosis', chain='flexion', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm gt 10.0', note=''), FeatureResult(code='dorso_plano', label='Dorso plano', chain='extension', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm abs_le 5.0', note=''), FeatureResult(code='inversion_cervical', label='Inversion cervical', chain='flexion', present=False, value=167.0791461369973, unit='deg', rule='cervical_angle_deg lt 155.0', note=''), FeatureResult(code='rectificacion_cervical', label='Rectificacion cervical', chain='extension', present=False, value=167.0791461369973, unit='deg', rule='cervical_angle_deg gt 170.0', note=''), FeatureResult(code='proyeccion_anterior_cabeza', label='Proyeccion anterior de cabeza', chain='flexion', present=False, value=102.81710642374594, unit='deg', rule='craniovertebral_angle_deg lt 50.0', note=''), FeatureResult(code='bascula_posterior_cabeza', label='Bascula posterior de cabeza', chain='extension', present=True, value=102.81710642374594, unit='deg', rule='craniovertebral_angle_deg gt 60.0', note=''), FeatureResult(code='retroversion_pelvica', label='Retroversion pelvica', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='pelvic_tilt_mm lt -10.0', note=''), FeatureResult(code='anteversion_pelvica', label='Anteversion pelvica', chain='extension', present=True, value=43.73572428941725, unit='mm', rule='pelvic_tilt_mm gt 10.0', note=''), FeatureResult(code='coxis_hacia_adentro', label='Coxis hacia adentro', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm lt -6.0', note=''), FeatureResult(code='rectificacion_lumbar', label='Rectificacion lumbar', chain='flexion', present=False, value=-9.117229349613183, unit='mm', rule='lumbar_curve_mm abs_le 5.0', note=''), FeatureResult(code='hiperlordosis', label='Hiperlordosis', chain='extension', present=False, value=-9.117229349613183, unit='mm', rule='lumbar_curve_mm gt 10.0', note=''), FeatureResult(code='descenso_hombros', label='Descenso de hombros', chain='flexion', present=True, value=146.49977806583047, unit='mm', rule='shoulder_drop_mm gt 20.0', note=''), FeatureResult(code='ascenso_hombros', label='Ascenso de hombros', chain='extension', present=False, value=146.49977806583047, unit='mm', rule='shoulder_drop_mm lt 10.0', note=''), FeatureResult(code='hipercifosis', label='Hipercifosis', chain='flexion', present=False, value=28.540342040061944, unit='mm', rule='d7_offset_mm gt 60.0', note=''), FeatureResult(code='espalda_plana', label='Espalda plana', chain='extension', present=False, value=28.540342040061944, unit='mm', rule='d7_offset_mm lt 20.0', note=''), FeatureResult(code='rectificacion_lumbar_baja', label='Rectificacion lumbar', chain='flexion', present=False, value=34.618494939804066, unit='mm', rule='l1_offset_mm lt 20.0', note=''), FeatureResult(code='hiperlordosis_baja', label='Hiperlordosis baja', chain='extension', present=False, value=34.618494939804066, unit='mm', rule='l1_offset_mm gt 45.0', note=''), FeatureResult(code='flexion_msls', label='Flexion de MMII', chain='flexion', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg lt 175.0', note=''), FeatureResult(code='knee_posteriorizada_flexion', label='Rodilla posteriorizada', chain='flexion', present=False, value=18.0964557826519, unit='mm', rule='knee_barre_offset_mm lt -5.0', note=''), FeatureResult(code='ankle_posteriorizado_flexion', label='Tobillo posteriorizado', chain='flexion', present=False, value=-0.4528268277645111, unit='mm', rule='ankle_barre_offset_mm lt -5.0', note=''), FeatureResult(code='extension_msls', label='Extension de MMII', chain='extension', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg gt 185.0', note=''), FeatureResult(code='knee_antepulsion_extension', label='Rodilla en antepulsion', chain='extension', present=True, value=18.0964557826519, unit='mm', rule='knee_barre_offset_mm gt 5.0', note=''), FeatureResult(code='ankle_antepulsion_extension', label='Tobillo en antepulsion', chain='extension', present=False, value=-0.4528268277645111, unit='mm', rule='ankle_barre_offset_mm gt 5.0', note=''), FeatureResult(code='inspiracion_global', label='Patron inspiratorio', chain='inspiracion', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm gt 15.0', note=''), FeatureResult(code='espiracion_global', label='Patron espiratorio', chain='espiracion', present=True, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm lt 8.0', note='')], chain_summaries={'flexion': ChainSummary(name='Cadena de flexion', positives=1, total=14, activation_percentage=7.142857142857142, percentage=5.179282868525896), 'extension': ChainSummary(name='Cadena de extension', positives=4, total=13, activation_percentage=30.76923076923077, percentage=22.31075697211155), 'apertura': ChainSummary(name='Cadena de apertura', positives=0, total=0, activation_percentage=0.0, percentage=0.0), 'cierre': ChainSummary(name='Cadena de cierre', positives=0, total=0, activation_percentage=0.0, percentage=0.0), 'inspiracion': ChainSummary(name='Cadena inspiratoria', positives=0, total=1, activation_percentage=0.0, percentage=0.0), 'espiracion': ChainSummary(name='Cadena espiratoria', positives=1, total=1, activation_percentage=100.0, percentage=72.50996015936255)}, images={'annotated': array([[[ 93, 108, 104],
+        [ 93, 108, 104],
+        [ 92, 107, 103],
+        ...,
+        [ 97, 112, 108],
+        [ 97, 112, 108],
+        [ 98, 113, 109]],
+
+       [[ 93, 108, 104],
+        [ 93, 108, 104],
+        [ 92, 107, 103],
+        ...,
+        [ 97, 112, 108],
+        [ 98, 113, 109],
+        [ 98, 113, 109]],
+
+       [[ 93, 108, 104],
+        [ 93, 108, 104],
+        [ 93, 108, 104],
+        ...,
+        [ 98, 113, 109],
+        [ 98, 113, 109],
+        [ 98, 113, 109]],
+
+       ...,
+
+       [[ 60,  73,  75],
+        [ 59,  72,  74],
+        [ 58,  71,  73],
+        ...,
+        [ 58,  76,  77],
+        [ 60,  78,  79],
+        [ 62,  80,  81]],
+
+       [[ 60,  73,  75],
+        [ 60,  73,  75],
+        [ 59,  72,  74],
+        ...,
+        [ 60,  78,  79],
+        [ 60,  78,  79],
+        [ 59,  77,  78]],
+
+       [[ 60,  73,  75],
+        [ 60,  73,  75],
+        [ 59,  72,  74],
+        ...,
+        [ 56,  74,  75],
+        [ 55,  73,  74],
+        [ 54,  72,  73]]], shape=(1549, 623, 3), dtype=uint8)}, notes=['Cadena predominante: Cadena espiratoria (72.5%).'])
+Imagen anotada guardada en: uploads/chains_annotated_sagital_asd_1776423621.jpg
+--- FIN /analisis_cadenas ---
+--- INICIO /analisis_cadenas ---
+chains_image_sagital: <FileStorage: '' ('application/octet-stream')>
+chains_image_sagital_data: 
+No se subió/capturó imagen sagital
+--- FIN /analisis_cadenas ---
+--- INICIO /analisis_cadenas ---
+chains_image_sagital: <FileStorage: 'Sagital_Derecho.jpeg' ('image/jpeg')>
+chains_image_sagital_data: 
+Procesando imagen sagital desde archivo
+Llamando a analizar_cadenas
+Resultado analizar_cadenas: AnalysisResult(metrics={'knee_angle_deg': 178.8167654969083, 'q_angle_deg': 178.8167654969083, 'charpy_angle_deg': 1.5595411635200913, 'clavicular_opening_angle_deg': 0.919711720559542, 'cervical_angle_deg': 167.0791461369973, 'craniovertebral_angle_deg': 102.81710642374594, 'mandibular_angle_deg': 8.477622419959017, 'd7_offset_mm': 28.540342040061944, 'l1_offset_mm': 34.618494939804066, 'sacrum_offset_mm': 43.73572428941725, 'thoracic_curve_mm': -6.078152899742122, 'lumbar_curve_mm': -9.117229349613183, 'pelvic_tilt_mm': 43.73572428941725, 'shoulder_drop_mm': 146.49977806583047, 'head_barre_offset_mm': 65.61402063071728, 'shoulder_barre_offset_mm': 19.42311269044876, 'hip_barre_offset_mm': 41.13080161809921, 'knee_barre_offset_mm': 18.0964557826519, 'ankle_barre_offset_mm': -0.4528268277645111, 'arm_midline_distance_mm': 127.58424186706543, 'arm_rotation_score': -104.99885167181492, 'hip_rotation_score': -174.28309231996536, 'foot_orientation_score': -11.479732871055603, 'plane': 'sagittal', 'profile_side': 'left', 'calibration_mm_per_px': 1.0, 'calibration_source': 'pixel'}, feature_results=[FeatureResult(code='genu_flexum', label='Genu flexum', chain='flexion', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg lt 175.0', note=''), FeatureResult(code='genu_recurvatum', label='Genu recurvatum', chain='extension', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg gt 185.0', note=''), FeatureResult(code='sacro_vertical', label='Sacro vertical', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm abs_le 5.0', note=''), FeatureResult(code='sacro_horizontal', label='Sacro horizontal', chain='extension', present=True, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm abs_ge 20.0', note=''), FeatureResult(code='cifosis', label='Cifosis', chain='flexion', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm gt 10.0', note=''), FeatureResult(code='dorso_plano', label='Dorso plano', chain='extension', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm abs_le 5.0', note=''), FeatureResult(code='inversion_cervical', label='Inversion cervical', chain='flexion', present=False, value=167.0791461369973, unit='deg', rule='cervical_angle_deg lt 155.0', note=''), FeatureResult(code='rectificacion_cervical', label='Rectificacion cervical', chain='extension', present=False, value=167.0791461369973, unit='deg', rule='cervical_angle_deg gt 170.0', note=''), FeatureResult(code='proyeccion_anterior_cabeza', label='Proyeccion anterior de cabeza', chain='flexion', present=False, value=102.81710642374594, unit='deg', rule='craniovertebral_angle_deg lt 50.0', note=''), FeatureResult(code='bascula_posterior_cabeza', label='Bascula posterior de cabeza', chain='extension', present=True, value=102.81710642374594, unit='deg', rule='craniovertebral_angle_deg gt 60.0', note=''), FeatureResult(code='retroversion_pelvica', label='Retroversion pelvica', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='pelvic_tilt_mm lt -10.0', note=''), FeatureResult(code='anteversion_pelvica', label='Anteversion pelvica', chain='extension', present=True, value=43.73572428941725, unit='mm', rule='pelvic_tilt_mm gt 10.0', note=''), FeatureResult(code='coxis_hacia_adentro', label='Coxis hacia adentro', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm lt -6.0', note=''), FeatureResult(code='rectificacion_lumbar', label='Rectificacion lumbar', chain='flexion', present=False, value=-9.117229349613183, unit='mm', rule='lumbar_curve_mm abs_le 5.0', note=''), FeatureResult(code='hiperlordosis', label='Hiperlordosis', chain='extension', present=False, value=-9.117229349613183, unit='mm', rule='lumbar_curve_mm gt 10.0', note=''), FeatureResult(code='descenso_hombros', label='Descenso de hombros', chain='flexion', present=True, value=146.49977806583047, unit='mm', rule='shoulder_drop_mm gt 20.0', note=''), FeatureResult(code='ascenso_hombros', label='Ascenso de hombros', chain='extension', present=False, value=146.49977806583047, unit='mm', rule='shoulder_drop_mm lt 10.0', note=''), FeatureResult(code='hipercifosis', label='Hipercifosis', chain='flexion', present=False, value=28.540342040061944, unit='mm', rule='d7_offset_mm gt 60.0', note=''), FeatureResult(code='espalda_plana', label='Espalda plana', chain='extension', present=False, value=28.540342040061944, unit='mm', rule='d7_offset_mm lt 20.0', note=''), FeatureResult(code='rectificacion_lumbar_baja', label='Rectificacion lumbar', chain='flexion', present=False, value=34.618494939804066, unit='mm', rule='l1_offset_mm lt 20.0', note=''), FeatureResult(code='hiperlordosis_baja', label='Hiperlordosis baja', chain='extension', present=False, value=34.618494939804066, unit='mm', rule='l1_offset_mm gt 45.0', note=''), FeatureResult(code='flexion_msls', label='Flexion de MMII', chain='flexion', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg lt 175.0', note=''), FeatureResult(code='knee_posteriorizada_flexion', label='Rodilla posteriorizada', chain='flexion', present=False, value=18.0964557826519, unit='mm', rule='knee_barre_offset_mm lt -5.0', note=''), FeatureResult(code='ankle_posteriorizado_flexion', label='Tobillo posteriorizado', chain='flexion', present=False, value=-0.4528268277645111, unit='mm', rule='ankle_barre_offset_mm lt -5.0', note=''), FeatureResult(code='extension_msls', label='Extension de MMII', chain='extension', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg gt 185.0', note=''), FeatureResult(code='knee_antepulsion_extension', label='Rodilla en antepulsion', chain='extension', present=True, value=18.0964557826519, unit='mm', rule='knee_barre_offset_mm gt 5.0', note=''), FeatureResult(code='ankle_antepulsion_extension', label='Tobillo en antepulsion', chain='extension', present=False, value=-0.4528268277645111, unit='mm', rule='ankle_barre_offset_mm gt 5.0', note=''), FeatureResult(code='inspiracion_global', label='Patron inspiratorio', chain='inspiracion', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm gt 15.0', note=''), FeatureResult(code='espiracion_global', label='Patron espiratorio', chain='espiracion', present=True, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm lt 8.0', note='')], chain_summaries={'flexion': ChainSummary(name='Cadena de flexion', positives=1, total=14, activation_percentage=7.142857142857142, percentage=5.179282868525896), 'extension': ChainSummary(name='Cadena de extension', positives=4, total=13, activation_percentage=30.76923076923077, percentage=22.31075697211155), 'apertura': ChainSummary(name='Cadena de apertura', positives=0, total=0, activation_percentage=0.0, percentage=0.0), 'cierre': ChainSummary(name='Cadena de cierre', positives=0, total=0, activation_percentage=0.0, percentage=0.0), 'inspiracion': ChainSummary(name='Cadena inspiratoria', positives=0, total=1, activation_percentage=0.0, percentage=0.0), 'espiracion': ChainSummary(name='Cadena espiratoria', positives=1, total=1, activation_percentage=100.0, percentage=72.50996015936255)}, images={'annotated': array([[[ 93, 108, 104],
+        [ 93, 108, 104],
+        [ 92, 107, 103],
+        ...,
+        [ 97, 112, 108],
+        [ 97, 112, 108],
+        [ 98, 113, 109]],
+
+       [[ 93, 108, 104],
+        [ 93, 108, 104],
+        [ 92, 107, 103],
+        ...,
+        [ 97, 112, 108],
+        [ 98, 113, 109],
+        [ 98, 113, 109]],
+
+       [[ 93, 108, 104],
+        [ 93, 108, 104],
+        [ 93, 108, 104],
+        ...,
+        [ 98, 113, 109],
+        [ 98, 113, 109],
+        [ 98, 113, 109]],
+
+       ...,
+
+       [[ 60,  73,  75],
+        [ 59,  72,  74],
+        [ 58,  71,  73],
+        ...,
+        [ 58,  76,  77],
+        [ 60,  78,  79],
+        [ 62,  80,  81]],
+
+       [[ 60,  73,  75],
+        [ 60,  73,  75],
+        [ 59,  72,  74],
+        ...,
+        [ 60,  78,  79],
+        [ 60,  78,  79],
+        [ 59,  77,  78]],
+
+       [[ 60,  73,  75],
+        [ 60,  73,  75],
+        [ 59,  72,  74],
+        ...,
+        [ 56,  74,  75],
+        [ 55,  73,  74],
+        [ 54,  72,  73]]], shape=(1549, 623, 3), dtype=uint8)}, notes=['Cadena predominante: Cadena espiratoria (72.5%).'])
+Imagen anotada guardada en: uploads/chains_annotated_sagital_asd_1776424144.jpg
+--- FIN /analisis_cadenas ---
+--- INICIO /analisis_cadenas ---
+chains_image_sagital: <FileStorage: '' ('application/octet-stream')>
+chains_image_sagital_data: 
+No se subió/capturó imagen sagital
+--- FIN /analisis_cadenas ---
+--- INICIO /analisis_cadenas ---
+chains_image_frontal: <FileStorage: 'Frontal_Anterior.jpeg' ('image/jpeg')>
+chains_image_frontal_data: 
+chains_image_sagital: <FileStorage: 'Sagital_Derecho.jpeg' ('image/jpeg')>
+chains_image_sagital_data: 
+Procesando imagen frontal desde archivo
+Llamando a analizar_cadenas frontal
+Resultado analizar_cadenas frontal: AnalysisResult(metrics={'knee_angle_deg': 175.08782133283881, 'q_angle_deg': 175.08782133283881, 'charpy_angle_deg': 105.20864766653285, 'clavicular_opening_angle_deg': 122.60855945174211, 'cervical_angle_deg': 154.89021046255328, 'craniovertebral_angle_deg': 64.00428999297006, 'mandibular_angle_deg': 69.85107038983861, 'd7_offset_mm': 2.44136185795071, 'l1_offset_mm': 4.068936429917812, 'sacrum_offset_mm': 6.5102982878685225, 'thoracic_curve_mm': -1.6275745719671022, 'lumbar_curve_mm': -2.44136185795071, 'pelvic_tilt_mm': 6.5102982878685225, 'shoulder_drop_mm': 186.36520385742188, 'head_barre_offset_mm': -4.3386193960905075, 'shoulder_barre_offset_mm': -0.0, 'hip_barre_offset_mm': 5.812766328454018, 'knee_barre_offset_mm': -81.31818124651909, 'ankle_barre_offset_mm': -105.9929915368557, 'arm_midline_distance_mm': 271.85550870001316, 'arm_rotation_score': -59.584073185920715, 'hip_rotation_score': 39.57944172620773, 'foot_orientation_score': 272.31166845560074, 'plane': 'frontal', 'profile_side': 'left', 'calibration_mm_per_px': 1.0, 'calibration_source': 'pixel'}, feature_results=[FeatureResult(code='pectus_excavatum', label='Pectus excavatum', chain='flexion', present=False, value=105.20864766653285, unit='deg', rule='charpy_angle_deg lt 80.0', note=''), FeatureResult(code='cierre_costillas', label='Cierre de costillas', chain='flexion', present=False, value=105.20864766653285, unit='deg', rule='charpy_angle_deg lt 90.0', note=''), FeatureResult(code='apertura_costillas', label='Apertura de costillas', chain='extension', present=True, value=105.20864766653285, unit='deg', rule='charpy_angle_deg gt 90.0', note=''), FeatureResult(code='valgo_rodilla', label='Valgo de rodilla', chain='flexion', present=False, value=175.08782133283881, unit='deg', rule='q_angle_deg lt 170.0', note=''), FeatureResult(code='varo_rodilla', label='Varo de rodilla', chain='extension', present=False, value=175.08782133283881, unit='deg', rule='q_angle_deg gt 180.0', note=''), FeatureResult(code='rotacion_interna_cadera', label='Rotacion interna de cadera', chain='flexion', present=False, value=39.57944172620773, unit='mm', rule='hip_rotation_score lt -5.0', note=''), FeatureResult(code='rotacion_externa', label='Rotacion externa', chain='extension', present=True, value=39.57944172620773, unit='mm', rule='hip_rotation_score gt 5.0', note=''), FeatureResult(code='aduccion_brazos', label='Aduccion de brazos', chain='flexion', present=False, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm lt 90.0', note=''), FeatureResult(code='abduccion_brazos', label='Abduccion de brazos', chain='extension', present=True, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm gt 120.0', note=''), FeatureResult(code='rotacion_interna_brazos', label='Rotacion interna de brazos', chain='flexion', present=True, value=-59.584073185920715, unit='mm', rule='arm_rotation_score lt -5.0', note=''), FeatureResult(code='rotacion_externa_brazos', label='Rotacion externa de brazos', chain='extension', present=False, value=-59.584073185920715, unit='mm', rule='arm_rotation_score gt 5.0', note=''), FeatureResult(code='descenso_hombros', label='Descenso de hombros', chain='flexion', present=True, value=186.36520385742188, unit='mm', rule='shoulder_drop_mm gt 20.0', note=''), FeatureResult(code='ascenso_hombros', label='Ascenso de hombros', chain='extension', present=False, value=186.36520385742188, unit='mm', rule='shoulder_drop_mm lt 10.0', note=''), FeatureResult(code='elevacion_esternoclavicular', label='Elevacion esternoclavicular', chain='flexion', present=False, value=122.60855945174211, unit='deg', rule='clavicular_opening_angle_deg lt 65.0', note=''), FeatureResult(code='esternon_horizontal', label='Esternon horizontal', chain='extension', present=True, value=122.60855945174211, unit='deg', rule='clavicular_opening_angle_deg gt 95.0', note=''), FeatureResult(code='apertura_mandibula', label='Apertura de mandibula', chain='extension', present=False, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg gt 100.0', note=''), FeatureResult(code='cierre_mandibula', label='Cierre de mandibula', chain='flexion', present=True, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg lt 80.0', note=''), FeatureResult(code='apertura_costal_global', label='Apertura costal global', chain='apertura', present=True, value=105.20864766653285, unit='deg', rule='charpy_angle_deg gt 90.0', note=''), FeatureResult(code='apertura_brazos_global', label='Abduccion global de MMSS', chain='apertura', present=True, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm gt 130.0', note=''), FeatureResult(code='cierre_costal_global', label='Cierre costal global', chain='cierre', present=False, value=105.20864766653285, unit='deg', rule='charpy_angle_deg lt 90.0', note=''), FeatureResult(code='cierre_brazos_global', label='Aduccion global de MMSS', chain='cierre', present=False, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm lt 85.0', note=''), FeatureResult(code='mandibula_abierta_global', label='Apertura mandibular global', chain='inspiracion', present=False, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg gt 100.0', note=''), FeatureResult(code='mandibula_cerrada_global', label='Cierre mandibular global', chain='espiracion', present=True, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg lt 80.0', note='')], chain_summaries={'flexion': ChainSummary(name='Cadena de flexion', positives=3, total=9, activation_percentage=33.33333333333333, percentage=11.76470588235294), 'extension': ChainSummary(name='Cadena de extension', positives=4, total=8, activation_percentage=50.0, percentage=17.647058823529413), 'apertura': ChainSummary(name='Cadena de apertura', positives=2, total=2, activation_percentage=100.0, percentage=35.294117647058826), 'cierre': ChainSummary(name='Cadena de cierre', positives=0, total=2, activation_percentage=0.0, percentage=0.0), 'inspiracion': ChainSummary(name='Cadena inspiratoria', positives=0, total=1, activation_percentage=0.0, percentage=0.0), 'espiracion': ChainSummary(name='Cadena espiratoria', positives=1, total=1, activation_percentage=100.0, percentage=35.294117647058826)}, images={'annotated': array([[[111, 122, 112],
+        [111, 122, 112],
+        [111, 122, 112],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       [[111, 122, 112],
+        [111, 122, 112],
+        [111, 122, 112],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       [[111, 122, 112],
+        [111, 122, 112],
+        [112, 123, 113],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       ...,
+
+       [[ 57,  70,  72],
+        [ 55,  68,  70],
+        [ 54,  67,  69],
+        ...,
+        [ 54,  69,  72],
+        [ 53,  68,  71],
+        [ 52,  67,  70]],
+
+       [[ 62,  75,  77],
+        [ 60,  73,  75],
+        [ 58,  71,  73],
+        ...,
+        [ 51,  66,  69],
+        [ 50,  65,  68],
+        [ 50,  65,  68]],
+
+       [[ 63,  76,  78],
+        [ 61,  74,  76],
+        [ 58,  71,  73],
+        ...,
+        [ 46,  61,  64],
+        [ 46,  61,  64],
+        [ 47,  62,  65]]], shape=(1460, 779, 3), dtype=uint8)}, notes=['Cadena predominante: Cadena de apertura (35.3%).'])
+Imagen anotada guardada en: uploads/chains_annotated_frontal_dddd_1776424276.jpg
+Procesando imagen sagital desde archivo
+Llamando a analizar_cadenas sagital
+Resultado analizar_cadenas sagital: AnalysisResult(metrics={'knee_angle_deg': 178.8167654969083, 'q_angle_deg': 178.8167654969083, 'charpy_angle_deg': 1.5595411635200913, 'clavicular_opening_angle_deg': 0.919711720559542, 'cervical_angle_deg': 167.0791461369973, 'craniovertebral_angle_deg': 102.81710642374594, 'mandibular_angle_deg': 8.477622419959017, 'd7_offset_mm': 28.540342040061944, 'l1_offset_mm': 34.618494939804066, 'sacrum_offset_mm': 43.73572428941725, 'thoracic_curve_mm': -6.078152899742122, 'lumbar_curve_mm': -9.117229349613183, 'pelvic_tilt_mm': 43.73572428941725, 'shoulder_drop_mm': 146.49977806583047, 'head_barre_offset_mm': 65.61402063071728, 'shoulder_barre_offset_mm': 19.42311269044876, 'hip_barre_offset_mm': 41.13080161809921, 'knee_barre_offset_mm': 18.0964557826519, 'ankle_barre_offset_mm': -0.4528268277645111, 'arm_midline_distance_mm': 127.58424186706543, 'arm_rotation_score': -104.99885167181492, 'hip_rotation_score': -174.28309231996536, 'foot_orientation_score': -11.479732871055603, 'plane': 'sagittal', 'profile_side': 'left', 'calibration_mm_per_px': 1.0, 'calibration_source': 'pixel'}, feature_results=[FeatureResult(code='genu_flexum', label='Genu flexum', chain='flexion', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg lt 175.0', note=''), FeatureResult(code='genu_recurvatum', label='Genu recurvatum', chain='extension', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg gt 185.0', note=''), FeatureResult(code='sacro_vertical', label='Sacro vertical', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm abs_le 5.0', note=''), FeatureResult(code='sacro_horizontal', label='Sacro horizontal', chain='extension', present=True, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm abs_ge 20.0', note=''), FeatureResult(code='cifosis', label='Cifosis', chain='flexion', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm gt 10.0', note=''), FeatureResult(code='dorso_plano', label='Dorso plano', chain='extension', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm abs_le 5.0', note=''), FeatureResult(code='inversion_cervical', label='Inversion cervical', chain='flexion', present=False, value=167.0791461369973, unit='deg', rule='cervical_angle_deg lt 155.0', note=''), FeatureResult(code='rectificacion_cervical', label='Rectificacion cervical', chain='extension', present=False, value=167.0791461369973, unit='deg', rule='cervical_angle_deg gt 170.0', note=''), FeatureResult(code='proyeccion_anterior_cabeza', label='Proyeccion anterior de cabeza', chain='flexion', present=False, value=102.81710642374594, unit='deg', rule='craniovertebral_angle_deg lt 50.0', note=''), FeatureResult(code='bascula_posterior_cabeza', label='Bascula posterior de cabeza', chain='extension', present=True, value=102.81710642374594, unit='deg', rule='craniovertebral_angle_deg gt 60.0', note=''), FeatureResult(code='retroversion_pelvica', label='Retroversion pelvica', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='pelvic_tilt_mm lt -10.0', note=''), FeatureResult(code='anteversion_pelvica', label='Anteversion pelvica', chain='extension', present=True, value=43.73572428941725, unit='mm', rule='pelvic_tilt_mm gt 10.0', note=''), FeatureResult(code='coxis_hacia_adentro', label='Coxis hacia adentro', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm lt -6.0', note=''), FeatureResult(code='rectificacion_lumbar', label='Rectificacion lumbar', chain='flexion', present=False, value=-9.117229349613183, unit='mm', rule='lumbar_curve_mm abs_le 5.0', note=''), FeatureResult(code='hiperlordosis', label='Hiperlordosis', chain='extension', present=False, value=-9.117229349613183, unit='mm', rule='lumbar_curve_mm gt 10.0', note=''), FeatureResult(code='descenso_hombros', label='Descenso de hombros', chain='flexion', present=True, value=146.49977806583047, unit='mm', rule='shoulder_drop_mm gt 20.0', note=''), FeatureResult(code='ascenso_hombros', label='Ascenso de hombros', chain='extension', present=False, value=146.49977806583047, unit='mm', rule='shoulder_drop_mm lt 10.0', note=''), FeatureResult(code='hipercifosis', label='Hipercifosis', chain='flexion', present=False, value=28.540342040061944, unit='mm', rule='d7_offset_mm gt 60.0', note=''), FeatureResult(code='espalda_plana', label='Espalda plana', chain='extension', present=False, value=28.540342040061944, unit='mm', rule='d7_offset_mm lt 20.0', note=''), FeatureResult(code='rectificacion_lumbar_baja', label='Rectificacion lumbar', chain='flexion', present=False, value=34.618494939804066, unit='mm', rule='l1_offset_mm lt 20.0', note=''), FeatureResult(code='hiperlordosis_baja', label='Hiperlordosis baja', chain='extension', present=False, value=34.618494939804066, unit='mm', rule='l1_offset_mm gt 45.0', note=''), FeatureResult(code='flexion_msls', label='Flexion de MMII', chain='flexion', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg lt 175.0', note=''), FeatureResult(code='knee_posteriorizada_flexion', label='Rodilla posteriorizada', chain='flexion', present=False, value=18.0964557826519, unit='mm', rule='knee_barre_offset_mm lt -5.0', note=''), FeatureResult(code='ankle_posteriorizado_flexion', label='Tobillo posteriorizado', chain='flexion', present=False, value=-0.4528268277645111, unit='mm', rule='ankle_barre_offset_mm lt -5.0', note=''), FeatureResult(code='extension_msls', label='Extension de MMII', chain='extension', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg gt 185.0', note=''), FeatureResult(code='knee_antepulsion_extension', label='Rodilla en antepulsion', chain='extension', present=True, value=18.0964557826519, unit='mm', rule='knee_barre_offset_mm gt 5.0', note=''), FeatureResult(code='ankle_antepulsion_extension', label='Tobillo en antepulsion', chain='extension', present=False, value=-0.4528268277645111, unit='mm', rule='ankle_barre_offset_mm gt 5.0', note=''), FeatureResult(code='inspiracion_global', label='Patron inspiratorio', chain='inspiracion', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm gt 15.0', note=''), FeatureResult(code='espiracion_global', label='Patron espiratorio', chain='espiracion', present=True, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm lt 8.0', note='')], chain_summaries={'flexion': ChainSummary(name='Cadena de flexion', positives=1, total=14, activation_percentage=7.142857142857142, percentage=5.179282868525896), 'extension': ChainSummary(name='Cadena de extension', positives=4, total=13, activation_percentage=30.76923076923077, percentage=22.31075697211155), 'apertura': ChainSummary(name='Cadena de apertura', positives=0, total=0, activation_percentage=0.0, percentage=0.0), 'cierre': ChainSummary(name='Cadena de cierre', positives=0, total=0, activation_percentage=0.0, percentage=0.0), 'inspiracion': ChainSummary(name='Cadena inspiratoria', positives=0, total=1, activation_percentage=0.0, percentage=0.0), 'espiracion': ChainSummary(name='Cadena espiratoria', positives=1, total=1, activation_percentage=100.0, percentage=72.50996015936255)}, images={'annotated': array([[[ 93, 108, 104],
+        [ 93, 108, 104],
+        [ 92, 107, 103],
+        ...,
+        [ 97, 112, 108],
+        [ 97, 112, 108],
+        [ 98, 113, 109]],
+
+       [[ 93, 108, 104],
+        [ 93, 108, 104],
+        [ 92, 107, 103],
+        ...,
+        [ 97, 112, 108],
+        [ 98, 113, 109],
+        [ 98, 113, 109]],
+
+       [[ 93, 108, 104],
+        [ 93, 108, 104],
+        [ 93, 108, 104],
+        ...,
+        [ 98, 113, 109],
+        [ 98, 113, 109],
+        [ 98, 113, 109]],
+
+       ...,
+
+       [[ 60,  73,  75],
+        [ 59,  72,  74],
+        [ 58,  71,  73],
+        ...,
+        [ 58,  76,  77],
+        [ 60,  78,  79],
+        [ 62,  80,  81]],
+
+       [[ 60,  73,  75],
+        [ 60,  73,  75],
+        [ 59,  72,  74],
+        ...,
+        [ 60,  78,  79],
+        [ 60,  78,  79],
+        [ 59,  77,  78]],
+
+       [[ 60,  73,  75],
+        [ 60,  73,  75],
+        [ 59,  72,  74],
+        ...,
+        [ 56,  74,  75],
+        [ 55,  73,  74],
+        [ 54,  72,  73]]], shape=(1549, 623, 3), dtype=uint8)}, notes=['Cadena predominante: Cadena espiratoria (72.5%).'])
+Imagen anotada guardada en: uploads/chains_annotated_sagital_dddd_1776424276.jpg
+--- FIN /analisis_cadenas ---
+--- INICIO /analisis_cadenas ---
+chains_image_frontal: <FileStorage: '' ('application/octet-stream')>
+chains_image_frontal_data: 
+chains_image_sagital: <FileStorage: 'Frontal_Anterior.jpeg' ('image/jpeg')>
+chains_image_sagital_data: 
+Procesando imagen sagital desde archivo
+Llamando a analizar_cadenas sagital
+Resultado analizar_cadenas sagital: AnalysisResult(metrics={'knee_angle_deg': 175.08782133283881, 'q_angle_deg': 175.08782133283881, 'charpy_angle_deg': 105.20864766653285, 'clavicular_opening_angle_deg': 122.60855945174211, 'cervical_angle_deg': 154.89021046255328, 'craniovertebral_angle_deg': 64.00428999297006, 'mandibular_angle_deg': 69.85107038983861, 'd7_offset_mm': 2.3932002469897498, 'l1_offset_mm': 4.020774818956852, 'sacrum_offset_mm': 6.462136676907562, 'thoracic_curve_mm': -1.6275745719671022, 'lumbar_curve_mm': -2.44136185795071, 'pelvic_tilt_mm': 6.462136676907562, 'shoulder_drop_mm': 186.36520385742188, 'head_barre_offset_mm': -4.386781007051468, 'shoulder_barre_offset_mm': -0.04816161096096039, 'hip_barre_offset_mm': 5.764604717493057, 'knee_barre_offset_mm': -81.36634285748005, 'ankle_barre_offset_mm': -106.04115314781666, 'arm_midline_distance_mm': 271.85550870001316, 'arm_rotation_score': -59.584073185920715, 'hip_rotation_score': 39.57944172620773, 'foot_orientation_score': 272.31166845560074, 'plane': 'sagittal', 'profile_side': 'left', 'calibration_mm_per_px': 1.0, 'calibration_source': 'pixel'}, feature_results=[FeatureResult(code='genu_flexum', label='Genu flexum', chain='flexion', present=False, value=175.08782133283881, unit='deg', rule='knee_angle_deg lt 175.0', note=''), FeatureResult(code='genu_recurvatum', label='Genu recurvatum', chain='extension', present=False, value=175.08782133283881, unit='deg', rule='knee_angle_deg gt 185.0', note=''), FeatureResult(code='sacro_vertical', label='Sacro vertical', chain='flexion', present=False, value=6.462136676907562, unit='mm', rule='sacrum_offset_mm abs_le 5.0', note=''), FeatureResult(code='sacro_horizontal', label='Sacro horizontal', chain='extension', present=False, value=6.462136676907562, unit='mm', rule='sacrum_offset_mm abs_ge 20.0', note=''), FeatureResult(code='cifosis', label='Cifosis', chain='flexion', present=False, value=-1.6275745719671022, unit='mm', rule='thoracic_curve_mm gt 10.0', note=''), FeatureResult(code='dorso_plano', label='Dorso plano', chain='extension', present=True, value=-1.6275745719671022, unit='mm', rule='thoracic_curve_mm abs_le 5.0', note=''), FeatureResult(code='inversion_cervical', label='Inversion cervical', chain='flexion', present=True, value=154.89021046255328, unit='deg', rule='cervical_angle_deg lt 155.0', note=''), FeatureResult(code='rectificacion_cervical', label='Rectificacion cervical', chain='extension', present=False, value=154.89021046255328, unit='deg', rule='cervical_angle_deg gt 170.0', note=''), FeatureResult(code='proyeccion_anterior_cabeza', label='Proyeccion anterior de cabeza', chain='flexion', present=False, value=64.00428999297006, unit='deg', rule='craniovertebral_angle_deg lt 50.0', note=''), FeatureResult(code='bascula_posterior_cabeza', label='Bascula posterior de cabeza', chain='extension', present=True, value=64.00428999297006, unit='deg', rule='craniovertebral_angle_deg gt 60.0', note=''), FeatureResult(code='retroversion_pelvica', label='Retroversion pelvica', chain='flexion', present=False, value=6.462136676907562, unit='mm', rule='pelvic_tilt_mm lt -10.0', note=''), FeatureResult(code='anteversion_pelvica', label='Anteversion pelvica', chain='extension', present=False, value=6.462136676907562, unit='mm', rule='pelvic_tilt_mm gt 10.0', note=''), FeatureResult(code='coxis_hacia_adentro', label='Coxis hacia adentro', chain='flexion', present=False, value=6.462136676907562, unit='mm', rule='sacrum_offset_mm lt -6.0', note=''), FeatureResult(code='rectificacion_lumbar', label='Rectificacion lumbar', chain='flexion', present=True, value=-2.44136185795071, unit='mm', rule='lumbar_curve_mm abs_le 5.0', note=''), FeatureResult(code='hiperlordosis', label='Hiperlordosis', chain='extension', present=False, value=-2.44136185795071, unit='mm', rule='lumbar_curve_mm gt 10.0', note=''), FeatureResult(code='descenso_hombros', label='Descenso de hombros', chain='flexion', present=True, value=186.36520385742188, unit='mm', rule='shoulder_drop_mm gt 20.0', note=''), FeatureResult(code='ascenso_hombros', label='Ascenso de hombros', chain='extension', present=False, value=186.36520385742188, unit='mm', rule='shoulder_drop_mm lt 10.0', note=''), FeatureResult(code='hipercifosis', label='Hipercifosis', chain='flexion', present=False, value=2.3932002469897498, unit='mm', rule='d7_offset_mm gt 60.0', note=''), FeatureResult(code='espalda_plana', label='Espalda plana', chain='extension', present=True, value=2.3932002469897498, unit='mm', rule='d7_offset_mm lt 20.0', note=''), FeatureResult(code='rectificacion_lumbar_baja', label='Rectificacion lumbar', chain='flexion', present=True, value=4.020774818956852, unit='mm', rule='l1_offset_mm lt 20.0', note=''), FeatureResult(code='hiperlordosis_baja', label='Hiperlordosis baja', chain='extension', present=False, value=4.020774818956852, unit='mm', rule='l1_offset_mm gt 45.0', note=''), FeatureResult(code='flexion_msls', label='Flexion de MMII', chain='flexion', present=False, value=175.08782133283881, unit='deg', rule='knee_angle_deg lt 175.0', note=''), FeatureResult(code='knee_posteriorizada_flexion', label='Rodilla posteriorizada', chain='flexion', present=True, value=-81.36634285748005, unit='mm', rule='knee_barre_offset_mm lt -5.0', note=''), FeatureResult(code='ankle_posteriorizado_flexion', label='Tobillo posteriorizado', chain='flexion', present=True, value=-106.04115314781666, unit='mm', rule='ankle_barre_offset_mm lt -5.0', note=''), FeatureResult(code='extension_msls', label='Extension de MMII', chain='extension', present=False, value=175.08782133283881, unit='deg', rule='knee_angle_deg gt 185.0', note=''), FeatureResult(code='knee_antepulsion_extension', label='Rodilla en antepulsion', chain='extension', present=False, value=-81.36634285748005, unit='mm', rule='knee_barre_offset_mm gt 5.0', note=''), FeatureResult(code='ankle_antepulsion_extension', label='Tobillo en antepulsion', chain='extension', present=False, value=-106.04115314781666, unit='mm', rule='ankle_barre_offset_mm gt 5.0', note=''), FeatureResult(code='inspiracion_global', label='Patron inspiratorio', chain='inspiracion', present=False, value=-1.6275745719671022, unit='mm', rule='thoracic_curve_mm gt 15.0', note=''), FeatureResult(code='espiracion_global', label='Patron espiratorio', chain='espiracion', present=True, value=-1.6275745719671022, unit='mm', rule='thoracic_curve_mm lt 8.0', note='')], chain_summaries={'flexion': ChainSummary(name='Cadena de flexion', positives=6, total=14, activation_percentage=42.857142857142854, percentage=25.82781456953642), 'extension': ChainSummary(name='Cadena de extension', positives=3, total=13, activation_percentage=23.076923076923077, percentage=13.907284768211921), 'apertura': ChainSummary(name='Cadena de apertura', positives=0, total=0, activation_percentage=0.0, percentage=0.0), 'cierre': ChainSummary(name='Cadena de cierre', positives=0, total=0, activation_percentage=0.0, percentage=0.0), 'inspiracion': ChainSummary(name='Cadena inspiratoria', positives=0, total=1, activation_percentage=0.0, percentage=0.0), 'espiracion': ChainSummary(name='Cadena espiratoria', positives=1, total=1, activation_percentage=100.0, percentage=60.26490066225166)}, images={'annotated': array([[[111, 122, 112],
+        [111, 122, 112],
+        [111, 122, 112],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       [[111, 122, 112],
+        [111, 122, 112],
+        [111, 122, 112],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       [[111, 122, 112],
+        [111, 122, 112],
+        [112, 123, 113],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       ...,
+
+       [[ 57,  70,  72],
+        [ 55,  68,  70],
+        [ 54,  67,  69],
+        ...,
+        [ 54,  69,  72],
+        [ 53,  68,  71],
+        [ 52,  67,  70]],
+
+       [[ 62,  75,  77],
+        [ 60,  73,  75],
+        [ 58,  71,  73],
+        ...,
+        [ 51,  66,  69],
+        [ 50,  65,  68],
+        [ 50,  65,  68]],
+
+       [[ 63,  76,  78],
+        [ 61,  74,  76],
+        [ 58,  71,  73],
+        ...,
+        [ 46,  61,  64],
+        [ 46,  61,  64],
+        [ 47,  62,  65]]], shape=(1460, 779, 3), dtype=uint8)}, notes=['Cadena predominante: Cadena espiratoria (60.3%).'])
+Imagen anotada guardada en: uploads/chains_annotated_sagital_dddd_1776424283.jpg
+--- FIN /analisis_cadenas ---
+--- INICIO /analisis_cadenas ---
+chains_image_frontal: <FileStorage: 'Frontal_Anterior.jpeg' ('image/jpeg')>
+chains_image_frontal_data: 
+chains_image_sagital: <FileStorage: 'Frontal_Anterior.jpeg' ('image/jpeg')>
+chains_image_sagital_data: 
+Procesando imagen frontal desde archivo
+Llamando a analizar_cadenas frontal
+Resultado analizar_cadenas frontal: AnalysisResult(metrics={'knee_angle_deg': 175.08782133283881, 'q_angle_deg': 175.08782133283881, 'charpy_angle_deg': 105.20864766653285, 'clavicular_opening_angle_deg': 122.60855945174211, 'cervical_angle_deg': 154.89021046255328, 'craniovertebral_angle_deg': 64.00428999297006, 'mandibular_angle_deg': 69.85107038983861, 'd7_offset_mm': 2.44136185795071, 'l1_offset_mm': 4.068936429917812, 'sacrum_offset_mm': 6.5102982878685225, 'thoracic_curve_mm': -1.6275745719671022, 'lumbar_curve_mm': -2.44136185795071, 'pelvic_tilt_mm': 6.5102982878685225, 'shoulder_drop_mm': 186.36520385742188, 'head_barre_offset_mm': -4.3386193960905075, 'shoulder_barre_offset_mm': -0.0, 'hip_barre_offset_mm': 5.812766328454018, 'knee_barre_offset_mm': -81.31818124651909, 'ankle_barre_offset_mm': -105.9929915368557, 'arm_midline_distance_mm': 271.85550870001316, 'arm_rotation_score': -60.456298649311066, 'hip_rotation_score': 39.57944172620773, 'foot_orientation_score': 272.31166845560074, 'plane': 'frontal', 'profile_side': 'left', 'calibration_mm_per_px': 1.0, 'calibration_source': 'pixel'}, feature_results=[FeatureResult(code='pectus_excavatum', label='Pectus excavatum', chain='flexion', present=False, value=105.20864766653285, unit='deg', rule='charpy_angle_deg lt 80.0', note=''), FeatureResult(code='cierre_costillas', label='Cierre de costillas', chain='flexion', present=False, value=105.20864766653285, unit='deg', rule='charpy_angle_deg lt 90.0', note=''), FeatureResult(code='apertura_costillas', label='Apertura de costillas', chain='extension', present=True, value=105.20864766653285, unit='deg', rule='charpy_angle_deg gt 90.0', note=''), FeatureResult(code='valgo_rodilla', label='Valgo de rodilla', chain='flexion', present=False, value=175.08782133283881, unit='deg', rule='q_angle_deg lt 170.0', note=''), FeatureResult(code='varo_rodilla', label='Varo de rodilla', chain='extension', present=False, value=175.08782133283881, unit='deg', rule='q_angle_deg gt 180.0', note=''), FeatureResult(code='rotacion_interna_cadera', label='Rotacion interna de cadera', chain='flexion', present=False, value=39.57944172620773, unit='mm', rule='hip_rotation_score lt -5.0', note=''), FeatureResult(code='rotacion_externa', label='Rotacion externa', chain='extension', present=True, value=39.57944172620773, unit='mm', rule='hip_rotation_score gt 5.0', note=''), FeatureResult(code='aduccion_brazos', label='Aduccion de brazos', chain='flexion', present=False, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm lt 90.0', note=''), FeatureResult(code='abduccion_brazos', label='Abduccion de brazos', chain='extension', present=True, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm gt 120.0', note=''), FeatureResult(code='rotacion_interna_brazos', label='Rotacion interna de brazos', chain='flexion', present=True, value=-60.456298649311066, unit='mm', rule='arm_rotation_score lt -5.0', note=''), FeatureResult(code='rotacion_externa_brazos', label='Rotacion externa de brazos', chain='extension', present=False, value=-60.456298649311066, unit='mm', rule='arm_rotation_score gt 5.0', note=''), FeatureResult(code='descenso_hombros', label='Descenso de hombros', chain='flexion', present=True, value=186.36520385742188, unit='mm', rule='shoulder_drop_mm gt 20.0', note=''), FeatureResult(code='ascenso_hombros', label='Ascenso de hombros', chain='extension', present=False, value=186.36520385742188, unit='mm', rule='shoulder_drop_mm lt 10.0', note=''), FeatureResult(code='elevacion_esternoclavicular', label='Elevacion esternoclavicular', chain='flexion', present=False, value=122.60855945174211, unit='deg', rule='clavicular_opening_angle_deg lt 65.0', note=''), FeatureResult(code='esternon_horizontal', label='Esternon horizontal', chain='extension', present=True, value=122.60855945174211, unit='deg', rule='clavicular_opening_angle_deg gt 95.0', note=''), FeatureResult(code='apertura_mandibula', label='Apertura de mandibula', chain='extension', present=False, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg gt 100.0', note=''), FeatureResult(code='cierre_mandibula', label='Cierre de mandibula', chain='flexion', present=True, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg lt 80.0', note=''), FeatureResult(code='apertura_costal_global', label='Apertura costal global', chain='apertura', present=True, value=105.20864766653285, unit='deg', rule='charpy_angle_deg gt 90.0', note=''), FeatureResult(code='apertura_brazos_global', label='Abduccion global de MMSS', chain='apertura', present=True, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm gt 130.0', note=''), FeatureResult(code='cierre_costal_global', label='Cierre costal global', chain='cierre', present=False, value=105.20864766653285, unit='deg', rule='charpy_angle_deg lt 90.0', note=''), FeatureResult(code='cierre_brazos_global', label='Aduccion global de MMSS', chain='cierre', present=False, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm lt 85.0', note=''), FeatureResult(code='mandibula_abierta_global', label='Apertura mandibular global', chain='inspiracion', present=False, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg gt 100.0', note=''), FeatureResult(code='mandibula_cerrada_global', label='Cierre mandibular global', chain='espiracion', present=True, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg lt 80.0', note='')], chain_summaries={'flexion': ChainSummary(name='Cadena de flexion', positives=3, total=9, activation_percentage=33.33333333333333, percentage=11.76470588235294), 'extension': ChainSummary(name='Cadena de extension', positives=4, total=8, activation_percentage=50.0, percentage=17.647058823529413), 'apertura': ChainSummary(name='Cadena de apertura', positives=2, total=2, activation_percentage=100.0, percentage=35.294117647058826), 'cierre': ChainSummary(name='Cadena de cierre', positives=0, total=2, activation_percentage=0.0, percentage=0.0), 'inspiracion': ChainSummary(name='Cadena inspiratoria', positives=0, total=1, activation_percentage=0.0, percentage=0.0), 'espiracion': ChainSummary(name='Cadena espiratoria', positives=1, total=1, activation_percentage=100.0, percentage=35.294117647058826)}, images={'annotated': array([[[111, 122, 112],
+        [111, 122, 112],
+        [111, 122, 112],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       [[111, 122, 112],
+        [111, 122, 112],
+        [111, 122, 112],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       [[111, 122, 112],
+        [111, 122, 112],
+        [112, 123, 113],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       ...,
+
+       [[ 57,  70,  72],
+        [ 55,  68,  70],
+        [ 54,  67,  69],
+        ...,
+        [ 54,  69,  72],
+        [ 53,  68,  71],
+        [ 52,  67,  70]],
+
+       [[ 62,  75,  77],
+        [ 60,  73,  75],
+        [ 58,  71,  73],
+        ...,
+        [ 51,  66,  69],
+        [ 50,  65,  68],
+        [ 50,  65,  68]],
+
+       [[ 63,  76,  78],
+        [ 61,  74,  76],
+        [ 58,  71,  73],
+        ...,
+        [ 46,  61,  64],
+        [ 46,  61,  64],
+        [ 47,  62,  65]]], shape=(1460, 779, 3), dtype=uint8)}, notes=['Cadena predominante: Cadena de apertura (35.3%).'])
+Imagen anotada guardada en: uploads/chains_annotated_frontal_ss_1776424297.jpg
+Procesando imagen sagital desde archivo
+Llamando a analizar_cadenas sagital
+Resultado analizar_cadenas sagital: AnalysisResult(metrics={'knee_angle_deg': 175.08782133283881, 'q_angle_deg': 175.08782133283881, 'charpy_angle_deg': 105.20864766653285, 'clavicular_opening_angle_deg': 122.60855945174211, 'cervical_angle_deg': 154.89021046255328, 'craniovertebral_angle_deg': 64.00428999297006, 'mandibular_angle_deg': 69.85107038983861, 'd7_offset_mm': 2.3932002469897498, 'l1_offset_mm': 4.020774818956852, 'sacrum_offset_mm': 6.462136676907562, 'thoracic_curve_mm': -1.6275745719671022, 'lumbar_curve_mm': -2.44136185795071, 'pelvic_tilt_mm': 6.462136676907562, 'shoulder_drop_mm': 186.36520385742188, 'head_barre_offset_mm': -4.386781007051468, 'shoulder_barre_offset_mm': -0.04816161096096039, 'hip_barre_offset_mm': 5.764604717493057, 'knee_barre_offset_mm': -81.36634285748005, 'ankle_barre_offset_mm': -106.04115314781666, 'arm_midline_distance_mm': 271.85550870001316, 'arm_rotation_score': -59.584073185920715, 'hip_rotation_score': 39.57944172620773, 'foot_orientation_score': 272.31166845560074, 'plane': 'sagittal', 'profile_side': 'left', 'calibration_mm_per_px': 1.0, 'calibration_source': 'pixel'}, feature_results=[FeatureResult(code='genu_flexum', label='Genu flexum', chain='flexion', present=False, value=175.08782133283881, unit='deg', rule='knee_angle_deg lt 175.0', note=''), FeatureResult(code='genu_recurvatum', label='Genu recurvatum', chain='extension', present=False, value=175.08782133283881, unit='deg', rule='knee_angle_deg gt 185.0', note=''), FeatureResult(code='sacro_vertical', label='Sacro vertical', chain='flexion', present=False, value=6.462136676907562, unit='mm', rule='sacrum_offset_mm abs_le 5.0', note=''), FeatureResult(code='sacro_horizontal', label='Sacro horizontal', chain='extension', present=False, value=6.462136676907562, unit='mm', rule='sacrum_offset_mm abs_ge 20.0', note=''), FeatureResult(code='cifosis', label='Cifosis', chain='flexion', present=False, value=-1.6275745719671022, unit='mm', rule='thoracic_curve_mm gt 10.0', note=''), FeatureResult(code='dorso_plano', label='Dorso plano', chain='extension', present=True, value=-1.6275745719671022, unit='mm', rule='thoracic_curve_mm abs_le 5.0', note=''), FeatureResult(code='inversion_cervical', label='Inversion cervical', chain='flexion', present=True, value=154.89021046255328, unit='deg', rule='cervical_angle_deg lt 155.0', note=''), FeatureResult(code='rectificacion_cervical', label='Rectificacion cervical', chain='extension', present=False, value=154.89021046255328, unit='deg', rule='cervical_angle_deg gt 170.0', note=''), FeatureResult(code='proyeccion_anterior_cabeza', label='Proyeccion anterior de cabeza', chain='flexion', present=False, value=64.00428999297006, unit='deg', rule='craniovertebral_angle_deg lt 50.0', note=''), FeatureResult(code='bascula_posterior_cabeza', label='Bascula posterior de cabeza', chain='extension', present=True, value=64.00428999297006, unit='deg', rule='craniovertebral_angle_deg gt 60.0', note=''), FeatureResult(code='retroversion_pelvica', label='Retroversion pelvica', chain='flexion', present=False, value=6.462136676907562, unit='mm', rule='pelvic_tilt_mm lt -10.0', note=''), FeatureResult(code='anteversion_pelvica', label='Anteversion pelvica', chain='extension', present=False, value=6.462136676907562, unit='mm', rule='pelvic_tilt_mm gt 10.0', note=''), FeatureResult(code='coxis_hacia_adentro', label='Coxis hacia adentro', chain='flexion', present=False, value=6.462136676907562, unit='mm', rule='sacrum_offset_mm lt -6.0', note=''), FeatureResult(code='rectificacion_lumbar', label='Rectificacion lumbar', chain='flexion', present=True, value=-2.44136185795071, unit='mm', rule='lumbar_curve_mm abs_le 5.0', note=''), FeatureResult(code='hiperlordosis', label='Hiperlordosis', chain='extension', present=False, value=-2.44136185795071, unit='mm', rule='lumbar_curve_mm gt 10.0', note=''), FeatureResult(code='descenso_hombros', label='Descenso de hombros', chain='flexion', present=True, value=186.36520385742188, unit='mm', rule='shoulder_drop_mm gt 20.0', note=''), FeatureResult(code='ascenso_hombros', label='Ascenso de hombros', chain='extension', present=False, value=186.36520385742188, unit='mm', rule='shoulder_drop_mm lt 10.0', note=''), FeatureResult(code='hipercifosis', label='Hipercifosis', chain='flexion', present=False, value=2.3932002469897498, unit='mm', rule='d7_offset_mm gt 60.0', note=''), FeatureResult(code='espalda_plana', label='Espalda plana', chain='extension', present=True, value=2.3932002469897498, unit='mm', rule='d7_offset_mm lt 20.0', note=''), FeatureResult(code='rectificacion_lumbar_baja', label='Rectificacion lumbar', chain='flexion', present=True, value=4.020774818956852, unit='mm', rule='l1_offset_mm lt 20.0', note=''), FeatureResult(code='hiperlordosis_baja', label='Hiperlordosis baja', chain='extension', present=False, value=4.020774818956852, unit='mm', rule='l1_offset_mm gt 45.0', note=''), FeatureResult(code='flexion_msls', label='Flexion de MMII', chain='flexion', present=False, value=175.08782133283881, unit='deg', rule='knee_angle_deg lt 175.0', note=''), FeatureResult(code='knee_posteriorizada_flexion', label='Rodilla posteriorizada', chain='flexion', present=True, value=-81.36634285748005, unit='mm', rule='knee_barre_offset_mm lt -5.0', note=''), FeatureResult(code='ankle_posteriorizado_flexion', label='Tobillo posteriorizado', chain='flexion', present=True, value=-106.04115314781666, unit='mm', rule='ankle_barre_offset_mm lt -5.0', note=''), FeatureResult(code='extension_msls', label='Extension de MMII', chain='extension', present=False, value=175.08782133283881, unit='deg', rule='knee_angle_deg gt 185.0', note=''), FeatureResult(code='knee_antepulsion_extension', label='Rodilla en antepulsion', chain='extension', present=False, value=-81.36634285748005, unit='mm', rule='knee_barre_offset_mm gt 5.0', note=''), FeatureResult(code='ankle_antepulsion_extension', label='Tobillo en antepulsion', chain='extension', present=False, value=-106.04115314781666, unit='mm', rule='ankle_barre_offset_mm gt 5.0', note=''), FeatureResult(code='inspiracion_global', label='Patron inspiratorio', chain='inspiracion', present=False, value=-1.6275745719671022, unit='mm', rule='thoracic_curve_mm gt 15.0', note=''), FeatureResult(code='espiracion_global', label='Patron espiratorio', chain='espiracion', present=True, value=-1.6275745719671022, unit='mm', rule='thoracic_curve_mm lt 8.0', note='')], chain_summaries={'flexion': ChainSummary(name='Cadena de flexion', positives=6, total=14, activation_percentage=42.857142857142854, percentage=25.82781456953642), 'extension': ChainSummary(name='Cadena de extension', positives=3, total=13, activation_percentage=23.076923076923077, percentage=13.907284768211921), 'apertura': ChainSummary(name='Cadena de apertura', positives=0, total=0, activation_percentage=0.0, percentage=0.0), 'cierre': ChainSummary(name='Cadena de cierre', positives=0, total=0, activation_percentage=0.0, percentage=0.0), 'inspiracion': ChainSummary(name='Cadena inspiratoria', positives=0, total=1, activation_percentage=0.0, percentage=0.0), 'espiracion': ChainSummary(name='Cadena espiratoria', positives=1, total=1, activation_percentage=100.0, percentage=60.26490066225166)}, images={'annotated': array([[[111, 122, 112],
+        [111, 122, 112],
+        [111, 122, 112],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       [[111, 122, 112],
+        [111, 122, 112],
+        [111, 122, 112],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       [[111, 122, 112],
+        [111, 122, 112],
+        [112, 123, 113],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       ...,
+
+       [[ 57,  70,  72],
+        [ 55,  68,  70],
+        [ 54,  67,  69],
+        ...,
+        [ 54,  69,  72],
+        [ 53,  68,  71],
+        [ 52,  67,  70]],
+
+       [[ 62,  75,  77],
+        [ 60,  73,  75],
+        [ 58,  71,  73],
+        ...,
+        [ 51,  66,  69],
+        [ 50,  65,  68],
+        [ 50,  65,  68]],
+
+       [[ 63,  76,  78],
+        [ 61,  74,  76],
+        [ 58,  71,  73],
+        ...,
+        [ 46,  61,  64],
+        [ 46,  61,  64],
+        [ 47,  62,  65]]], shape=(1460, 779, 3), dtype=uint8)}, notes=['Cadena predominante: Cadena espiratoria (60.3%).'])
+Imagen anotada guardada en: uploads/chains_annotated_sagital_ss_1776424297.jpg
+--- FIN /analisis_cadenas ---
+--- INICIO /analisis_cadenas ---
+chains_image_frontal: <FileStorage: 'Frontal_Anterior.jpeg' ('image/jpeg')>
+chains_image_frontal_data: 
+chains_image_sagital: <FileStorage: 'Sagital_Izquierdo.jpeg' ('image/jpeg')>
+chains_image_sagital_data: 
+Procesando imagen frontal desde archivo
+Llamando a analizar_cadenas frontal
+Resultado analizar_cadenas frontal: AnalysisResult(metrics={'knee_angle_deg': 178.63271052954676, 'q_angle_deg': 178.63271052954676, 'charpy_angle_deg': 104.33548533075043, 'clavicular_opening_angle_deg': 115.58799568917821, 'cervical_angle_deg': 158.37736459443914, 'craniovertebral_angle_deg': 69.46216318337945, 'mandibular_angle_deg': 51.219948354004146, 'd7_offset_mm': -1.6006457054614884, 'l1_offset_mm': -2.667742842435814, 'sacrum_offset_mm': -4.268388547897359, 'thoracic_curve_mm': 1.0670971369743256, 'lumbar_curve_mm': 1.6006457054615453, 'pelvic_tilt_mm': -4.268388547897359, 'shoulder_drop_mm': 169.4602445140481, 'head_barre_offset_mm': 8.890041500329971, 'shoulder_barre_offset_mm': -0.0, 'hip_barre_offset_mm': -3.811061203479767, 'knee_barre_offset_mm': -50.8930846452713, 'ankle_barre_offset_mm': -33.49434578418732, 'arm_midline_distance_mm': 143.34586662054062, 'arm_rotation_score': -30.75619125366211, 'hip_rotation_score': 22.106852531433105, 'foot_orientation_score': 107.0379935503006, 'plane': 'frontal', 'profile_side': 'left', 'calibration_mm_per_px': 1.0, 'calibration_source': 'pixel'}, feature_results=[FeatureResult(code='pectus_excavatum', label='Pectus excavatum', chain='flexion', present=False, value=104.33548533075043, unit='deg', rule='charpy_angle_deg lt 80.0', note=''), FeatureResult(code='cierre_costillas', label='Cierre de costillas', chain='flexion', present=False, value=104.33548533075043, unit='deg', rule='charpy_angle_deg lt 90.0', note=''), FeatureResult(code='apertura_costillas', label='Apertura de costillas', chain='extension', present=True, value=104.33548533075043, unit='deg', rule='charpy_angle_deg gt 90.0', note=''), FeatureResult(code='valgo_rodilla', label='Valgo de rodilla', chain='flexion', present=False, value=178.63271052954676, unit='deg', rule='q_angle_deg lt 170.0', note=''), FeatureResult(code='varo_rodilla', label='Varo de rodilla', chain='extension', present=False, value=178.63271052954676, unit='deg', rule='q_angle_deg gt 180.0', note=''), FeatureResult(code='rotacion_interna_cadera', label='Rotacion interna de cadera', chain='flexion', present=False, value=22.106852531433105, unit='mm', rule='hip_rotation_score lt -5.0', note=''), FeatureResult(code='rotacion_externa', label='Rotacion externa', chain='extension', present=True, value=22.106852531433105, unit='mm', rule='hip_rotation_score gt 5.0', note=''), FeatureResult(code='aduccion_brazos', label='Aduccion de brazos', chain='flexion', present=False, value=143.34586662054062, unit='mm', rule='arm_midline_distance_mm lt 90.0', note=''), FeatureResult(code='abduccion_brazos', label='Abduccion de brazos', chain='extension', present=True, value=143.34586662054062, unit='mm', rule='arm_midline_distance_mm gt 120.0', note=''), FeatureResult(code='rotacion_interna_brazos', label='Rotacion interna de brazos', chain='flexion', present=True, value=-30.75619125366211, unit='mm', rule='arm_rotation_score lt -5.0', note=''), FeatureResult(code='rotacion_externa_brazos', label='Rotacion externa de brazos', chain='extension', present=False, value=-30.75619125366211, unit='mm', rule='arm_rotation_score gt 5.0', note=''), FeatureResult(code='descenso_hombros', label='Descenso de hombros', chain='flexion', present=True, value=169.4602445140481, unit='mm', rule='shoulder_drop_mm gt 20.0', note=''), FeatureResult(code='ascenso_hombros', label='Ascenso de hombros', chain='extension', present=False, value=169.4602445140481, unit='mm', rule='shoulder_drop_mm lt 10.0', note=''), FeatureResult(code='elevacion_esternoclavicular', label='Elevacion esternoclavicular', chain='flexion', present=False, value=115.58799568917821, unit='deg', rule='clavicular_opening_angle_deg lt 65.0', note=''), FeatureResult(code='esternon_horizontal', label='Esternon horizontal', chain='extension', present=True, value=115.58799568917821, unit='deg', rule='clavicular_opening_angle_deg gt 95.0', note=''), FeatureResult(code='apertura_mandibula', label='Apertura de mandibula', chain='extension', present=False, value=51.219948354004146, unit='deg', rule='mandibular_angle_deg gt 100.0', note=''), FeatureResult(code='cierre_mandibula', label='Cierre de mandibula', chain='flexion', present=True, value=51.219948354004146, unit='deg', rule='mandibular_angle_deg lt 80.0', note=''), FeatureResult(code='apertura_costal_global', label='Apertura costal global', chain='apertura', present=True, value=104.33548533075043, unit='deg', rule='charpy_angle_deg gt 90.0', note=''), FeatureResult(code='apertura_brazos_global', label='Abduccion global de MMSS', chain='apertura', present=True, value=143.34586662054062, unit='mm', rule='arm_midline_distance_mm gt 130.0', note=''), FeatureResult(code='cierre_costal_global', label='Cierre costal global', chain='cierre', present=False, value=104.33548533075043, unit='deg', rule='charpy_angle_deg lt 90.0', note=''), FeatureResult(code='cierre_brazos_global', label='Aduccion global de MMSS', chain='cierre', present=False, value=143.34586662054062, unit='mm', rule='arm_midline_distance_mm lt 85.0', note=''), FeatureResult(code='mandibula_abierta_global', label='Apertura mandibular global', chain='inspiracion', present=False, value=51.219948354004146, unit='deg', rule='mandibular_angle_deg gt 100.0', note=''), FeatureResult(code='mandibula_cerrada_global', label='Cierre mandibular global', chain='espiracion', present=True, value=51.219948354004146, unit='deg', rule='mandibular_angle_deg lt 80.0', note='')], chain_summaries={'flexion': ChainSummary(name='Cadena de flexion', positives=3, total=9, activation_percentage=33.33333333333333, percentage=11.76470588235294), 'extension': ChainSummary(name='Cadena de extension', positives=4, total=8, activation_percentage=50.0, percentage=17.647058823529413), 'apertura': ChainSummary(name='Cadena de apertura', positives=2, total=2, activation_percentage=100.0, percentage=35.294117647058826), 'cierre': ChainSummary(name='Cadena de cierre', positives=0, total=2, activation_percentage=0.0, percentage=0.0), 'inspiracion': ChainSummary(name='Cadena inspiratoria', positives=0, total=1, activation_percentage=0.0, percentage=0.0), 'espiracion': ChainSummary(name='Cadena espiratoria', positives=1, total=1, activation_percentage=100.0, percentage=35.294117647058826)}, images={'annotated': array([[[255, 255, 254],
+        [255, 255, 254],
+        [255, 255, 254],
+        ...,
+        [167, 174, 169],
+        [167, 174, 169],
+        [167, 174, 169]],
+
+       [[255, 255, 254],
+        [255, 255, 254],
+        [255, 255, 254],
+        ...,
+        [167, 174, 169],
+        [167, 174, 169],
+        [167, 174, 169]],
+
+       [[255, 255, 254],
+        [255, 255, 254],
+        [255, 255, 254],
+        ...,
+        [167, 174, 169],
+        [167, 174, 169],
+        [167, 174, 169]],
+
+       ...,
+
+       [[132, 153, 174],
+        [130, 151, 172],
+        [130, 151, 172],
+        ...,
+        [107, 121, 139],
+        [107, 121, 139],
+        [106, 120, 138]],
+
+       [[132, 153, 174],
+        [131, 152, 173],
+        [131, 152, 173],
+        ...,
+        [106, 120, 138],
+        [106, 120, 138],
+        [106, 120, 138]],
+
+       [[132, 153, 174],
+        [131, 152, 173],
+        [132, 153, 174],
+        ...,
+        [105, 119, 137],
+        [106, 120, 138],
+        [105, 119, 137]]], shape=(1205, 783, 3), dtype=uint8)}, notes=['Cadena predominante: Cadena de apertura (35.3%).'])
+Imagen anotada guardada en: uploads/chains_annotated_frontal_ss_1776424643.jpg
+Procesando imagen sagital desde archivo
+Error en el análisis sagital: 'AnalysisResult' object has no attribute 'get'
+Traceback (most recent call last):
+  File "/home/blackrubick/Escritorio/Trabajo/foot-analysis/webapp/app.py", line 362, in analisis_cadenas
+    session['chains_metrics_sagital'] = resultado.get('metrics')
+                                        ^^^^^^^^^^^^^
+AttributeError: 'AnalysisResult' object has no attribute 'get'
+
+No se subió/capturó imagen frontal ni sagital
+--- FIN /analisis_cadenas ---
+--- INICIO /analisis_cadenas ---
+chains_image_frontal: <FileStorage: 'Frontal_Anterior.jpeg' ('image/jpeg')>
+chains_image_frontal_data: 
+chains_image_sagital: <FileStorage: 'Sagital_Derecho.jpeg' ('image/jpeg')>
+chains_image_sagital_data: 
+Procesando imagen frontal desde archivo
+Llamando a analizar_cadenas frontal
+Resultado analizar_cadenas frontal: AnalysisResult(metrics={'knee_angle_deg': 175.08782133283881, 'q_angle_deg': 175.08782133283881, 'charpy_angle_deg': 105.20864766653285, 'clavicular_opening_angle_deg': 122.60855945174211, 'cervical_angle_deg': 154.89021046255328, 'craniovertebral_angle_deg': 64.00428999297006, 'mandibular_angle_deg': 69.85107038983861, 'd7_offset_mm': 2.44136185795071, 'l1_offset_mm': 4.068936429917812, 'sacrum_offset_mm': 6.5102982878685225, 'thoracic_curve_mm': -1.6275745719671022, 'lumbar_curve_mm': -2.44136185795071, 'pelvic_tilt_mm': 6.5102982878685225, 'shoulder_drop_mm': 186.36520385742188, 'head_barre_offset_mm': -4.3386193960905075, 'shoulder_barre_offset_mm': -0.0, 'hip_barre_offset_mm': 5.812766328454018, 'knee_barre_offset_mm': -81.31818124651909, 'ankle_barre_offset_mm': -105.9929915368557, 'arm_midline_distance_mm': 271.85550870001316, 'arm_rotation_score': -59.584073185920715, 'hip_rotation_score': 39.57944172620773, 'foot_orientation_score': 272.31166845560074, 'plane': 'frontal', 'profile_side': 'left', 'calibration_mm_per_px': 1.0, 'calibration_source': 'pixel'}, feature_results=[FeatureResult(code='pectus_excavatum', label='Pectus excavatum', chain='flexion', present=False, value=105.20864766653285, unit='deg', rule='charpy_angle_deg lt 80.0', note=''), FeatureResult(code='cierre_costillas', label='Cierre de costillas', chain='flexion', present=False, value=105.20864766653285, unit='deg', rule='charpy_angle_deg lt 90.0', note=''), FeatureResult(code='apertura_costillas', label='Apertura de costillas', chain='extension', present=True, value=105.20864766653285, unit='deg', rule='charpy_angle_deg gt 90.0', note=''), FeatureResult(code='valgo_rodilla', label='Valgo de rodilla', chain='flexion', present=False, value=175.08782133283881, unit='deg', rule='q_angle_deg lt 170.0', note=''), FeatureResult(code='varo_rodilla', label='Varo de rodilla', chain='extension', present=False, value=175.08782133283881, unit='deg', rule='q_angle_deg gt 180.0', note=''), FeatureResult(code='rotacion_interna_cadera', label='Rotacion interna de cadera', chain='flexion', present=False, value=39.57944172620773, unit='mm', rule='hip_rotation_score lt -5.0', note=''), FeatureResult(code='rotacion_externa', label='Rotacion externa', chain='extension', present=True, value=39.57944172620773, unit='mm', rule='hip_rotation_score gt 5.0', note=''), FeatureResult(code='aduccion_brazos', label='Aduccion de brazos', chain='flexion', present=False, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm lt 90.0', note=''), FeatureResult(code='abduccion_brazos', label='Abduccion de brazos', chain='extension', present=True, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm gt 120.0', note=''), FeatureResult(code='rotacion_interna_brazos', label='Rotacion interna de brazos', chain='flexion', present=True, value=-59.584073185920715, unit='mm', rule='arm_rotation_score lt -5.0', note=''), FeatureResult(code='rotacion_externa_brazos', label='Rotacion externa de brazos', chain='extension', present=False, value=-59.584073185920715, unit='mm', rule='arm_rotation_score gt 5.0', note=''), FeatureResult(code='descenso_hombros', label='Descenso de hombros', chain='flexion', present=True, value=186.36520385742188, unit='mm', rule='shoulder_drop_mm gt 20.0', note=''), FeatureResult(code='ascenso_hombros', label='Ascenso de hombros', chain='extension', present=False, value=186.36520385742188, unit='mm', rule='shoulder_drop_mm lt 10.0', note=''), FeatureResult(code='elevacion_esternoclavicular', label='Elevacion esternoclavicular', chain='flexion', present=False, value=122.60855945174211, unit='deg', rule='clavicular_opening_angle_deg lt 65.0', note=''), FeatureResult(code='esternon_horizontal', label='Esternon horizontal', chain='extension', present=True, value=122.60855945174211, unit='deg', rule='clavicular_opening_angle_deg gt 95.0', note=''), FeatureResult(code='apertura_mandibula', label='Apertura de mandibula', chain='extension', present=False, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg gt 100.0', note=''), FeatureResult(code='cierre_mandibula', label='Cierre de mandibula', chain='flexion', present=True, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg lt 80.0', note=''), FeatureResult(code='apertura_costal_global', label='Apertura costal global', chain='apertura', present=True, value=105.20864766653285, unit='deg', rule='charpy_angle_deg gt 90.0', note=''), FeatureResult(code='apertura_brazos_global', label='Abduccion global de MMSS', chain='apertura', present=True, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm gt 130.0', note=''), FeatureResult(code='cierre_costal_global', label='Cierre costal global', chain='cierre', present=False, value=105.20864766653285, unit='deg', rule='charpy_angle_deg lt 90.0', note=''), FeatureResult(code='cierre_brazos_global', label='Aduccion global de MMSS', chain='cierre', present=False, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm lt 85.0', note=''), FeatureResult(code='mandibula_abierta_global', label='Apertura mandibular global', chain='inspiracion', present=False, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg gt 100.0', note=''), FeatureResult(code='mandibula_cerrada_global', label='Cierre mandibular global', chain='espiracion', present=True, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg lt 80.0', note='')], chain_summaries={'flexion': ChainSummary(name='Cadena de flexion', positives=3, total=9, activation_percentage=33.33333333333333, percentage=11.76470588235294), 'extension': ChainSummary(name='Cadena de extension', positives=4, total=8, activation_percentage=50.0, percentage=17.647058823529413), 'apertura': ChainSummary(name='Cadena de apertura', positives=2, total=2, activation_percentage=100.0, percentage=35.294117647058826), 'cierre': ChainSummary(name='Cadena de cierre', positives=0, total=2, activation_percentage=0.0, percentage=0.0), 'inspiracion': ChainSummary(name='Cadena inspiratoria', positives=0, total=1, activation_percentage=0.0, percentage=0.0), 'espiracion': ChainSummary(name='Cadena espiratoria', positives=1, total=1, activation_percentage=100.0, percentage=35.294117647058826)}, images={'annotated': array([[[111, 122, 112],
+        [111, 122, 112],
+        [111, 122, 112],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       [[111, 122, 112],
+        [111, 122, 112],
+        [111, 122, 112],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       [[111, 122, 112],
+        [111, 122, 112],
+        [112, 123, 113],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       ...,
+
+       [[ 57,  70,  72],
+        [ 55,  68,  70],
+        [ 54,  67,  69],
+        ...,
+        [ 54,  69,  72],
+        [ 53,  68,  71],
+        [ 52,  67,  70]],
+
+       [[ 62,  75,  77],
+        [ 60,  73,  75],
+        [ 58,  71,  73],
+        ...,
+        [ 51,  66,  69],
+        [ 50,  65,  68],
+        [ 50,  65,  68]],
+
+       [[ 63,  76,  78],
+        [ 61,  74,  76],
+        [ 58,  71,  73],
+        ...,
+        [ 46,  61,  64],
+        [ 46,  61,  64],
+        [ 47,  62,  65]]], shape=(1460, 779, 3), dtype=uint8)}, notes=['Cadena predominante: Cadena de apertura (35.3%).'])
+Imagen anotada guardada en: uploads/chains_annotated_frontal_ss_1776424676.jpg
+Procesando imagen sagital desde archivo
+Error en el análisis sagital: 'AnalysisResult' object has no attribute 'get'
+Traceback (most recent call last):
+  File "/home/blackrubick/Escritorio/Trabajo/foot-analysis/webapp/app.py", line 362, in analisis_cadenas
+    session['chains_metrics_sagital'] = resultado.get('metrics')
+                                        ^^^^^^^^^^^^^
+AttributeError: 'AnalysisResult' object has no attribute 'get'
+
+No se subió/capturó imagen frontal ni sagital
+--- FIN /analisis_cadenas ---
+--- INICIO /analisis_cadenas ---
+chains_image_frontal: <FileStorage: 'Frontal_Anterior.jpeg' ('image/jpeg')>
+chains_image_frontal_data: 
+chains_image_sagital: <FileStorage: 'Sagital_Derecho.jpeg' ('image/jpeg')>
+chains_image_sagital_data: 
+Procesando imagen frontal desde archivo
+Llamando a analizar_cadenas frontal
+Resultado analizar_cadenas frontal: AnalysisResult(metrics={'knee_angle_deg': 175.08782133283881, 'q_angle_deg': 175.08782133283881, 'charpy_angle_deg': 105.20864766653285, 'clavicular_opening_angle_deg': 122.60855945174211, 'cervical_angle_deg': 154.89021046255328, 'craniovertebral_angle_deg': 64.00428999297006, 'mandibular_angle_deg': 69.85107038983861, 'd7_offset_mm': 2.44136185795071, 'l1_offset_mm': 4.068936429917812, 'sacrum_offset_mm': 6.5102982878685225, 'thoracic_curve_mm': -1.6275745719671022, 'lumbar_curve_mm': -2.44136185795071, 'pelvic_tilt_mm': 6.5102982878685225, 'shoulder_drop_mm': 186.36520385742188, 'head_barre_offset_mm': -4.3386193960905075, 'shoulder_barre_offset_mm': -0.0, 'hip_barre_offset_mm': 5.812766328454018, 'knee_barre_offset_mm': -81.31818124651909, 'ankle_barre_offset_mm': -105.9929915368557, 'arm_midline_distance_mm': 271.85550870001316, 'arm_rotation_score': -59.584073185920715, 'hip_rotation_score': 39.57944172620773, 'foot_orientation_score': 272.31166845560074, 'plane': 'frontal', 'profile_side': 'left', 'calibration_mm_per_px': 1.0, 'calibration_source': 'pixel'}, feature_results=[FeatureResult(code='pectus_excavatum', label='Pectus excavatum', chain='flexion', present=False, value=105.20864766653285, unit='deg', rule='charpy_angle_deg lt 80.0', note=''), FeatureResult(code='cierre_costillas', label='Cierre de costillas', chain='flexion', present=False, value=105.20864766653285, unit='deg', rule='charpy_angle_deg lt 90.0', note=''), FeatureResult(code='apertura_costillas', label='Apertura de costillas', chain='extension', present=True, value=105.20864766653285, unit='deg', rule='charpy_angle_deg gt 90.0', note=''), FeatureResult(code='valgo_rodilla', label='Valgo de rodilla', chain='flexion', present=False, value=175.08782133283881, unit='deg', rule='q_angle_deg lt 170.0', note=''), FeatureResult(code='varo_rodilla', label='Varo de rodilla', chain='extension', present=False, value=175.08782133283881, unit='deg', rule='q_angle_deg gt 180.0', note=''), FeatureResult(code='rotacion_interna_cadera', label='Rotacion interna de cadera', chain='flexion', present=False, value=39.57944172620773, unit='mm', rule='hip_rotation_score lt -5.0', note=''), FeatureResult(code='rotacion_externa', label='Rotacion externa', chain='extension', present=True, value=39.57944172620773, unit='mm', rule='hip_rotation_score gt 5.0', note=''), FeatureResult(code='aduccion_brazos', label='Aduccion de brazos', chain='flexion', present=False, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm lt 90.0', note=''), FeatureResult(code='abduccion_brazos', label='Abduccion de brazos', chain='extension', present=True, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm gt 120.0', note=''), FeatureResult(code='rotacion_interna_brazos', label='Rotacion interna de brazos', chain='flexion', present=True, value=-59.584073185920715, unit='mm', rule='arm_rotation_score lt -5.0', note=''), FeatureResult(code='rotacion_externa_brazos', label='Rotacion externa de brazos', chain='extension', present=False, value=-59.584073185920715, unit='mm', rule='arm_rotation_score gt 5.0', note=''), FeatureResult(code='descenso_hombros', label='Descenso de hombros', chain='flexion', present=True, value=186.36520385742188, unit='mm', rule='shoulder_drop_mm gt 20.0', note=''), FeatureResult(code='ascenso_hombros', label='Ascenso de hombros', chain='extension', present=False, value=186.36520385742188, unit='mm', rule='shoulder_drop_mm lt 10.0', note=''), FeatureResult(code='elevacion_esternoclavicular', label='Elevacion esternoclavicular', chain='flexion', present=False, value=122.60855945174211, unit='deg', rule='clavicular_opening_angle_deg lt 65.0', note=''), FeatureResult(code='esternon_horizontal', label='Esternon horizontal', chain='extension', present=True, value=122.60855945174211, unit='deg', rule='clavicular_opening_angle_deg gt 95.0', note=''), FeatureResult(code='apertura_mandibula', label='Apertura de mandibula', chain='extension', present=False, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg gt 100.0', note=''), FeatureResult(code='cierre_mandibula', label='Cierre de mandibula', chain='flexion', present=True, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg lt 80.0', note=''), FeatureResult(code='apertura_costal_global', label='Apertura costal global', chain='apertura', present=True, value=105.20864766653285, unit='deg', rule='charpy_angle_deg gt 90.0', note=''), FeatureResult(code='apertura_brazos_global', label='Abduccion global de MMSS', chain='apertura', present=True, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm gt 130.0', note=''), FeatureResult(code='cierre_costal_global', label='Cierre costal global', chain='cierre', present=False, value=105.20864766653285, unit='deg', rule='charpy_angle_deg lt 90.0', note=''), FeatureResult(code='cierre_brazos_global', label='Aduccion global de MMSS', chain='cierre', present=False, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm lt 85.0', note=''), FeatureResult(code='mandibula_abierta_global', label='Apertura mandibular global', chain='inspiracion', present=False, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg gt 100.0', note=''), FeatureResult(code='mandibula_cerrada_global', label='Cierre mandibular global', chain='espiracion', present=True, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg lt 80.0', note='')], chain_summaries={'flexion': ChainSummary(name='Cadena de flexion', positives=3, total=9, activation_percentage=33.33333333333333, percentage=11.76470588235294), 'extension': ChainSummary(name='Cadena de extension', positives=4, total=8, activation_percentage=50.0, percentage=17.647058823529413), 'apertura': ChainSummary(name='Cadena de apertura', positives=2, total=2, activation_percentage=100.0, percentage=35.294117647058826), 'cierre': ChainSummary(name='Cadena de cierre', positives=0, total=2, activation_percentage=0.0, percentage=0.0), 'inspiracion': ChainSummary(name='Cadena inspiratoria', positives=0, total=1, activation_percentage=0.0, percentage=0.0), 'espiracion': ChainSummary(name='Cadena espiratoria', positives=1, total=1, activation_percentage=100.0, percentage=35.294117647058826)}, images={'annotated': array([[[111, 122, 112],
+        [111, 122, 112],
+        [111, 122, 112],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       [[111, 122, 112],
+        [111, 122, 112],
+        [111, 122, 112],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       [[111, 122, 112],
+        [111, 122, 112],
+        [112, 123, 113],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       ...,
+
+       [[ 57,  70,  72],
+        [ 55,  68,  70],
+        [ 54,  67,  69],
+        ...,
+        [ 54,  69,  72],
+        [ 53,  68,  71],
+        [ 52,  67,  70]],
+
+       [[ 62,  75,  77],
+        [ 60,  73,  75],
+        [ 58,  71,  73],
+        ...,
+        [ 51,  66,  69],
+        [ 50,  65,  68],
+        [ 50,  65,  68]],
+
+       [[ 63,  76,  78],
+        [ 61,  74,  76],
+        [ 58,  71,  73],
+        ...,
+        [ 46,  61,  64],
+        [ 46,  61,  64],
+        [ 47,  62,  65]]], shape=(1460, 779, 3), dtype=uint8)}, notes=['Cadena predominante: Cadena de apertura (35.3%).'])
+Imagen anotada guardada en: uploads/chains_annotated_frontal_ss_1776424720.jpg
+Procesando imagen sagital desde archivo
+Error en el análisis sagital: 'AnalysisResult' object has no attribute 'get'
+Traceback (most recent call last):
+  File "/home/blackrubick/Escritorio/Trabajo/foot-analysis/webapp/app.py", line 376, in analisis_cadenas
+    session['chains_metrics_sagital'] = resultado.get('metrics')
+                                        ^^^^^^^^^^^^^
+AttributeError: 'AnalysisResult' object has no attribute 'get'
+
+No se subió/capturó imagen frontal ni sagital
+--- FIN /analisis_cadenas ---
+--- INICIO /analisis_cadenas ---
+chains_image_frontal: <FileStorage: 'Frontal_Anterior.jpeg' ('image/jpeg')>
+chains_image_frontal_data: 
+chains_image_sagital: <FileStorage: 'Sagital_Derecho.jpeg' ('image/jpeg')>
+chains_image_sagital_data: 
+Procesando imagen frontal desde archivo
+Llamando a analizar_cadenas frontal
+Resultado analizar_cadenas frontal: AnalysisResult(metrics={'knee_angle_deg': 175.08782133283881, 'q_angle_deg': 175.08782133283881, 'charpy_angle_deg': 105.20864766653285, 'clavicular_opening_angle_deg': 122.60855945174211, 'cervical_angle_deg': 154.89021046255328, 'craniovertebral_angle_deg': 64.00428999297006, 'mandibular_angle_deg': 69.85107038983861, 'd7_offset_mm': 2.44136185795071, 'l1_offset_mm': 4.068936429917812, 'sacrum_offset_mm': 6.5102982878685225, 'thoracic_curve_mm': -1.6275745719671022, 'lumbar_curve_mm': -2.44136185795071, 'pelvic_tilt_mm': 6.5102982878685225, 'shoulder_drop_mm': 186.36520385742188, 'head_barre_offset_mm': -4.3386193960905075, 'shoulder_barre_offset_mm': -0.0, 'hip_barre_offset_mm': 5.812766328454018, 'knee_barre_offset_mm': -81.31818124651909, 'ankle_barre_offset_mm': -105.9929915368557, 'arm_midline_distance_mm': 271.85550870001316, 'arm_rotation_score': -59.584073185920715, 'hip_rotation_score': 39.57944172620773, 'foot_orientation_score': 272.31166845560074, 'plane': 'frontal', 'profile_side': 'left', 'calibration_mm_per_px': 1.0, 'calibration_source': 'pixel'}, feature_results=[FeatureResult(code='pectus_excavatum', label='Pectus excavatum', chain='flexion', present=False, value=105.20864766653285, unit='deg', rule='charpy_angle_deg lt 80.0', note=''), FeatureResult(code='cierre_costillas', label='Cierre de costillas', chain='flexion', present=False, value=105.20864766653285, unit='deg', rule='charpy_angle_deg lt 90.0', note=''), FeatureResult(code='apertura_costillas', label='Apertura de costillas', chain='extension', present=True, value=105.20864766653285, unit='deg', rule='charpy_angle_deg gt 90.0', note=''), FeatureResult(code='valgo_rodilla', label='Valgo de rodilla', chain='flexion', present=False, value=175.08782133283881, unit='deg', rule='q_angle_deg lt 170.0', note=''), FeatureResult(code='varo_rodilla', label='Varo de rodilla', chain='extension', present=False, value=175.08782133283881, unit='deg', rule='q_angle_deg gt 180.0', note=''), FeatureResult(code='rotacion_interna_cadera', label='Rotacion interna de cadera', chain='flexion', present=False, value=39.57944172620773, unit='mm', rule='hip_rotation_score lt -5.0', note=''), FeatureResult(code='rotacion_externa', label='Rotacion externa', chain='extension', present=True, value=39.57944172620773, unit='mm', rule='hip_rotation_score gt 5.0', note=''), FeatureResult(code='aduccion_brazos', label='Aduccion de brazos', chain='flexion', present=False, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm lt 90.0', note=''), FeatureResult(code='abduccion_brazos', label='Abduccion de brazos', chain='extension', present=True, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm gt 120.0', note=''), FeatureResult(code='rotacion_interna_brazos', label='Rotacion interna de brazos', chain='flexion', present=True, value=-59.584073185920715, unit='mm', rule='arm_rotation_score lt -5.0', note=''), FeatureResult(code='rotacion_externa_brazos', label='Rotacion externa de brazos', chain='extension', present=False, value=-59.584073185920715, unit='mm', rule='arm_rotation_score gt 5.0', note=''), FeatureResult(code='descenso_hombros', label='Descenso de hombros', chain='flexion', present=True, value=186.36520385742188, unit='mm', rule='shoulder_drop_mm gt 20.0', note=''), FeatureResult(code='ascenso_hombros', label='Ascenso de hombros', chain='extension', present=False, value=186.36520385742188, unit='mm', rule='shoulder_drop_mm lt 10.0', note=''), FeatureResult(code='elevacion_esternoclavicular', label='Elevacion esternoclavicular', chain='flexion', present=False, value=122.60855945174211, unit='deg', rule='clavicular_opening_angle_deg lt 65.0', note=''), FeatureResult(code='esternon_horizontal', label='Esternon horizontal', chain='extension', present=True, value=122.60855945174211, unit='deg', rule='clavicular_opening_angle_deg gt 95.0', note=''), FeatureResult(code='apertura_mandibula', label='Apertura de mandibula', chain='extension', present=False, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg gt 100.0', note=''), FeatureResult(code='cierre_mandibula', label='Cierre de mandibula', chain='flexion', present=True, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg lt 80.0', note=''), FeatureResult(code='apertura_costal_global', label='Apertura costal global', chain='apertura', present=True, value=105.20864766653285, unit='deg', rule='charpy_angle_deg gt 90.0', note=''), FeatureResult(code='apertura_brazos_global', label='Abduccion global de MMSS', chain='apertura', present=True, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm gt 130.0', note=''), FeatureResult(code='cierre_costal_global', label='Cierre costal global', chain='cierre', present=False, value=105.20864766653285, unit='deg', rule='charpy_angle_deg lt 90.0', note=''), FeatureResult(code='cierre_brazos_global', label='Aduccion global de MMSS', chain='cierre', present=False, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm lt 85.0', note=''), FeatureResult(code='mandibula_abierta_global', label='Apertura mandibular global', chain='inspiracion', present=False, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg gt 100.0', note=''), FeatureResult(code='mandibula_cerrada_global', label='Cierre mandibular global', chain='espiracion', present=True, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg lt 80.0', note='')], chain_summaries={'flexion': ChainSummary(name='Cadena de flexion', positives=3, total=9, activation_percentage=33.33333333333333, percentage=11.76470588235294), 'extension': ChainSummary(name='Cadena de extension', positives=4, total=8, activation_percentage=50.0, percentage=17.647058823529413), 'apertura': ChainSummary(name='Cadena de apertura', positives=2, total=2, activation_percentage=100.0, percentage=35.294117647058826), 'cierre': ChainSummary(name='Cadena de cierre', positives=0, total=2, activation_percentage=0.0, percentage=0.0), 'inspiracion': ChainSummary(name='Cadena inspiratoria', positives=0, total=1, activation_percentage=0.0, percentage=0.0), 'espiracion': ChainSummary(name='Cadena espiratoria', positives=1, total=1, activation_percentage=100.0, percentage=35.294117647058826)}, images={'annotated': array([[[111, 122, 112],
+        [111, 122, 112],
+        [111, 122, 112],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       [[111, 122, 112],
+        [111, 122, 112],
+        [111, 122, 112],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       [[111, 122, 112],
+        [111, 122, 112],
+        [112, 123, 113],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       ...,
+
+       [[ 57,  70,  72],
+        [ 55,  68,  70],
+        [ 54,  67,  69],
+        ...,
+        [ 54,  69,  72],
+        [ 53,  68,  71],
+        [ 52,  67,  70]],
+
+       [[ 62,  75,  77],
+        [ 60,  73,  75],
+        [ 58,  71,  73],
+        ...,
+        [ 51,  66,  69],
+        [ 50,  65,  68],
+        [ 50,  65,  68]],
+
+       [[ 63,  76,  78],
+        [ 61,  74,  76],
+        [ 58,  71,  73],
+        ...,
+        [ 46,  61,  64],
+        [ 46,  61,  64],
+        [ 47,  62,  65]]], shape=(1460, 779, 3), dtype=uint8)}, notes=['Cadena predominante: Cadena de apertura (35.3%).'])
+Imagen anotada guardada en: uploads/chains_annotated_frontal_ssssddd_1776424789.jpg
+Procesando imagen sagital desde archivo
+Llamando a analizar_cadenas sagital
+Resultado analizar_cadenas sagital: AnalysisResult(metrics={'knee_angle_deg': 178.8167654969083, 'q_angle_deg': 178.8167654969083, 'charpy_angle_deg': 1.5595411635200913, 'clavicular_opening_angle_deg': 0.919711720559542, 'cervical_angle_deg': 167.0791461369973, 'craniovertebral_angle_deg': 102.81710642374594, 'mandibular_angle_deg': 8.477622419959017, 'd7_offset_mm': 28.540342040061944, 'l1_offset_mm': 34.618494939804066, 'sacrum_offset_mm': 43.73572428941725, 'thoracic_curve_mm': -6.078152899742122, 'lumbar_curve_mm': -9.117229349613183, 'pelvic_tilt_mm': 43.73572428941725, 'shoulder_drop_mm': 146.49977806583047, 'head_barre_offset_mm': 65.61402063071728, 'shoulder_barre_offset_mm': 19.42311269044876, 'hip_barre_offset_mm': 41.13080161809921, 'knee_barre_offset_mm': 18.0964557826519, 'ankle_barre_offset_mm': -0.4528268277645111, 'arm_midline_distance_mm': 127.58424186706543, 'arm_rotation_score': -104.99885167181492, 'hip_rotation_score': -174.28309231996536, 'foot_orientation_score': -11.479732871055603, 'plane': 'sagittal', 'profile_side': 'left', 'calibration_mm_per_px': 1.0, 'calibration_source': 'pixel'}, feature_results=[FeatureResult(code='genu_flexum', label='Genu flexum', chain='flexion', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg lt 175.0', note=''), FeatureResult(code='genu_recurvatum', label='Genu recurvatum', chain='extension', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg gt 185.0', note=''), FeatureResult(code='sacro_vertical', label='Sacro vertical', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm abs_le 5.0', note=''), FeatureResult(code='sacro_horizontal', label='Sacro horizontal', chain='extension', present=True, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm abs_ge 20.0', note=''), FeatureResult(code='cifosis', label='Cifosis', chain='flexion', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm gt 10.0', note=''), FeatureResult(code='dorso_plano', label='Dorso plano', chain='extension', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm abs_le 5.0', note=''), FeatureResult(code='inversion_cervical', label='Inversion cervical', chain='flexion', present=False, value=167.0791461369973, unit='deg', rule='cervical_angle_deg lt 155.0', note=''), FeatureResult(code='rectificacion_cervical', label='Rectificacion cervical', chain='extension', present=False, value=167.0791461369973, unit='deg', rule='cervical_angle_deg gt 170.0', note=''), FeatureResult(code='proyeccion_anterior_cabeza', label='Proyeccion anterior de cabeza', chain='flexion', present=False, value=102.81710642374594, unit='deg', rule='craniovertebral_angle_deg lt 50.0', note=''), FeatureResult(code='bascula_posterior_cabeza', label='Bascula posterior de cabeza', chain='extension', present=True, value=102.81710642374594, unit='deg', rule='craniovertebral_angle_deg gt 60.0', note=''), FeatureResult(code='retroversion_pelvica', label='Retroversion pelvica', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='pelvic_tilt_mm lt -10.0', note=''), FeatureResult(code='anteversion_pelvica', label='Anteversion pelvica', chain='extension', present=True, value=43.73572428941725, unit='mm', rule='pelvic_tilt_mm gt 10.0', note=''), FeatureResult(code='coxis_hacia_adentro', label='Coxis hacia adentro', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm lt -6.0', note=''), FeatureResult(code='rectificacion_lumbar', label='Rectificacion lumbar', chain='flexion', present=False, value=-9.117229349613183, unit='mm', rule='lumbar_curve_mm abs_le 5.0', note=''), FeatureResult(code='hiperlordosis', label='Hiperlordosis', chain='extension', present=False, value=-9.117229349613183, unit='mm', rule='lumbar_curve_mm gt 10.0', note=''), FeatureResult(code='descenso_hombros', label='Descenso de hombros', chain='flexion', present=True, value=146.49977806583047, unit='mm', rule='shoulder_drop_mm gt 20.0', note=''), FeatureResult(code='ascenso_hombros', label='Ascenso de hombros', chain='extension', present=False, value=146.49977806583047, unit='mm', rule='shoulder_drop_mm lt 10.0', note=''), FeatureResult(code='hipercifosis', label='Hipercifosis', chain='flexion', present=False, value=28.540342040061944, unit='mm', rule='d7_offset_mm gt 60.0', note=''), FeatureResult(code='espalda_plana', label='Espalda plana', chain='extension', present=False, value=28.540342040061944, unit='mm', rule='d7_offset_mm lt 20.0', note=''), FeatureResult(code='rectificacion_lumbar_baja', label='Rectificacion lumbar', chain='flexion', present=False, value=34.618494939804066, unit='mm', rule='l1_offset_mm lt 20.0', note=''), FeatureResult(code='hiperlordosis_baja', label='Hiperlordosis baja', chain='extension', present=False, value=34.618494939804066, unit='mm', rule='l1_offset_mm gt 45.0', note=''), FeatureResult(code='flexion_msls', label='Flexion de MMII', chain='flexion', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg lt 175.0', note=''), FeatureResult(code='knee_posteriorizada_flexion', label='Rodilla posteriorizada', chain='flexion', present=False, value=18.0964557826519, unit='mm', rule='knee_barre_offset_mm lt -5.0', note=''), FeatureResult(code='ankle_posteriorizado_flexion', label='Tobillo posteriorizado', chain='flexion', present=False, value=-0.4528268277645111, unit='mm', rule='ankle_barre_offset_mm lt -5.0', note=''), FeatureResult(code='extension_msls', label='Extension de MMII', chain='extension', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg gt 185.0', note=''), FeatureResult(code='knee_antepulsion_extension', label='Rodilla en antepulsion', chain='extension', present=True, value=18.0964557826519, unit='mm', rule='knee_barre_offset_mm gt 5.0', note=''), FeatureResult(code='ankle_antepulsion_extension', label='Tobillo en antepulsion', chain='extension', present=False, value=-0.4528268277645111, unit='mm', rule='ankle_barre_offset_mm gt 5.0', note=''), FeatureResult(code='inspiracion_global', label='Patron inspiratorio', chain='inspiracion', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm gt 15.0', note=''), FeatureResult(code='espiracion_global', label='Patron espiratorio', chain='espiracion', present=True, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm lt 8.0', note='')], chain_summaries={'flexion': ChainSummary(name='Cadena de flexion', positives=1, total=14, activation_percentage=7.142857142857142, percentage=5.179282868525896), 'extension': ChainSummary(name='Cadena de extension', positives=4, total=13, activation_percentage=30.76923076923077, percentage=22.31075697211155), 'apertura': ChainSummary(name='Cadena de apertura', positives=0, total=0, activation_percentage=0.0, percentage=0.0), 'cierre': ChainSummary(name='Cadena de cierre', positives=0, total=0, activation_percentage=0.0, percentage=0.0), 'inspiracion': ChainSummary(name='Cadena inspiratoria', positives=0, total=1, activation_percentage=0.0, percentage=0.0), 'espiracion': ChainSummary(name='Cadena espiratoria', positives=1, total=1, activation_percentage=100.0, percentage=72.50996015936255)}, images={'annotated': array([[[ 93, 108, 104],
+        [ 93, 108, 104],
+        [ 92, 107, 103],
+        ...,
+        [ 97, 112, 108],
+        [ 97, 112, 108],
+        [ 98, 113, 109]],
+
+       [[ 93, 108, 104],
+        [ 93, 108, 104],
+        [ 92, 107, 103],
+        ...,
+        [ 97, 112, 108],
+        [ 98, 113, 109],
+        [ 98, 113, 109]],
+
+       [[ 93, 108, 104],
+        [ 93, 108, 104],
+        [ 93, 108, 104],
+        ...,
+        [ 98, 113, 109],
+        [ 98, 113, 109],
+        [ 98, 113, 109]],
+
+       ...,
+
+       [[ 60,  73,  75],
+        [ 59,  72,  74],
+        [ 58,  71,  73],
+        ...,
+        [ 58,  76,  77],
+        [ 60,  78,  79],
+        [ 62,  80,  81]],
+
+       [[ 60,  73,  75],
+        [ 60,  73,  75],
+        [ 59,  72,  74],
+        ...,
+        [ 60,  78,  79],
+        [ 60,  78,  79],
+        [ 59,  77,  78]],
+
+       [[ 60,  73,  75],
+        [ 60,  73,  75],
+        [ 59,  72,  74],
+        ...,
+        [ 56,  74,  75],
+        [ 55,  73,  74],
+        [ 54,  72,  73]]], shape=(1549, 623, 3), dtype=uint8)}, notes=['Cadena predominante: Cadena espiratoria (72.5%).'])
+Imagen anotada guardada en: uploads/chains_annotated_sagital_ssssddd_1776424789.jpg
+--- FIN /analisis_cadenas ---
+--- INICIO /analisis_cadenas ---
+chains_image_frontal: <FileStorage: 'Frontal_Anterior.jpeg' ('image/jpeg')>
+chains_image_frontal_data: 
+chains_image_sagital: <FileStorage: 'Sagital_Derecho.jpeg' ('image/jpeg')>
+chains_image_sagital_data: 
+Procesando imagen frontal desde archivo
+Llamando a analizar_cadenas frontal
+Resultado analizar_cadenas frontal: AnalysisResult(metrics={'knee_angle_deg': 175.08782133283881, 'q_angle_deg': 175.08782133283881, 'charpy_angle_deg': 105.20864766653285, 'clavicular_opening_angle_deg': 122.60855945174211, 'cervical_angle_deg': 154.89021046255328, 'craniovertebral_angle_deg': 64.00428999297006, 'mandibular_angle_deg': 69.85107038983861, 'd7_offset_mm': 2.44136185795071, 'l1_offset_mm': 4.068936429917812, 'sacrum_offset_mm': 6.5102982878685225, 'thoracic_curve_mm': -1.6275745719671022, 'lumbar_curve_mm': -2.44136185795071, 'pelvic_tilt_mm': 6.5102982878685225, 'shoulder_drop_mm': 186.36520385742188, 'head_barre_offset_mm': -4.3386193960905075, 'shoulder_barre_offset_mm': -0.0, 'hip_barre_offset_mm': 5.812766328454018, 'knee_barre_offset_mm': -81.31818124651909, 'ankle_barre_offset_mm': -105.9929915368557, 'arm_midline_distance_mm': 271.85550870001316, 'arm_rotation_score': -59.584073185920715, 'hip_rotation_score': 39.57944172620773, 'foot_orientation_score': 272.31166845560074, 'plane': 'frontal', 'profile_side': 'left', 'calibration_mm_per_px': 1.0, 'calibration_source': 'pixel'}, feature_results=[FeatureResult(code='pectus_excavatum', label='Pectus excavatum', chain='flexion', present=False, value=105.20864766653285, unit='deg', rule='charpy_angle_deg lt 80.0', note=''), FeatureResult(code='cierre_costillas', label='Cierre de costillas', chain='flexion', present=False, value=105.20864766653285, unit='deg', rule='charpy_angle_deg lt 90.0', note=''), FeatureResult(code='apertura_costillas', label='Apertura de costillas', chain='extension', present=True, value=105.20864766653285, unit='deg', rule='charpy_angle_deg gt 90.0', note=''), FeatureResult(code='valgo_rodilla', label='Valgo de rodilla', chain='flexion', present=False, value=175.08782133283881, unit='deg', rule='q_angle_deg lt 170.0', note=''), FeatureResult(code='varo_rodilla', label='Varo de rodilla', chain='extension', present=False, value=175.08782133283881, unit='deg', rule='q_angle_deg gt 180.0', note=''), FeatureResult(code='rotacion_interna_cadera', label='Rotacion interna de cadera', chain='flexion', present=False, value=39.57944172620773, unit='mm', rule='hip_rotation_score lt -5.0', note=''), FeatureResult(code='rotacion_externa', label='Rotacion externa', chain='extension', present=True, value=39.57944172620773, unit='mm', rule='hip_rotation_score gt 5.0', note=''), FeatureResult(code='aduccion_brazos', label='Aduccion de brazos', chain='flexion', present=False, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm lt 90.0', note=''), FeatureResult(code='abduccion_brazos', label='Abduccion de brazos', chain='extension', present=True, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm gt 120.0', note=''), FeatureResult(code='rotacion_interna_brazos', label='Rotacion interna de brazos', chain='flexion', present=True, value=-59.584073185920715, unit='mm', rule='arm_rotation_score lt -5.0', note=''), FeatureResult(code='rotacion_externa_brazos', label='Rotacion externa de brazos', chain='extension', present=False, value=-59.584073185920715, unit='mm', rule='arm_rotation_score gt 5.0', note=''), FeatureResult(code='descenso_hombros', label='Descenso de hombros', chain='flexion', present=True, value=186.36520385742188, unit='mm', rule='shoulder_drop_mm gt 20.0', note=''), FeatureResult(code='ascenso_hombros', label='Ascenso de hombros', chain='extension', present=False, value=186.36520385742188, unit='mm', rule='shoulder_drop_mm lt 10.0', note=''), FeatureResult(code='elevacion_esternoclavicular', label='Elevacion esternoclavicular', chain='flexion', present=False, value=122.60855945174211, unit='deg', rule='clavicular_opening_angle_deg lt 65.0', note=''), FeatureResult(code='esternon_horizontal', label='Esternon horizontal', chain='extension', present=True, value=122.60855945174211, unit='deg', rule='clavicular_opening_angle_deg gt 95.0', note=''), FeatureResult(code='apertura_mandibula', label='Apertura de mandibula', chain='extension', present=False, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg gt 100.0', note=''), FeatureResult(code='cierre_mandibula', label='Cierre de mandibula', chain='flexion', present=True, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg lt 80.0', note=''), FeatureResult(code='apertura_costal_global', label='Apertura costal global', chain='apertura', present=True, value=105.20864766653285, unit='deg', rule='charpy_angle_deg gt 90.0', note=''), FeatureResult(code='apertura_brazos_global', label='Abduccion global de MMSS', chain='apertura', present=True, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm gt 130.0', note=''), FeatureResult(code='cierre_costal_global', label='Cierre costal global', chain='cierre', present=False, value=105.20864766653285, unit='deg', rule='charpy_angle_deg lt 90.0', note=''), FeatureResult(code='cierre_brazos_global', label='Aduccion global de MMSS', chain='cierre', present=False, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm lt 85.0', note=''), FeatureResult(code='mandibula_abierta_global', label='Apertura mandibular global', chain='inspiracion', present=False, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg gt 100.0', note=''), FeatureResult(code='mandibula_cerrada_global', label='Cierre mandibular global', chain='espiracion', present=True, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg lt 80.0', note='')], chain_summaries={'flexion': ChainSummary(name='Cadena de flexion', positives=3, total=9, activation_percentage=33.33333333333333, percentage=11.76470588235294), 'extension': ChainSummary(name='Cadena de extension', positives=4, total=8, activation_percentage=50.0, percentage=17.647058823529413), 'apertura': ChainSummary(name='Cadena de apertura', positives=2, total=2, activation_percentage=100.0, percentage=35.294117647058826), 'cierre': ChainSummary(name='Cadena de cierre', positives=0, total=2, activation_percentage=0.0, percentage=0.0), 'inspiracion': ChainSummary(name='Cadena inspiratoria', positives=0, total=1, activation_percentage=0.0, percentage=0.0), 'espiracion': ChainSummary(name='Cadena espiratoria', positives=1, total=1, activation_percentage=100.0, percentage=35.294117647058826)}, images={'annotated': array([[[148, 149, 147],
+        [153, 154, 152],
+        [149, 150, 148],
+        ...,
+        [ 10,  17,  34],
+        [  0,   3,  33],
+        [ 45,  59, 108]],
+
+       [[153, 154, 150],
+        [150, 151, 149],
+        [148, 146, 145],
+        ...,
+        [ 28,  35,  52],
+        [  0,   2,  28],
+        [ 35,  51,  93]],
+
+       [[151, 155, 150],
+        [154, 152, 151],
+        [147, 145, 144],
+        ...,
+        [ 43,  50,  65],
+        [  0,   9,  33],
+        [ 24,  42,  79]],
+
+       ...,
+
+       [[ 29,  39,  69],
+        [ 28,  37,  70],
+        [ 28,  37,  70],
+        ...,
+        [ 50,  65,  74],
+        [ 60,  75,  84],
+        [ 60,  73,  81]],
+
+       [[ 29,  39,  69],
+        [ 28,  37,  70],
+        [ 27,  36,  69],
+        ...,
+        [ 59,  73,  85],
+        [ 57,  72,  81],
+        [ 54,  67,  75]],
+
+       [[ 28,  38,  68],
+        [ 28,  38,  68],
+        [ 28,  38,  68],
+        ...,
+        [ 68,  82,  94],
+        [ 54,  69,  78],
+        [ 49,  62,  70]]], shape=(636, 292, 3), dtype=uint8)}, notes=['Cadena predominante: Cadena de apertura (35.3%).'])
+Imagen anotada guardada en: uploads/chains_annotated_frontal_asd_1776425668.jpg
+Procesando imagen sagital desde archivo
+Llamando a analizar_cadenas sagital
+Resultado analizar_cadenas sagital: AnalysisResult(metrics={'knee_angle_deg': 178.8167654969083, 'q_angle_deg': 178.8167654969083, 'charpy_angle_deg': 1.5595411635200913, 'clavicular_opening_angle_deg': 0.919711720559542, 'cervical_angle_deg': 167.0791461369973, 'craniovertebral_angle_deg': 102.81710642374594, 'mandibular_angle_deg': 8.477622419959017, 'd7_offset_mm': 28.540342040061944, 'l1_offset_mm': 34.618494939804066, 'sacrum_offset_mm': 43.73572428941725, 'thoracic_curve_mm': -6.078152899742122, 'lumbar_curve_mm': -9.117229349613183, 'pelvic_tilt_mm': 43.73572428941725, 'shoulder_drop_mm': 146.49977806583047, 'head_barre_offset_mm': 65.61402063071728, 'shoulder_barre_offset_mm': 19.42311269044876, 'hip_barre_offset_mm': 41.13080161809921, 'knee_barre_offset_mm': 18.0964557826519, 'ankle_barre_offset_mm': -0.4528268277645111, 'arm_midline_distance_mm': 127.58424186706543, 'arm_rotation_score': -104.99885167181492, 'hip_rotation_score': -174.28309231996536, 'foot_orientation_score': -11.479732871055603, 'plane': 'sagittal', 'profile_side': 'left', 'calibration_mm_per_px': 1.0, 'calibration_source': 'pixel'}, feature_results=[FeatureResult(code='genu_flexum', label='Genu flexum', chain='flexion', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg lt 175.0', note=''), FeatureResult(code='genu_recurvatum', label='Genu recurvatum', chain='extension', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg gt 185.0', note=''), FeatureResult(code='sacro_vertical', label='Sacro vertical', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm abs_le 5.0', note=''), FeatureResult(code='sacro_horizontal', label='Sacro horizontal', chain='extension', present=True, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm abs_ge 20.0', note=''), FeatureResult(code='cifosis', label='Cifosis', chain='flexion', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm gt 10.0', note=''), FeatureResult(code='dorso_plano', label='Dorso plano', chain='extension', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm abs_le 5.0', note=''), FeatureResult(code='inversion_cervical', label='Inversion cervical', chain='flexion', present=False, value=167.0791461369973, unit='deg', rule='cervical_angle_deg lt 155.0', note=''), FeatureResult(code='rectificacion_cervical', label='Rectificacion cervical', chain='extension', present=False, value=167.0791461369973, unit='deg', rule='cervical_angle_deg gt 170.0', note=''), FeatureResult(code='proyeccion_anterior_cabeza', label='Proyeccion anterior de cabeza', chain='flexion', present=False, value=102.81710642374594, unit='deg', rule='craniovertebral_angle_deg lt 50.0', note=''), FeatureResult(code='bascula_posterior_cabeza', label='Bascula posterior de cabeza', chain='extension', present=True, value=102.81710642374594, unit='deg', rule='craniovertebral_angle_deg gt 60.0', note=''), FeatureResult(code='retroversion_pelvica', label='Retroversion pelvica', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='pelvic_tilt_mm lt -10.0', note=''), FeatureResult(code='anteversion_pelvica', label='Anteversion pelvica', chain='extension', present=True, value=43.73572428941725, unit='mm', rule='pelvic_tilt_mm gt 10.0', note=''), FeatureResult(code='coxis_hacia_adentro', label='Coxis hacia adentro', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm lt -6.0', note=''), FeatureResult(code='rectificacion_lumbar', label='Rectificacion lumbar', chain='flexion', present=False, value=-9.117229349613183, unit='mm', rule='lumbar_curve_mm abs_le 5.0', note=''), FeatureResult(code='hiperlordosis', label='Hiperlordosis', chain='extension', present=False, value=-9.117229349613183, unit='mm', rule='lumbar_curve_mm gt 10.0', note=''), FeatureResult(code='descenso_hombros', label='Descenso de hombros', chain='flexion', present=True, value=146.49977806583047, unit='mm', rule='shoulder_drop_mm gt 20.0', note=''), FeatureResult(code='ascenso_hombros', label='Ascenso de hombros', chain='extension', present=False, value=146.49977806583047, unit='mm', rule='shoulder_drop_mm lt 10.0', note=''), FeatureResult(code='hipercifosis', label='Hipercifosis', chain='flexion', present=False, value=28.540342040061944, unit='mm', rule='d7_offset_mm gt 60.0', note=''), FeatureResult(code='espalda_plana', label='Espalda plana', chain='extension', present=False, value=28.540342040061944, unit='mm', rule='d7_offset_mm lt 20.0', note=''), FeatureResult(code='rectificacion_lumbar_baja', label='Rectificacion lumbar', chain='flexion', present=False, value=34.618494939804066, unit='mm', rule='l1_offset_mm lt 20.0', note=''), FeatureResult(code='hiperlordosis_baja', label='Hiperlordosis baja', chain='extension', present=False, value=34.618494939804066, unit='mm', rule='l1_offset_mm gt 45.0', note=''), FeatureResult(code='flexion_msls', label='Flexion de MMII', chain='flexion', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg lt 175.0', note=''), FeatureResult(code='knee_posteriorizada_flexion', label='Rodilla posteriorizada', chain='flexion', present=False, value=18.0964557826519, unit='mm', rule='knee_barre_offset_mm lt -5.0', note=''), FeatureResult(code='ankle_posteriorizado_flexion', label='Tobillo posteriorizado', chain='flexion', present=False, value=-0.4528268277645111, unit='mm', rule='ankle_barre_offset_mm lt -5.0', note=''), FeatureResult(code='extension_msls', label='Extension de MMII', chain='extension', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg gt 185.0', note=''), FeatureResult(code='knee_antepulsion_extension', label='Rodilla en antepulsion', chain='extension', present=True, value=18.0964557826519, unit='mm', rule='knee_barre_offset_mm gt 5.0', note=''), FeatureResult(code='ankle_antepulsion_extension', label='Tobillo en antepulsion', chain='extension', present=False, value=-0.4528268277645111, unit='mm', rule='ankle_barre_offset_mm gt 5.0', note=''), FeatureResult(code='inspiracion_global', label='Patron inspiratorio', chain='inspiracion', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm gt 15.0', note=''), FeatureResult(code='espiracion_global', label='Patron espiratorio', chain='espiracion', present=True, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm lt 8.0', note='')], chain_summaries={'flexion': ChainSummary(name='Cadena de flexion', positives=1, total=14, activation_percentage=7.142857142857142, percentage=5.179282868525896), 'extension': ChainSummary(name='Cadena de extension', positives=4, total=13, activation_percentage=30.76923076923077, percentage=22.31075697211155), 'apertura': ChainSummary(name='Cadena de apertura', positives=0, total=0, activation_percentage=0.0, percentage=0.0), 'cierre': ChainSummary(name='Cadena de cierre', positives=0, total=0, activation_percentage=0.0, percentage=0.0), 'inspiracion': ChainSummary(name='Cadena inspiratoria', positives=0, total=1, activation_percentage=0.0, percentage=0.0), 'espiracion': ChainSummary(name='Cadena espiratoria', positives=1, total=1, activation_percentage=100.0, percentage=72.50996015936255)}, images={'annotated': None}, notes=['Cadena predominante: Cadena espiratoria (72.5%).'])
+Error en el análisis sagital: OpenCV(4.13.0) /io/opencv/modules/imgcodecs/src/loadsave.cpp:1193: error: (-215:Assertion failed) !_img.empty() in function 'imwrite'
+
+Traceback (most recent call last):
+  File "/home/blackrubick/Escritorio/Trabajo/foot-analysis/webapp/app.py", line 377, in analisis_cadenas
+    cv2.imwrite(out_path, annotated)
+cv2.error: OpenCV(4.13.0) /io/opencv/modules/imgcodecs/src/loadsave.cpp:1193: error: (-215:Assertion failed) !_img.empty() in function 'imwrite'
+
+
+No se subió/capturó imagen frontal ni sagital
+--- FIN /analisis_cadenas ---
+--- INICIO /analisis_cadenas ---
+chains_image_frontal: <FileStorage: '' ('application/octet-stream')>
+chains_image_frontal_data: 
+chains_image_sagital: <FileStorage: 'Sagital_Derecho.jpeg' ('image/jpeg')>
+chains_image_sagital_data: 
+Procesando imagen sagital desde archivo
+Llamando a analizar_cadenas sagital
+Resultado analizar_cadenas sagital: AnalysisResult(metrics={'knee_angle_deg': 178.8167654969083, 'q_angle_deg': 178.8167654969083, 'charpy_angle_deg': 1.5595411635200913, 'clavicular_opening_angle_deg': 0.919711720559542, 'cervical_angle_deg': 167.0791461369973, 'craniovertebral_angle_deg': 102.81710642374594, 'mandibular_angle_deg': 8.477622419959017, 'd7_offset_mm': 28.540342040061944, 'l1_offset_mm': 34.618494939804066, 'sacrum_offset_mm': 43.73572428941725, 'thoracic_curve_mm': -6.078152899742122, 'lumbar_curve_mm': -9.117229349613183, 'pelvic_tilt_mm': 43.73572428941725, 'shoulder_drop_mm': 146.49977806583047, 'head_barre_offset_mm': 65.61402063071728, 'shoulder_barre_offset_mm': 19.42311269044876, 'hip_barre_offset_mm': 41.13080161809921, 'knee_barre_offset_mm': 18.0964557826519, 'ankle_barre_offset_mm': -0.4528268277645111, 'arm_midline_distance_mm': 127.58424186706543, 'arm_rotation_score': -105.08998703956604, 'hip_rotation_score': -174.28309231996536, 'foot_orientation_score': -11.479732871055603, 'plane': 'sagittal', 'profile_side': 'left', 'calibration_mm_per_px': 1.0, 'calibration_source': 'pixel'}, feature_results=[FeatureResult(code='genu_flexum', label='Genu flexum', chain='flexion', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg lt 175.0', note=''), FeatureResult(code='genu_recurvatum', label='Genu recurvatum', chain='extension', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg gt 185.0', note=''), FeatureResult(code='sacro_vertical', label='Sacro vertical', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm abs_le 5.0', note=''), FeatureResult(code='sacro_horizontal', label='Sacro horizontal', chain='extension', present=True, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm abs_ge 20.0', note=''), FeatureResult(code='cifosis', label='Cifosis', chain='flexion', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm gt 10.0', note=''), FeatureResult(code='dorso_plano', label='Dorso plano', chain='extension', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm abs_le 5.0', note=''), FeatureResult(code='inversion_cervical', label='Inversion cervical', chain='flexion', present=False, value=167.0791461369973, unit='deg', rule='cervical_angle_deg lt 155.0', note=''), FeatureResult(code='rectificacion_cervical', label='Rectificacion cervical', chain='extension', present=False, value=167.0791461369973, unit='deg', rule='cervical_angle_deg gt 170.0', note=''), FeatureResult(code='proyeccion_anterior_cabeza', label='Proyeccion anterior de cabeza', chain='flexion', present=False, value=102.81710642374594, unit='deg', rule='craniovertebral_angle_deg lt 50.0', note=''), FeatureResult(code='bascula_posterior_cabeza', label='Bascula posterior de cabeza', chain='extension', present=True, value=102.81710642374594, unit='deg', rule='craniovertebral_angle_deg gt 60.0', note=''), FeatureResult(code='retroversion_pelvica', label='Retroversion pelvica', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='pelvic_tilt_mm lt -10.0', note=''), FeatureResult(code='anteversion_pelvica', label='Anteversion pelvica', chain='extension', present=True, value=43.73572428941725, unit='mm', rule='pelvic_tilt_mm gt 10.0', note=''), FeatureResult(code='coxis_hacia_adentro', label='Coxis hacia adentro', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm lt -6.0', note=''), FeatureResult(code='rectificacion_lumbar', label='Rectificacion lumbar', chain='flexion', present=False, value=-9.117229349613183, unit='mm', rule='lumbar_curve_mm abs_le 5.0', note=''), FeatureResult(code='hiperlordosis', label='Hiperlordosis', chain='extension', present=False, value=-9.117229349613183, unit='mm', rule='lumbar_curve_mm gt 10.0', note=''), FeatureResult(code='descenso_hombros', label='Descenso de hombros', chain='flexion', present=True, value=146.49977806583047, unit='mm', rule='shoulder_drop_mm gt 20.0', note=''), FeatureResult(code='ascenso_hombros', label='Ascenso de hombros', chain='extension', present=False, value=146.49977806583047, unit='mm', rule='shoulder_drop_mm lt 10.0', note=''), FeatureResult(code='hipercifosis', label='Hipercifosis', chain='flexion', present=False, value=28.540342040061944, unit='mm', rule='d7_offset_mm gt 60.0', note=''), FeatureResult(code='espalda_plana', label='Espalda plana', chain='extension', present=False, value=28.540342040061944, unit='mm', rule='d7_offset_mm lt 20.0', note=''), FeatureResult(code='rectificacion_lumbar_baja', label='Rectificacion lumbar', chain='flexion', present=False, value=34.618494939804066, unit='mm', rule='l1_offset_mm lt 20.0', note=''), FeatureResult(code='hiperlordosis_baja', label='Hiperlordosis baja', chain='extension', present=False, value=34.618494939804066, unit='mm', rule='l1_offset_mm gt 45.0', note=''), FeatureResult(code='flexion_msls', label='Flexion de MMII', chain='flexion', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg lt 175.0', note=''), FeatureResult(code='knee_posteriorizada_flexion', label='Rodilla posteriorizada', chain='flexion', present=False, value=18.0964557826519, unit='mm', rule='knee_barre_offset_mm lt -5.0', note=''), FeatureResult(code='ankle_posteriorizado_flexion', label='Tobillo posteriorizado', chain='flexion', present=False, value=-0.4528268277645111, unit='mm', rule='ankle_barre_offset_mm lt -5.0', note=''), FeatureResult(code='extension_msls', label='Extension de MMII', chain='extension', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg gt 185.0', note=''), FeatureResult(code='knee_antepulsion_extension', label='Rodilla en antepulsion', chain='extension', present=True, value=18.0964557826519, unit='mm', rule='knee_barre_offset_mm gt 5.0', note=''), FeatureResult(code='ankle_antepulsion_extension', label='Tobillo en antepulsion', chain='extension', present=False, value=-0.4528268277645111, unit='mm', rule='ankle_barre_offset_mm gt 5.0', note=''), FeatureResult(code='inspiracion_global', label='Patron inspiratorio', chain='inspiracion', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm gt 15.0', note=''), FeatureResult(code='espiracion_global', label='Patron espiratorio', chain='espiracion', present=True, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm lt 8.0', note='')], chain_summaries={'flexion': ChainSummary(name='Cadena de flexion', positives=1, total=14, activation_percentage=7.142857142857142, percentage=5.179282868525896), 'extension': ChainSummary(name='Cadena de extension', positives=4, total=13, activation_percentage=30.76923076923077, percentage=22.31075697211155), 'apertura': ChainSummary(name='Cadena de apertura', positives=0, total=0, activation_percentage=0.0, percentage=0.0), 'cierre': ChainSummary(name='Cadena de cierre', positives=0, total=0, activation_percentage=0.0, percentage=0.0), 'inspiracion': ChainSummary(name='Cadena inspiratoria', positives=0, total=1, activation_percentage=0.0, percentage=0.0), 'espiracion': ChainSummary(name='Cadena espiratoria', positives=1, total=1, activation_percentage=100.0, percentage=72.50996015936255)}, images={'annotated': None}, notes=['Cadena predominante: Cadena espiratoria (72.5%).'])
+Error en el análisis sagital: OpenCV(4.13.0) /io/opencv/modules/imgcodecs/src/loadsave.cpp:1193: error: (-215:Assertion failed) !_img.empty() in function 'imwrite'
+
+Traceback (most recent call last):
+  File "/home/blackrubick/Escritorio/Trabajo/foot-analysis/webapp/app.py", line 377, in analisis_cadenas
+    cv2.imwrite(out_path, annotated)
+cv2.error: OpenCV(4.13.0) /io/opencv/modules/imgcodecs/src/loadsave.cpp:1193: error: (-215:Assertion failed) !_img.empty() in function 'imwrite'
+
+
+No se subió/capturó imagen frontal ni sagital
+--- FIN /analisis_cadenas ---
+--- INICIO /analisis_cadenas ---
+chains_image_frontal: <FileStorage: 'Frontal_Anterior.jpeg' ('image/jpeg')>
+chains_image_frontal_data: 
+chains_image_sagital: <FileStorage: 'Sagital_Derecho.jpeg' ('image/jpeg')>
+chains_image_sagital_data: 
+Procesando imagen frontal desde archivo
+Llamando a analizar_cadenas frontal
+Resultado analizar_cadenas frontal: AnalysisResult(metrics={'knee_angle_deg': 175.08782133283881, 'q_angle_deg': 175.08782133283881, 'charpy_angle_deg': 105.20864766653285, 'clavicular_opening_angle_deg': 122.60855945174211, 'cervical_angle_deg': 154.89021046255328, 'craniovertebral_angle_deg': 64.00428999297006, 'mandibular_angle_deg': 69.85107038983861, 'd7_offset_mm': 2.44136185795071, 'l1_offset_mm': 4.068936429917812, 'sacrum_offset_mm': 6.5102982878685225, 'thoracic_curve_mm': -1.6275745719671022, 'lumbar_curve_mm': -2.44136185795071, 'pelvic_tilt_mm': 6.5102982878685225, 'shoulder_drop_mm': 186.36520385742188, 'head_barre_offset_mm': -4.3386193960905075, 'shoulder_barre_offset_mm': -0.0, 'hip_barre_offset_mm': 5.812766328454018, 'knee_barre_offset_mm': -81.31818124651909, 'ankle_barre_offset_mm': -105.9929915368557, 'arm_midline_distance_mm': 271.85550870001316, 'arm_rotation_score': -59.584073185920715, 'hip_rotation_score': 39.57944172620773, 'foot_orientation_score': 272.31166845560074, 'plane': 'frontal', 'profile_side': 'left', 'calibration_mm_per_px': 1.0, 'calibration_source': 'pixel'}, feature_results=[FeatureResult(code='pectus_excavatum', label='Pectus excavatum', chain='flexion', present=False, value=105.20864766653285, unit='deg', rule='charpy_angle_deg lt 80.0', note=''), FeatureResult(code='cierre_costillas', label='Cierre de costillas', chain='flexion', present=False, value=105.20864766653285, unit='deg', rule='charpy_angle_deg lt 90.0', note=''), FeatureResult(code='apertura_costillas', label='Apertura de costillas', chain='extension', present=True, value=105.20864766653285, unit='deg', rule='charpy_angle_deg gt 90.0', note=''), FeatureResult(code='valgo_rodilla', label='Valgo de rodilla', chain='flexion', present=False, value=175.08782133283881, unit='deg', rule='q_angle_deg lt 170.0', note=''), FeatureResult(code='varo_rodilla', label='Varo de rodilla', chain='extension', present=False, value=175.08782133283881, unit='deg', rule='q_angle_deg gt 180.0', note=''), FeatureResult(code='rotacion_interna_cadera', label='Rotacion interna de cadera', chain='flexion', present=False, value=39.57944172620773, unit='mm', rule='hip_rotation_score lt -5.0', note=''), FeatureResult(code='rotacion_externa', label='Rotacion externa', chain='extension', present=True, value=39.57944172620773, unit='mm', rule='hip_rotation_score gt 5.0', note=''), FeatureResult(code='aduccion_brazos', label='Aduccion de brazos', chain='flexion', present=False, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm lt 90.0', note=''), FeatureResult(code='abduccion_brazos', label='Abduccion de brazos', chain='extension', present=True, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm gt 120.0', note=''), FeatureResult(code='rotacion_interna_brazos', label='Rotacion interna de brazos', chain='flexion', present=True, value=-59.584073185920715, unit='mm', rule='arm_rotation_score lt -5.0', note=''), FeatureResult(code='rotacion_externa_brazos', label='Rotacion externa de brazos', chain='extension', present=False, value=-59.584073185920715, unit='mm', rule='arm_rotation_score gt 5.0', note=''), FeatureResult(code='descenso_hombros', label='Descenso de hombros', chain='flexion', present=True, value=186.36520385742188, unit='mm', rule='shoulder_drop_mm gt 20.0', note=''), FeatureResult(code='ascenso_hombros', label='Ascenso de hombros', chain='extension', present=False, value=186.36520385742188, unit='mm', rule='shoulder_drop_mm lt 10.0', note=''), FeatureResult(code='elevacion_esternoclavicular', label='Elevacion esternoclavicular', chain='flexion', present=False, value=122.60855945174211, unit='deg', rule='clavicular_opening_angle_deg lt 65.0', note=''), FeatureResult(code='esternon_horizontal', label='Esternon horizontal', chain='extension', present=True, value=122.60855945174211, unit='deg', rule='clavicular_opening_angle_deg gt 95.0', note=''), FeatureResult(code='apertura_mandibula', label='Apertura de mandibula', chain='extension', present=False, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg gt 100.0', note=''), FeatureResult(code='cierre_mandibula', label='Cierre de mandibula', chain='flexion', present=True, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg lt 80.0', note=''), FeatureResult(code='apertura_costal_global', label='Apertura costal global', chain='apertura', present=True, value=105.20864766653285, unit='deg', rule='charpy_angle_deg gt 90.0', note=''), FeatureResult(code='apertura_brazos_global', label='Abduccion global de MMSS', chain='apertura', present=True, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm gt 130.0', note=''), FeatureResult(code='cierre_costal_global', label='Cierre costal global', chain='cierre', present=False, value=105.20864766653285, unit='deg', rule='charpy_angle_deg lt 90.0', note=''), FeatureResult(code='cierre_brazos_global', label='Aduccion global de MMSS', chain='cierre', present=False, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm lt 85.0', note=''), FeatureResult(code='mandibula_abierta_global', label='Apertura mandibular global', chain='inspiracion', present=False, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg gt 100.0', note=''), FeatureResult(code='mandibula_cerrada_global', label='Cierre mandibular global', chain='espiracion', present=True, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg lt 80.0', note='')], chain_summaries={'flexion': ChainSummary(name='Cadena de flexion', positives=3, total=9, activation_percentage=33.33333333333333, percentage=11.76470588235294), 'extension': ChainSummary(name='Cadena de extension', positives=4, total=8, activation_percentage=50.0, percentage=17.647058823529413), 'apertura': ChainSummary(name='Cadena de apertura', positives=2, total=2, activation_percentage=100.0, percentage=35.294117647058826), 'cierre': ChainSummary(name='Cadena de cierre', positives=0, total=2, activation_percentage=0.0, percentage=0.0), 'inspiracion': ChainSummary(name='Cadena inspiratoria', positives=0, total=1, activation_percentage=0.0, percentage=0.0), 'espiracion': ChainSummary(name='Cadena espiratoria', positives=1, total=1, activation_percentage=100.0, percentage=35.294117647058826)}, images={'annotated': array([[[111, 122, 112],
+        [111, 122, 112],
+        [111, 122, 112],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       [[111, 122, 112],
+        [111, 122, 112],
+        [111, 122, 112],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       [[111, 122, 112],
+        [111, 122, 112],
+        [112, 123, 113],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       ...,
+
+       [[ 57,  70,  72],
+        [ 55,  68,  70],
+        [ 54,  67,  69],
+        ...,
+        [ 54,  69,  72],
+        [ 53,  68,  71],
+        [ 52,  67,  70]],
+
+       [[ 62,  75,  77],
+        [ 60,  73,  75],
+        [ 58,  71,  73],
+        ...,
+        [ 51,  66,  69],
+        [ 50,  65,  68],
+        [ 50,  65,  68]],
+
+       [[ 63,  76,  78],
+        [ 61,  74,  76],
+        [ 58,  71,  73],
+        ...,
+        [ 46,  61,  64],
+        [ 46,  61,  64],
+        [ 47,  62,  65]]], shape=(1460, 779, 3), dtype=uint8)}, notes=['Cadena predominante: Cadena de apertura (35.3%).'])
+Imagen anotada guardada en: uploads/chains_annotated_frontal_asd_1776425749.jpg
+Procesando imagen sagital desde archivo
+Llamando a analizar_cadenas sagital
+Resultado analizar_cadenas sagital: AnalysisResult(metrics={'knee_angle_deg': 178.8167654969083, 'q_angle_deg': 178.8167654969083, 'charpy_angle_deg': 1.5595411635200913, 'clavicular_opening_angle_deg': 0.919711720559542, 'cervical_angle_deg': 167.0791461369973, 'craniovertebral_angle_deg': 102.81710642374594, 'mandibular_angle_deg': 8.477622419959017, 'd7_offset_mm': 28.540342040061944, 'l1_offset_mm': 34.618494939804066, 'sacrum_offset_mm': 43.73572428941725, 'thoracic_curve_mm': -6.078152899742122, 'lumbar_curve_mm': -9.117229349613183, 'pelvic_tilt_mm': 43.73572428941725, 'shoulder_drop_mm': 146.49977806583047, 'head_barre_offset_mm': 65.61402063071728, 'shoulder_barre_offset_mm': 19.42311269044876, 'hip_barre_offset_mm': 41.13080161809921, 'knee_barre_offset_mm': 18.0964557826519, 'ankle_barre_offset_mm': -0.4528268277645111, 'arm_midline_distance_mm': 127.58424186706543, 'arm_rotation_score': -104.99885167181492, 'hip_rotation_score': -174.28309231996536, 'foot_orientation_score': -11.479732871055603, 'plane': 'sagittal', 'profile_side': 'left', 'calibration_mm_per_px': 1.0, 'calibration_source': 'pixel'}, feature_results=[FeatureResult(code='genu_flexum', label='Genu flexum', chain='flexion', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg lt 175.0', note=''), FeatureResult(code='genu_recurvatum', label='Genu recurvatum', chain='extension', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg gt 185.0', note=''), FeatureResult(code='sacro_vertical', label='Sacro vertical', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm abs_le 5.0', note=''), FeatureResult(code='sacro_horizontal', label='Sacro horizontal', chain='extension', present=True, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm abs_ge 20.0', note=''), FeatureResult(code='cifosis', label='Cifosis', chain='flexion', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm gt 10.0', note=''), FeatureResult(code='dorso_plano', label='Dorso plano', chain='extension', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm abs_le 5.0', note=''), FeatureResult(code='inversion_cervical', label='Inversion cervical', chain='flexion', present=False, value=167.0791461369973, unit='deg', rule='cervical_angle_deg lt 155.0', note=''), FeatureResult(code='rectificacion_cervical', label='Rectificacion cervical', chain='extension', present=False, value=167.0791461369973, unit='deg', rule='cervical_angle_deg gt 170.0', note=''), FeatureResult(code='proyeccion_anterior_cabeza', label='Proyeccion anterior de cabeza', chain='flexion', present=False, value=102.81710642374594, unit='deg', rule='craniovertebral_angle_deg lt 50.0', note=''), FeatureResult(code='bascula_posterior_cabeza', label='Bascula posterior de cabeza', chain='extension', present=True, value=102.81710642374594, unit='deg', rule='craniovertebral_angle_deg gt 60.0', note=''), FeatureResult(code='retroversion_pelvica', label='Retroversion pelvica', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='pelvic_tilt_mm lt -10.0', note=''), FeatureResult(code='anteversion_pelvica', label='Anteversion pelvica', chain='extension', present=True, value=43.73572428941725, unit='mm', rule='pelvic_tilt_mm gt 10.0', note=''), FeatureResult(code='coxis_hacia_adentro', label='Coxis hacia adentro', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm lt -6.0', note=''), FeatureResult(code='rectificacion_lumbar', label='Rectificacion lumbar', chain='flexion', present=False, value=-9.117229349613183, unit='mm', rule='lumbar_curve_mm abs_le 5.0', note=''), FeatureResult(code='hiperlordosis', label='Hiperlordosis', chain='extension', present=False, value=-9.117229349613183, unit='mm', rule='lumbar_curve_mm gt 10.0', note=''), FeatureResult(code='descenso_hombros', label='Descenso de hombros', chain='flexion', present=True, value=146.49977806583047, unit='mm', rule='shoulder_drop_mm gt 20.0', note=''), FeatureResult(code='ascenso_hombros', label='Ascenso de hombros', chain='extension', present=False, value=146.49977806583047, unit='mm', rule='shoulder_drop_mm lt 10.0', note=''), FeatureResult(code='hipercifosis', label='Hipercifosis', chain='flexion', present=False, value=28.540342040061944, unit='mm', rule='d7_offset_mm gt 60.0', note=''), FeatureResult(code='espalda_plana', label='Espalda plana', chain='extension', present=False, value=28.540342040061944, unit='mm', rule='d7_offset_mm lt 20.0', note=''), FeatureResult(code='rectificacion_lumbar_baja', label='Rectificacion lumbar', chain='flexion', present=False, value=34.618494939804066, unit='mm', rule='l1_offset_mm lt 20.0', note=''), FeatureResult(code='hiperlordosis_baja', label='Hiperlordosis baja', chain='extension', present=False, value=34.618494939804066, unit='mm', rule='l1_offset_mm gt 45.0', note=''), FeatureResult(code='flexion_msls', label='Flexion de MMII', chain='flexion', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg lt 175.0', note=''), FeatureResult(code='knee_posteriorizada_flexion', label='Rodilla posteriorizada', chain='flexion', present=False, value=18.0964557826519, unit='mm', rule='knee_barre_offset_mm lt -5.0', note=''), FeatureResult(code='ankle_posteriorizado_flexion', label='Tobillo posteriorizado', chain='flexion', present=False, value=-0.4528268277645111, unit='mm', rule='ankle_barre_offset_mm lt -5.0', note=''), FeatureResult(code='extension_msls', label='Extension de MMII', chain='extension', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg gt 185.0', note=''), FeatureResult(code='knee_antepulsion_extension', label='Rodilla en antepulsion', chain='extension', present=True, value=18.0964557826519, unit='mm', rule='knee_barre_offset_mm gt 5.0', note=''), FeatureResult(code='ankle_antepulsion_extension', label='Tobillo en antepulsion', chain='extension', present=False, value=-0.4528268277645111, unit='mm', rule='ankle_barre_offset_mm gt 5.0', note=''), FeatureResult(code='inspiracion_global', label='Patron inspiratorio', chain='inspiracion', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm gt 15.0', note=''), FeatureResult(code='espiracion_global', label='Patron espiratorio', chain='espiracion', present=True, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm lt 8.0', note='')], chain_summaries={'flexion': ChainSummary(name='Cadena de flexion', positives=1, total=14, activation_percentage=7.142857142857142, percentage=5.179282868525896), 'extension': ChainSummary(name='Cadena de extension', positives=4, total=13, activation_percentage=30.76923076923077, percentage=22.31075697211155), 'apertura': ChainSummary(name='Cadena de apertura', positives=0, total=0, activation_percentage=0.0, percentage=0.0), 'cierre': ChainSummary(name='Cadena de cierre', positives=0, total=0, activation_percentage=0.0, percentage=0.0), 'inspiracion': ChainSummary(name='Cadena inspiratoria', positives=0, total=1, activation_percentage=0.0, percentage=0.0), 'espiracion': ChainSummary(name='Cadena espiratoria', positives=1, total=1, activation_percentage=100.0, percentage=72.50996015936255)}, images={'annotated': array([[[ 93, 108, 104],
+        [ 93, 108, 104],
+        [ 92, 107, 103],
+        ...,
+        [ 97, 112, 108],
+        [ 97, 112, 108],
+        [ 98, 113, 109]],
+
+       [[ 93, 108, 104],
+        [ 93, 108, 104],
+        [ 92, 107, 103],
+        ...,
+        [ 97, 112, 108],
+        [ 98, 113, 109],
+        [ 98, 113, 109]],
+
+       [[ 93, 108, 104],
+        [ 93, 108, 104],
+        [ 93, 108, 104],
+        ...,
+        [ 98, 113, 109],
+        [ 98, 113, 109],
+        [ 98, 113, 109]],
+
+       ...,
+
+       [[ 60,  73,  75],
+        [ 59,  72,  74],
+        [ 58,  71,  73],
+        ...,
+        [ 58,  76,  77],
+        [ 60,  78,  79],
+        [ 62,  80,  81]],
+
+       [[ 60,  73,  75],
+        [ 60,  73,  75],
+        [ 59,  72,  74],
+        ...,
+        [ 60,  78,  79],
+        [ 60,  78,  79],
+        [ 59,  77,  78]],
+
+       [[ 60,  73,  75],
+        [ 60,  73,  75],
+        [ 59,  72,  74],
+        ...,
+        [ 56,  74,  75],
+        [ 55,  73,  74],
+        [ 54,  72,  73]]], shape=(1549, 623, 3), dtype=uint8)}, notes=['Cadena predominante: Cadena espiratoria (72.5%).'])
+Imagen anotada guardada en: uploads/chains_annotated_sagital_asd_1776425749.jpg
+--- FIN /analisis_cadenas ---
+--- INICIO /analisis_cadenas ---
+chains_image_frontal: <FileStorage: 'Frontal_Anterior.jpeg' ('image/jpeg')>
+chains_image_frontal_data: 
+chains_image_sagital: <FileStorage: 'Sagital_Derecho.jpeg' ('image/jpeg')>
+chains_image_sagital_data: 
+Procesando imagen frontal desde archivo
+Llamando a analizar_cadenas frontal
+Resultado analizar_cadenas frontal: AnalysisResult(metrics={'knee_angle_deg': 175.08782133283881, 'q_angle_deg': 175.08782133283881, 'charpy_angle_deg': 105.20864766653285, 'clavicular_opening_angle_deg': 122.60855945174211, 'cervical_angle_deg': 154.89021046255328, 'craniovertebral_angle_deg': 64.00428999297006, 'mandibular_angle_deg': 69.85107038983861, 'd7_offset_mm': 2.44136185795071, 'l1_offset_mm': 4.068936429917812, 'sacrum_offset_mm': 6.5102982878685225, 'thoracic_curve_mm': -1.6275745719671022, 'lumbar_curve_mm': -2.44136185795071, 'pelvic_tilt_mm': 6.5102982878685225, 'shoulder_drop_mm': 186.36520385742188, 'head_barre_offset_mm': -4.3386193960905075, 'shoulder_barre_offset_mm': -0.0, 'hip_barre_offset_mm': 5.812766328454018, 'knee_barre_offset_mm': -81.31818124651909, 'ankle_barre_offset_mm': -105.9929915368557, 'arm_midline_distance_mm': 271.85550870001316, 'arm_rotation_score': -59.584073185920715, 'hip_rotation_score': 39.57944172620773, 'foot_orientation_score': 272.31166845560074, 'plane': 'frontal', 'profile_side': 'left', 'calibration_mm_per_px': 1.0, 'calibration_source': 'pixel'}, feature_results=[FeatureResult(code='pectus_excavatum', label='Pectus excavatum', chain='flexion', present=False, value=105.20864766653285, unit='deg', rule='charpy_angle_deg lt 80.0', note=''), FeatureResult(code='cierre_costillas', label='Cierre de costillas', chain='flexion', present=False, value=105.20864766653285, unit='deg', rule='charpy_angle_deg lt 90.0', note=''), FeatureResult(code='apertura_costillas', label='Apertura de costillas', chain='extension', present=True, value=105.20864766653285, unit='deg', rule='charpy_angle_deg gt 90.0', note=''), FeatureResult(code='valgo_rodilla', label='Valgo de rodilla', chain='flexion', present=False, value=175.08782133283881, unit='deg', rule='q_angle_deg lt 170.0', note=''), FeatureResult(code='varo_rodilla', label='Varo de rodilla', chain='extension', present=False, value=175.08782133283881, unit='deg', rule='q_angle_deg gt 180.0', note=''), FeatureResult(code='rotacion_interna_cadera', label='Rotacion interna de cadera', chain='flexion', present=False, value=39.57944172620773, unit='mm', rule='hip_rotation_score lt -5.0', note=''), FeatureResult(code='rotacion_externa', label='Rotacion externa', chain='extension', present=True, value=39.57944172620773, unit='mm', rule='hip_rotation_score gt 5.0', note=''), FeatureResult(code='aduccion_brazos', label='Aduccion de brazos', chain='flexion', present=False, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm lt 90.0', note=''), FeatureResult(code='abduccion_brazos', label='Abduccion de brazos', chain='extension', present=True, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm gt 120.0', note=''), FeatureResult(code='rotacion_interna_brazos', label='Rotacion interna de brazos', chain='flexion', present=True, value=-59.584073185920715, unit='mm', rule='arm_rotation_score lt -5.0', note=''), FeatureResult(code='rotacion_externa_brazos', label='Rotacion externa de brazos', chain='extension', present=False, value=-59.584073185920715, unit='mm', rule='arm_rotation_score gt 5.0', note=''), FeatureResult(code='descenso_hombros', label='Descenso de hombros', chain='flexion', present=True, value=186.36520385742188, unit='mm', rule='shoulder_drop_mm gt 20.0', note=''), FeatureResult(code='ascenso_hombros', label='Ascenso de hombros', chain='extension', present=False, value=186.36520385742188, unit='mm', rule='shoulder_drop_mm lt 10.0', note=''), FeatureResult(code='elevacion_esternoclavicular', label='Elevacion esternoclavicular', chain='flexion', present=False, value=122.60855945174211, unit='deg', rule='clavicular_opening_angle_deg lt 65.0', note=''), FeatureResult(code='esternon_horizontal', label='Esternon horizontal', chain='extension', present=True, value=122.60855945174211, unit='deg', rule='clavicular_opening_angle_deg gt 95.0', note=''), FeatureResult(code='apertura_mandibula', label='Apertura de mandibula', chain='extension', present=False, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg gt 100.0', note=''), FeatureResult(code='cierre_mandibula', label='Cierre de mandibula', chain='flexion', present=True, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg lt 80.0', note=''), FeatureResult(code='apertura_costal_global', label='Apertura costal global', chain='apertura', present=True, value=105.20864766653285, unit='deg', rule='charpy_angle_deg gt 90.0', note=''), FeatureResult(code='apertura_brazos_global', label='Abduccion global de MMSS', chain='apertura', present=True, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm gt 130.0', note=''), FeatureResult(code='cierre_costal_global', label='Cierre costal global', chain='cierre', present=False, value=105.20864766653285, unit='deg', rule='charpy_angle_deg lt 90.0', note=''), FeatureResult(code='cierre_brazos_global', label='Aduccion global de MMSS', chain='cierre', present=False, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm lt 85.0', note=''), FeatureResult(code='mandibula_abierta_global', label='Apertura mandibular global', chain='inspiracion', present=False, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg gt 100.0', note=''), FeatureResult(code='mandibula_cerrada_global', label='Cierre mandibular global', chain='espiracion', present=True, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg lt 80.0', note='')], chain_summaries={'flexion': ChainSummary(name='Cadena de flexion', positives=3, total=9, activation_percentage=33.33333333333333, percentage=11.76470588235294), 'extension': ChainSummary(name='Cadena de extension', positives=4, total=8, activation_percentage=50.0, percentage=17.647058823529413), 'apertura': ChainSummary(name='Cadena de apertura', positives=2, total=2, activation_percentage=100.0, percentage=35.294117647058826), 'cierre': ChainSummary(name='Cadena de cierre', positives=0, total=2, activation_percentage=0.0, percentage=0.0), 'inspiracion': ChainSummary(name='Cadena inspiratoria', positives=0, total=1, activation_percentage=0.0, percentage=0.0), 'espiracion': ChainSummary(name='Cadena espiratoria', positives=1, total=1, activation_percentage=100.0, percentage=35.294117647058826)}, images={'annotated': array([[[111, 122, 112],
+        [111, 122, 112],
+        [111, 122, 112],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       [[111, 122, 112],
+        [111, 122, 112],
+        [111, 122, 112],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       [[111, 122, 112],
+        [111, 122, 112],
+        [112, 123, 113],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       ...,
+
+       [[ 57,  70,  72],
+        [ 55,  68,  70],
+        [ 54,  67,  69],
+        ...,
+        [ 54,  69,  72],
+        [ 53,  68,  71],
+        [ 52,  67,  70]],
+
+       [[ 62,  75,  77],
+        [ 60,  73,  75],
+        [ 58,  71,  73],
+        ...,
+        [ 51,  66,  69],
+        [ 50,  65,  68],
+        [ 50,  65,  68]],
+
+       [[ 63,  76,  78],
+        [ 61,  74,  76],
+        [ 58,  71,  73],
+        ...,
+        [ 46,  61,  64],
+        [ 46,  61,  64],
+        [ 47,  62,  65]]], shape=(1460, 779, 3), dtype=uint8)}, notes=['Cadena predominante: Cadena de apertura (35.3%).'])
+Imagen anotada guardada en: uploads/chains_annotated_frontal_asd_1776430138.jpg
+Procesando imagen sagital desde archivo
+Llamando a analizar_cadenas sagital
+Resultado analizar_cadenas sagital: AnalysisResult(metrics={'knee_angle_deg': 178.8167654969083, 'q_angle_deg': 178.8167654969083, 'charpy_angle_deg': 1.5595411635200913, 'clavicular_opening_angle_deg': 0.919711720559542, 'cervical_angle_deg': 167.0791461369973, 'craniovertebral_angle_deg': 102.81710642374594, 'mandibular_angle_deg': 8.477622419959017, 'd7_offset_mm': 28.540342040061944, 'l1_offset_mm': 34.618494939804066, 'sacrum_offset_mm': 43.73572428941725, 'thoracic_curve_mm': -6.078152899742122, 'lumbar_curve_mm': -9.117229349613183, 'pelvic_tilt_mm': 43.73572428941725, 'shoulder_drop_mm': 146.49977806583047, 'head_barre_offset_mm': 65.61402063071728, 'shoulder_barre_offset_mm': 19.42311269044876, 'hip_barre_offset_mm': 41.13080161809921, 'knee_barre_offset_mm': 18.0964557826519, 'ankle_barre_offset_mm': -0.4528268277645111, 'arm_midline_distance_mm': 127.58424186706543, 'arm_rotation_score': -104.99885167181492, 'hip_rotation_score': -174.28309231996536, 'foot_orientation_score': -11.479732871055603, 'plane': 'sagittal', 'profile_side': 'left', 'calibration_mm_per_px': 1.0, 'calibration_source': 'pixel'}, feature_results=[FeatureResult(code='genu_flexum', label='Genu flexum', chain='flexion', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg lt 175.0', note=''), FeatureResult(code='genu_recurvatum', label='Genu recurvatum', chain='extension', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg gt 185.0', note=''), FeatureResult(code='sacro_vertical', label='Sacro vertical', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm abs_le 5.0', note=''), FeatureResult(code='sacro_horizontal', label='Sacro horizontal', chain='extension', present=True, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm abs_ge 20.0', note=''), FeatureResult(code='cifosis', label='Cifosis', chain='flexion', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm gt 10.0', note=''), FeatureResult(code='dorso_plano', label='Dorso plano', chain='extension', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm abs_le 5.0', note=''), FeatureResult(code='inversion_cervical', label='Inversion cervical', chain='flexion', present=False, value=167.0791461369973, unit='deg', rule='cervical_angle_deg lt 155.0', note=''), FeatureResult(code='rectificacion_cervical', label='Rectificacion cervical', chain='extension', present=False, value=167.0791461369973, unit='deg', rule='cervical_angle_deg gt 170.0', note=''), FeatureResult(code='proyeccion_anterior_cabeza', label='Proyeccion anterior de cabeza', chain='flexion', present=False, value=102.81710642374594, unit='deg', rule='craniovertebral_angle_deg lt 50.0', note=''), FeatureResult(code='bascula_posterior_cabeza', label='Bascula posterior de cabeza', chain='extension', present=True, value=102.81710642374594, unit='deg', rule='craniovertebral_angle_deg gt 60.0', note=''), FeatureResult(code='retroversion_pelvica', label='Retroversion pelvica', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='pelvic_tilt_mm lt -10.0', note=''), FeatureResult(code='anteversion_pelvica', label='Anteversion pelvica', chain='extension', present=True, value=43.73572428941725, unit='mm', rule='pelvic_tilt_mm gt 10.0', note=''), FeatureResult(code='coxis_hacia_adentro', label='Coxis hacia adentro', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm lt -6.0', note=''), FeatureResult(code='rectificacion_lumbar', label='Rectificacion lumbar', chain='flexion', present=False, value=-9.117229349613183, unit='mm', rule='lumbar_curve_mm abs_le 5.0', note=''), FeatureResult(code='hiperlordosis', label='Hiperlordosis', chain='extension', present=False, value=-9.117229349613183, unit='mm', rule='lumbar_curve_mm gt 10.0', note=''), FeatureResult(code='descenso_hombros', label='Descenso de hombros', chain='flexion', present=True, value=146.49977806583047, unit='mm', rule='shoulder_drop_mm gt 20.0', note=''), FeatureResult(code='ascenso_hombros', label='Ascenso de hombros', chain='extension', present=False, value=146.49977806583047, unit='mm', rule='shoulder_drop_mm lt 10.0', note=''), FeatureResult(code='hipercifosis', label='Hipercifosis', chain='flexion', present=False, value=28.540342040061944, unit='mm', rule='d7_offset_mm gt 60.0', note=''), FeatureResult(code='espalda_plana', label='Espalda plana', chain='extension', present=False, value=28.540342040061944, unit='mm', rule='d7_offset_mm lt 20.0', note=''), FeatureResult(code='rectificacion_lumbar_baja', label='Rectificacion lumbar', chain='flexion', present=False, value=34.618494939804066, unit='mm', rule='l1_offset_mm lt 20.0', note=''), FeatureResult(code='hiperlordosis_baja', label='Hiperlordosis baja', chain='extension', present=False, value=34.618494939804066, unit='mm', rule='l1_offset_mm gt 45.0', note=''), FeatureResult(code='flexion_msls', label='Flexion de MMII', chain='flexion', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg lt 175.0', note=''), FeatureResult(code='knee_posteriorizada_flexion', label='Rodilla posteriorizada', chain='flexion', present=False, value=18.0964557826519, unit='mm', rule='knee_barre_offset_mm lt -5.0', note=''), FeatureResult(code='ankle_posteriorizado_flexion', label='Tobillo posteriorizado', chain='flexion', present=False, value=-0.4528268277645111, unit='mm', rule='ankle_barre_offset_mm lt -5.0', note=''), FeatureResult(code='extension_msls', label='Extension de MMII', chain='extension', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg gt 185.0', note=''), FeatureResult(code='knee_antepulsion_extension', label='Rodilla en antepulsion', chain='extension', present=True, value=18.0964557826519, unit='mm', rule='knee_barre_offset_mm gt 5.0', note=''), FeatureResult(code='ankle_antepulsion_extension', label='Tobillo en antepulsion', chain='extension', present=False, value=-0.4528268277645111, unit='mm', rule='ankle_barre_offset_mm gt 5.0', note=''), FeatureResult(code='inspiracion_global', label='Patron inspiratorio', chain='inspiracion', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm gt 15.0', note=''), FeatureResult(code='espiracion_global', label='Patron espiratorio', chain='espiracion', present=True, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm lt 8.0', note='')], chain_summaries={'flexion': ChainSummary(name='Cadena de flexion', positives=1, total=14, activation_percentage=7.142857142857142, percentage=5.179282868525896), 'extension': ChainSummary(name='Cadena de extension', positives=4, total=13, activation_percentage=30.76923076923077, percentage=22.31075697211155), 'apertura': ChainSummary(name='Cadena de apertura', positives=0, total=0, activation_percentage=0.0, percentage=0.0), 'cierre': ChainSummary(name='Cadena de cierre', positives=0, total=0, activation_percentage=0.0, percentage=0.0), 'inspiracion': ChainSummary(name='Cadena inspiratoria', positives=0, total=1, activation_percentage=0.0, percentage=0.0), 'espiracion': ChainSummary(name='Cadena espiratoria', positives=1, total=1, activation_percentage=100.0, percentage=72.50996015936255)}, images={'annotated': array([[[ 93, 108, 104],
+        [ 93, 108, 104],
+        [ 92, 107, 103],
+        ...,
+        [ 97, 112, 108],
+        [ 97, 112, 108],
+        [ 98, 113, 109]],
+
+       [[ 93, 108, 104],
+        [ 93, 108, 104],
+        [ 92, 107, 103],
+        ...,
+        [ 97, 112, 108],
+        [ 98, 113, 109],
+        [ 98, 113, 109]],
+
+       [[ 93, 108, 104],
+        [ 93, 108, 104],
+        [ 93, 108, 104],
+        ...,
+        [ 98, 113, 109],
+        [ 98, 113, 109],
+        [ 98, 113, 109]],
+
+       ...,
+
+       [[ 60,  73,  75],
+        [ 59,  72,  74],
+        [ 58,  71,  73],
+        ...,
+        [ 58,  76,  77],
+        [ 60,  78,  79],
+        [ 62,  80,  81]],
+
+       [[ 60,  73,  75],
+        [ 60,  73,  75],
+        [ 59,  72,  74],
+        ...,
+        [ 60,  78,  79],
+        [ 60,  78,  79],
+        [ 59,  77,  78]],
+
+       [[ 60,  73,  75],
+        [ 60,  73,  75],
+        [ 59,  72,  74],
+        ...,
+        [ 56,  74,  75],
+        [ 55,  73,  74],
+        [ 54,  72,  73]]], shape=(1549, 623, 3), dtype=uint8)}, notes=['Cadena predominante: Cadena espiratoria (72.5%).'])
+Imagen anotada guardada en: uploads/chains_annotated_sagital_asd_1776430138.jpg
+--- FIN /analisis_cadenas ---
+--- INICIO /analisis_cadenas ---
+chains_image_frontal: <FileStorage: 'Frontal_Anterior.jpeg' ('image/jpeg')>
+chains_image_frontal_data: 
+chains_image_sagital: <FileStorage: 'Sagital_Derecho.jpeg' ('image/jpeg')>
+chains_image_sagital_data: 
+Procesando imagen frontal desde archivo
+Llamando a analizar_cadenas frontal
+Resultado analizar_cadenas frontal: AnalysisResult(metrics={'knee_angle_deg': 175.08782133283881, 'q_angle_deg': 175.08782133283881, 'charpy_angle_deg': 105.20864766653285, 'clavicular_opening_angle_deg': 122.60855945174211, 'cervical_angle_deg': 154.89021046255328, 'craniovertebral_angle_deg': 64.00428999297006, 'mandibular_angle_deg': 69.85107038983861, 'd7_offset_mm': 2.44136185795071, 'l1_offset_mm': 4.068936429917812, 'sacrum_offset_mm': 6.5102982878685225, 'thoracic_curve_mm': -1.6275745719671022, 'lumbar_curve_mm': -2.44136185795071, 'pelvic_tilt_mm': 6.5102982878685225, 'shoulder_drop_mm': 186.36520385742188, 'head_barre_offset_mm': -4.3386193960905075, 'shoulder_barre_offset_mm': -0.0, 'hip_barre_offset_mm': 5.812766328454018, 'knee_barre_offset_mm': -81.31818124651909, 'ankle_barre_offset_mm': -105.9929915368557, 'arm_midline_distance_mm': 271.85550870001316, 'arm_rotation_score': -59.584073185920715, 'hip_rotation_score': 39.57944172620773, 'foot_orientation_score': 272.31166845560074, 'plane': 'frontal', 'profile_side': 'left', 'calibration_mm_per_px': 1.0, 'calibration_source': 'pixel'}, feature_results=[FeatureResult(code='pectus_excavatum', label='Pectus excavatum', chain='flexion', present=False, value=105.20864766653285, unit='deg', rule='charpy_angle_deg lt 80.0', note=''), FeatureResult(code='cierre_costillas', label='Cierre de costillas', chain='flexion', present=False, value=105.20864766653285, unit='deg', rule='charpy_angle_deg lt 90.0', note=''), FeatureResult(code='apertura_costillas', label='Apertura de costillas', chain='extension', present=True, value=105.20864766653285, unit='deg', rule='charpy_angle_deg gt 90.0', note=''), FeatureResult(code='valgo_rodilla', label='Valgo de rodilla', chain='flexion', present=False, value=175.08782133283881, unit='deg', rule='q_angle_deg lt 170.0', note=''), FeatureResult(code='varo_rodilla', label='Varo de rodilla', chain='extension', present=False, value=175.08782133283881, unit='deg', rule='q_angle_deg gt 180.0', note=''), FeatureResult(code='rotacion_interna_cadera', label='Rotacion interna de cadera', chain='flexion', present=False, value=39.57944172620773, unit='mm', rule='hip_rotation_score lt -5.0', note=''), FeatureResult(code='rotacion_externa', label='Rotacion externa', chain='extension', present=True, value=39.57944172620773, unit='mm', rule='hip_rotation_score gt 5.0', note=''), FeatureResult(code='aduccion_brazos', label='Aduccion de brazos', chain='flexion', present=False, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm lt 90.0', note=''), FeatureResult(code='abduccion_brazos', label='Abduccion de brazos', chain='extension', present=True, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm gt 120.0', note=''), FeatureResult(code='rotacion_interna_brazos', label='Rotacion interna de brazos', chain='flexion', present=True, value=-59.584073185920715, unit='mm', rule='arm_rotation_score lt -5.0', note=''), FeatureResult(code='rotacion_externa_brazos', label='Rotacion externa de brazos', chain='extension', present=False, value=-59.584073185920715, unit='mm', rule='arm_rotation_score gt 5.0', note=''), FeatureResult(code='descenso_hombros', label='Descenso de hombros', chain='flexion', present=True, value=186.36520385742188, unit='mm', rule='shoulder_drop_mm gt 20.0', note=''), FeatureResult(code='ascenso_hombros', label='Ascenso de hombros', chain='extension', present=False, value=186.36520385742188, unit='mm', rule='shoulder_drop_mm lt 10.0', note=''), FeatureResult(code='elevacion_esternoclavicular', label='Elevacion esternoclavicular', chain='flexion', present=False, value=122.60855945174211, unit='deg', rule='clavicular_opening_angle_deg lt 65.0', note=''), FeatureResult(code='esternon_horizontal', label='Esternon horizontal', chain='extension', present=True, value=122.60855945174211, unit='deg', rule='clavicular_opening_angle_deg gt 95.0', note=''), FeatureResult(code='apertura_mandibula', label='Apertura de mandibula', chain='extension', present=False, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg gt 100.0', note=''), FeatureResult(code='cierre_mandibula', label='Cierre de mandibula', chain='flexion', present=True, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg lt 80.0', note=''), FeatureResult(code='apertura_costal_global', label='Apertura costal global', chain='apertura', present=True, value=105.20864766653285, unit='deg', rule='charpy_angle_deg gt 90.0', note=''), FeatureResult(code='apertura_brazos_global', label='Abduccion global de MMSS', chain='apertura', present=True, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm gt 130.0', note=''), FeatureResult(code='cierre_costal_global', label='Cierre costal global', chain='cierre', present=False, value=105.20864766653285, unit='deg', rule='charpy_angle_deg lt 90.0', note=''), FeatureResult(code='cierre_brazos_global', label='Aduccion global de MMSS', chain='cierre', present=False, value=271.85550870001316, unit='mm', rule='arm_midline_distance_mm lt 85.0', note=''), FeatureResult(code='mandibula_abierta_global', label='Apertura mandibular global', chain='inspiracion', present=False, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg gt 100.0', note=''), FeatureResult(code='mandibula_cerrada_global', label='Cierre mandibular global', chain='espiracion', present=True, value=69.85107038983861, unit='deg', rule='mandibular_angle_deg lt 80.0', note='')], chain_summaries={'flexion': ChainSummary(name='Cadena de flexion', positives=3, total=9, activation_percentage=33.33333333333333, percentage=11.76470588235294), 'extension': ChainSummary(name='Cadena de extension', positives=4, total=8, activation_percentage=50.0, percentage=17.647058823529413), 'apertura': ChainSummary(name='Cadena de apertura', positives=2, total=2, activation_percentage=100.0, percentage=35.294117647058826), 'cierre': ChainSummary(name='Cadena de cierre', positives=0, total=2, activation_percentage=0.0, percentage=0.0), 'inspiracion': ChainSummary(name='Cadena inspiratoria', positives=0, total=1, activation_percentage=0.0, percentage=0.0), 'espiracion': ChainSummary(name='Cadena espiratoria', positives=1, total=1, activation_percentage=100.0, percentage=35.294117647058826)}, images={'annotated': array([[[111, 122, 112],
+        [111, 122, 112],
+        [111, 122, 112],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       [[111, 122, 112],
+        [111, 122, 112],
+        [111, 122, 112],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       [[111, 122, 112],
+        [111, 122, 112],
+        [112, 123, 113],
+        ...,
+        [107, 120, 112],
+        [107, 120, 112],
+        [107, 120, 112]],
+
+       ...,
+
+       [[ 57,  70,  72],
+        [ 55,  68,  70],
+        [ 54,  67,  69],
+        ...,
+        [ 54,  69,  72],
+        [ 53,  68,  71],
+        [ 52,  67,  70]],
+
+       [[ 62,  75,  77],
+        [ 60,  73,  75],
+        [ 58,  71,  73],
+        ...,
+        [ 51,  66,  69],
+        [ 50,  65,  68],
+        [ 50,  65,  68]],
+
+       [[ 63,  76,  78],
+        [ 61,  74,  76],
+        [ 58,  71,  73],
+        ...,
+        [ 46,  61,  64],
+        [ 46,  61,  64],
+        [ 47,  62,  65]]], shape=(1460, 779, 3), dtype=uint8)}, notes=['Cadena predominante: Cadena de apertura (35.3%).'])
+Imagen anotada guardada en: uploads/chains_annotated_frontal_sd_1776430172.jpg
+Procesando imagen sagital desde archivo
+Llamando a analizar_cadenas sagital
+Resultado analizar_cadenas sagital: AnalysisResult(metrics={'knee_angle_deg': 178.8167654969083, 'q_angle_deg': 178.8167654969083, 'charpy_angle_deg': 1.5595411635200913, 'clavicular_opening_angle_deg': 0.919711720559542, 'cervical_angle_deg': 167.0791461369973, 'craniovertebral_angle_deg': 102.81710642374594, 'mandibular_angle_deg': 8.477622419959017, 'd7_offset_mm': 28.540342040061944, 'l1_offset_mm': 34.618494939804066, 'sacrum_offset_mm': 43.73572428941725, 'thoracic_curve_mm': -6.078152899742122, 'lumbar_curve_mm': -9.117229349613183, 'pelvic_tilt_mm': 43.73572428941725, 'shoulder_drop_mm': 146.49977806583047, 'head_barre_offset_mm': 65.61402063071728, 'shoulder_barre_offset_mm': 19.42311269044876, 'hip_barre_offset_mm': 41.13080161809921, 'knee_barre_offset_mm': 18.0964557826519, 'ankle_barre_offset_mm': -0.4528268277645111, 'arm_midline_distance_mm': 127.58424186706543, 'arm_rotation_score': -104.99885167181492, 'hip_rotation_score': -174.28309231996536, 'foot_orientation_score': -11.479732871055603, 'plane': 'sagittal', 'profile_side': 'left', 'calibration_mm_per_px': 1.0, 'calibration_source': 'pixel'}, feature_results=[FeatureResult(code='genu_flexum', label='Genu flexum', chain='flexion', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg lt 175.0', note=''), FeatureResult(code='genu_recurvatum', label='Genu recurvatum', chain='extension', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg gt 185.0', note=''), FeatureResult(code='sacro_vertical', label='Sacro vertical', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm abs_le 5.0', note=''), FeatureResult(code='sacro_horizontal', label='Sacro horizontal', chain='extension', present=True, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm abs_ge 20.0', note=''), FeatureResult(code='cifosis', label='Cifosis', chain='flexion', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm gt 10.0', note=''), FeatureResult(code='dorso_plano', label='Dorso plano', chain='extension', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm abs_le 5.0', note=''), FeatureResult(code='inversion_cervical', label='Inversion cervical', chain='flexion', present=False, value=167.0791461369973, unit='deg', rule='cervical_angle_deg lt 155.0', note=''), FeatureResult(code='rectificacion_cervical', label='Rectificacion cervical', chain='extension', present=False, value=167.0791461369973, unit='deg', rule='cervical_angle_deg gt 170.0', note=''), FeatureResult(code='proyeccion_anterior_cabeza', label='Proyeccion anterior de cabeza', chain='flexion', present=False, value=102.81710642374594, unit='deg', rule='craniovertebral_angle_deg lt 50.0', note=''), FeatureResult(code='bascula_posterior_cabeza', label='Bascula posterior de cabeza', chain='extension', present=True, value=102.81710642374594, unit='deg', rule='craniovertebral_angle_deg gt 60.0', note=''), FeatureResult(code='retroversion_pelvica', label='Retroversion pelvica', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='pelvic_tilt_mm lt -10.0', note=''), FeatureResult(code='anteversion_pelvica', label='Anteversion pelvica', chain='extension', present=True, value=43.73572428941725, unit='mm', rule='pelvic_tilt_mm gt 10.0', note=''), FeatureResult(code='coxis_hacia_adentro', label='Coxis hacia adentro', chain='flexion', present=False, value=43.73572428941725, unit='mm', rule='sacrum_offset_mm lt -6.0', note=''), FeatureResult(code='rectificacion_lumbar', label='Rectificacion lumbar', chain='flexion', present=False, value=-9.117229349613183, unit='mm', rule='lumbar_curve_mm abs_le 5.0', note=''), FeatureResult(code='hiperlordosis', label='Hiperlordosis', chain='extension', present=False, value=-9.117229349613183, unit='mm', rule='lumbar_curve_mm gt 10.0', note=''), FeatureResult(code='descenso_hombros', label='Descenso de hombros', chain='flexion', present=True, value=146.49977806583047, unit='mm', rule='shoulder_drop_mm gt 20.0', note=''), FeatureResult(code='ascenso_hombros', label='Ascenso de hombros', chain='extension', present=False, value=146.49977806583047, unit='mm', rule='shoulder_drop_mm lt 10.0', note=''), FeatureResult(code='hipercifosis', label='Hipercifosis', chain='flexion', present=False, value=28.540342040061944, unit='mm', rule='d7_offset_mm gt 60.0', note=''), FeatureResult(code='espalda_plana', label='Espalda plana', chain='extension', present=False, value=28.540342040061944, unit='mm', rule='d7_offset_mm lt 20.0', note=''), FeatureResult(code='rectificacion_lumbar_baja', label='Rectificacion lumbar', chain='flexion', present=False, value=34.618494939804066, unit='mm', rule='l1_offset_mm lt 20.0', note=''), FeatureResult(code='hiperlordosis_baja', label='Hiperlordosis baja', chain='extension', present=False, value=34.618494939804066, unit='mm', rule='l1_offset_mm gt 45.0', note=''), FeatureResult(code='flexion_msls', label='Flexion de MMII', chain='flexion', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg lt 175.0', note=''), FeatureResult(code='knee_posteriorizada_flexion', label='Rodilla posteriorizada', chain='flexion', present=False, value=18.0964557826519, unit='mm', rule='knee_barre_offset_mm lt -5.0', note=''), FeatureResult(code='ankle_posteriorizado_flexion', label='Tobillo posteriorizado', chain='flexion', present=False, value=-0.4528268277645111, unit='mm', rule='ankle_barre_offset_mm lt -5.0', note=''), FeatureResult(code='extension_msls', label='Extension de MMII', chain='extension', present=False, value=178.8167654969083, unit='deg', rule='knee_angle_deg gt 185.0', note=''), FeatureResult(code='knee_antepulsion_extension', label='Rodilla en antepulsion', chain='extension', present=True, value=18.0964557826519, unit='mm', rule='knee_barre_offset_mm gt 5.0', note=''), FeatureResult(code='ankle_antepulsion_extension', label='Tobillo en antepulsion', chain='extension', present=False, value=-0.4528268277645111, unit='mm', rule='ankle_barre_offset_mm gt 5.0', note=''), FeatureResult(code='inspiracion_global', label='Patron inspiratorio', chain='inspiracion', present=False, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm gt 15.0', note=''), FeatureResult(code='espiracion_global', label='Patron espiratorio', chain='espiracion', present=True, value=-6.078152899742122, unit='mm', rule='thoracic_curve_mm lt 8.0', note='')], chain_summaries={'flexion': ChainSummary(name='Cadena de flexion', positives=1, total=14, activation_percentage=7.142857142857142, percentage=5.179282868525896), 'extension': ChainSummary(name='Cadena de extension', positives=4, total=13, activation_percentage=30.76923076923077, percentage=22.31075697211155), 'apertura': ChainSummary(name='Cadena de apertura', positives=0, total=0, activation_percentage=0.0, percentage=0.0), 'cierre': ChainSummary(name='Cadena de cierre', positives=0, total=0, activation_percentage=0.0, percentage=0.0), 'inspiracion': ChainSummary(name='Cadena inspiratoria', positives=0, total=1, activation_percentage=0.0, percentage=0.0), 'espiracion': ChainSummary(name='Cadena espiratoria', positives=1, total=1, activation_percentage=100.0, percentage=72.50996015936255)}, images={'annotated': array([[[ 93, 108, 104],
+        [ 93, 108, 104],
+        [ 92, 107, 103],
+        ...,
+        [ 97, 112, 108],
+        [ 97, 112, 108],
+        [ 98, 113, 109]],
+
+       [[ 93, 108, 104],
+        [ 93, 108, 104],
+        [ 92, 107, 103],
+        ...,
+        [ 97, 112, 108],
+        [ 98, 113, 109],
+        [ 98, 113, 109]],
+
+       [[ 93, 108, 104],
+        [ 93, 108, 104],
+        [ 93, 108, 104],
+        ...,
+        [ 98, 113, 109],
+        [ 98, 113, 109],
+        [ 98, 113, 109]],
+
+       ...,
+
+       [[ 60,  73,  75],
+        [ 59,  72,  74],
+        [ 58,  71,  73],
+        ...,
+        [ 58,  76,  77],
+        [ 60,  78,  79],
+        [ 62,  80,  81]],
+
+       [[ 60,  73,  75],
+        [ 60,  73,  75],
+        [ 59,  72,  74],
+        ...,
+        [ 60,  78,  79],
+        [ 60,  78,  79],
+        [ 59,  77,  78]],
+
+       [[ 60,  73,  75],
+        [ 60,  73,  75],
+        [ 59,  72,  74],
+        ...,
+        [ 56,  74,  75],
+        [ 55,  73,  74],
+        [ 54,  72,  73]]], shape=(1549, 623, 3), dtype=uint8)}, notes=['Cadena predominante: Cadena espiratoria (72.5%).'])
+Imagen anotada guardada en: uploads/chains_annotated_sagital_sd_1776430172.jpg
+--- FIN /analisis_cadenas ---
